@@ -19,9 +19,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/FCRRV"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="20dp"
+                android:fadingEdge="horizontal"
+                android:requiresFadingEdge="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/FCRPC"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
