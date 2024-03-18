@@ -1,12 +1,17 @@
 package com.project.balpyo.TimeCalculator
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.project.balpyo.R
+import androidx.fragment.app.Fragment
 import com.project.balpyo.databinding.FragmentTimeCalculatorSpeedBinding
+import com.warkiz.widget.IndicatorSeekBar
+import com.warkiz.widget.OnSeekChangeListener
+import com.warkiz.widget.SeekParams
+
 
 class TimeCalculatorSpeedFragment : Fragment() {
 
@@ -20,7 +25,23 @@ class TimeCalculatorSpeedFragment : Fragment() {
         binding = FragmentTimeCalculatorSpeedBinding.inflate(layoutInflater)
 
         initToolBar()
-        
+
+        binding.run {
+            seekbar.setOnSeekChangeListener(object : OnSeekChangeListener {
+                override fun onSeeking(seekParams: SeekParams) {
+                    Log.i(TAG, seekParams.seekBar.toString())
+                    Log.i(TAG, seekParams.progress.toString())
+                    Log.i(TAG, seekParams.progressFloat.toString())
+                    Log.i(TAG, seekParams.fromUser.toString())
+                    //when tick count > 0
+                    Log.i(TAG, seekParams.thumbPosition.toString())
+                    Log.i(TAG, seekParams.tickText)
+                }
+
+                override fun onStartTrackingTouch(seekBar: IndicatorSeekBar) {}
+                override fun onStopTrackingTouch(seekBar: IndicatorSeekBar) {}
+            })
+        }
         return binding.root
     }
 

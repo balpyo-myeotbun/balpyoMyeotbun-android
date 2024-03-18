@@ -50,7 +50,7 @@
         app:isb_show_tick_marks_type="oval"
         app:isb_show_tick_texts="true"
         app:isb_thumb_color="@color/white"
-        app:isb_thumb_size="30dp"
+        app:isb_thumb_size="20dp"
         app:isb_tick_marks_color="@drawable/color_indicator_marker"
         app:isb_tick_marks_size="13dp"
         app:isb_tick_texts_color="@color/primary"
