@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("com.github.warkiz.widget:indicatorseekbar:2.1.2")
     implementation("com.google.android.exoplayer:exoplayer:2.15.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
