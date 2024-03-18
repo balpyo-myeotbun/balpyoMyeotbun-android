@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FlowController.FlowControllerAddTimeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/FCATTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="113dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:textSize="22sp"
+            android:textColor="@color/text"
+            android:text="발화 외에 더 추가하고 싶은 \n시간들이 있나요?"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+        <View
+            android:id="@+id/topDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FCATTitle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="20dp"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarSize="2dp"
+            android:scrollbarThumbVertical="@color/primary"
+            android:scrollbarTrackVertical="@color/gray3"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/BottomDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topDivider" />
+
+        <View
+            android:id="@+id/BottomDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/FCAT2Sec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/FCAT2Sec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/gray1"
+            android:fontFamily="@font/pretendard_regular"
+            android:paddingLeft="9dp"
+            android:paddingTop="11dp"
+            android:paddingRight="9dp"
+            android:paddingBottom="11dp"
+            android:text="숨 고르기 (2초)"
+            android:textColor="@color/gray4"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/FCATNextBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/gray2"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:id="@+id/FCAT3Sec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/gray1"
+            android:fontFamily="@font/pretendard_regular"
+            android:paddingLeft="9dp"
+            android:paddingTop="11dp"
+            android:paddingRight="9dp"
+            android:paddingBottom="11dp"
+            android:text="PPT 넘김 (3초)"
+            android:textColor="@color/gray4"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/FCATNextBtn"
+            app:layout_constraintStart_toEndOf="@+id/FCAT2Sec"
+            app:strokeColor="@color/gray2"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:id="@+id/FCATNextBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="12dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="12dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="다음"
+            android:textSize="16sp"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
