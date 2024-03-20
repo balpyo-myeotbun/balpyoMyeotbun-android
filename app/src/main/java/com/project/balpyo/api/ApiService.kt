@@ -8,4 +8,9 @@ import retrofit2.http.POST
 
 interface ApiService {
 
+    // 스크립트 생성
+    @POST("user/ai/script")
+    fun generateScript(
+        @Body parameters: GenerateScriptRequest
+    ): Call<GenerateScriptResponse>
 }
