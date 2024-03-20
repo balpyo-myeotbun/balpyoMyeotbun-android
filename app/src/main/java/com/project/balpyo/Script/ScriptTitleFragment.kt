@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import com.project.balpyo.FlowController.FlowControllerResultFragment
 import com.project.balpyo.R
+import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentScriptTitleBinding
 
 class ScriptTitleFragment : Fragment() {
@@ -24,6 +25,7 @@ class ScriptTitleFragment : Fragment() {
 
         binding.run {
             buttonNext.setOnClickListener {
+                MyApplication.scriptTitle = editTextTitle.text.toString()
                 val transaction: FragmentTransaction =
                     requireActivity().supportFragmentManager.beginTransaction()
                 val ScriptSubjectFragment = ScriptSubjectFragment()
