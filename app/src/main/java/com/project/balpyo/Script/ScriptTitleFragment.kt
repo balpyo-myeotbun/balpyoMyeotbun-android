@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
+import com.project.balpyo.FlowController.FlowControllerResultFragment
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentScriptTitleBinding
 
@@ -19,6 +21,16 @@ class ScriptTitleFragment : Fragment() {
         binding = FragmentScriptTitleBinding.inflate(layoutInflater)
 
         initToolBar()
+
+        binding.run {
+            buttonNext.setOnClickListener {
+                val transaction: FragmentTransaction =
+                    requireActivity().supportFragmentManager.beginTransaction()
+                val ScriptSubjectFragment = ScriptSubjectFragment()
+                transaction.replace(com.project.balpyo.R.id.fragmentContainerView, ScriptSubjectFragment)
+                transaction.commit()
+            }
+        }
 
         return binding.root
     }
