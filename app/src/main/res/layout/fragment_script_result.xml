@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -66,6 +66,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
+        android:enabled="true"
+        android:editable="false"
         android:background="@drawable/background_text"
         android:ems="10"
         android:gravity="start|top"
@@ -78,7 +80,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_edit" />
 
     <Button
         android:id="@+id/button_edit"
