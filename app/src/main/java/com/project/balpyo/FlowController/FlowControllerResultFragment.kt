@@ -12,12 +12,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerResultBinding
-import com.project.balpyo.scriptplay.ScriptSynchronizer
+import com.project.balpyo.ScriptSync.ScriptSynchronizer
 
 class FlowControllerResultFragment() : Fragment() {
     private lateinit var viewDataBinding: FragmentFlowControllerResultBinding
     private var script = "안녕하세요, 발표 몇분입니다.빠르기를 조정해드릴게요."
-    var mediaplayer : MediaPlayer?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

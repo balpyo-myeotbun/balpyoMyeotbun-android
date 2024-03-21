@@ -1,4 +1,4 @@
-package com.project.balpyo.scriptplay
+package com.project.balpyo.ScriptSync
 
 import android.graphics.Color
 import android.media.MediaPlayer
@@ -39,7 +39,7 @@ class ScriptSynchronizer(
         mPlayer.setDataSource(activity!!.applicationContext, uri)
         mPlayer.prepare()
         activity?.runOnUiThread {
-            pcTimeBar.max = totalDuration.toInt()
+            pcTimeBar.max = mPlayer.duration
             pcEndTimeTextView.text = convertMsToMinutesSeconds(totalDuration)
             setupSeekBarListener()
         }
