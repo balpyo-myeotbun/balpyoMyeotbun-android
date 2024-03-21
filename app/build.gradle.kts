@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -15,6 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String","server_url",getApiKey("server_url"))
     }
 
     buildTypes {
@@ -29,6 +33,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     dataBinding {
         enable = true
@@ -44,6 +49,10 @@ android {
     }
 }
 
+fun getApiKey(propertyKey:String) : String {
+    return  gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -51,6 +60,23 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    
+    // seekbar library
+    implementation("com.github.warkiz.widget:indicatorseekbar:2.1.2")
+    implementation("com.google.android.exoplayer:exoplayer:2.15.1")
+    // recyclerView library
+    implementation("com.arasthel:spannedgridlayoutmanager:3.0.2")
+
+    // api
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // JSON 변환
+    implementation("com.squareup.okhttp3:okhttp:4.10.0") // OkHttp 라이브러리
+    implementation("com.squareup.okhttp3:logging-interceptor:3.11.0")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    implementation("com.squareup.okhttp3:okhttp-urlconnection:4.9.0")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.9.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
