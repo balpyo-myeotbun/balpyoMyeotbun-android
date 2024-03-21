@@ -43,6 +43,7 @@
             app:layout_constraintTop_toBottomOf="@+id/FCATTitle" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/FCATRV"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="20dp"
@@ -80,6 +81,7 @@
             android:paddingTop="11dp"
             android:paddingRight="9dp"
             android:paddingBottom="11dp"
+            android:tag="숨 고르기 (2초)"
             android:text="숨 고르기 (2초)"
             android:textColor="@color/gray4"
             app:cornerRadius="8dp"
@@ -100,6 +102,7 @@
             android:paddingTop="11dp"
             android:paddingRight="9dp"
             android:paddingBottom="11dp"
+            android:tag="PPT 넘김 (3초)"
             android:text="PPT 넘김 (3초)"
             android:textColor="@color/gray4"
             app:cornerRadius="8dp"

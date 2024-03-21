@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    
     // seekbar library
     implementation("com.github.warkiz.widget:indicatorseekbar:2.1.2")
     implementation("com.google.android.exoplayer:exoplayer:2.15.1")
@@ -76,8 +77,9 @@ dependencies {
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.9.0")
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
 }

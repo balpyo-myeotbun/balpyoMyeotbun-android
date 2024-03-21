@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.exoplayer2.ui.DefaultTimeBar
+    <SeekBar
         android:id="@+id/PCTimeBar"
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -15,14 +15,11 @@
         android:max="100000"
         android:paddingStart="0dp"
         android:paddingEnd="0dp"
-        app:bar_height="2dp"
-        app:scrubber_color="@color/primary"
-        app:buffered_color="@color/gray2"
+        android:progressTint="@color/primary"
+        android:thumb="@color/primary"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:played_color="@color/primary"
-        app:touch_target_height="2dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/PCStartTimeTextView"
