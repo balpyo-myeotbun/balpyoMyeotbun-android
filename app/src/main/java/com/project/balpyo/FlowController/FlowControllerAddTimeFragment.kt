@@ -12,23 +12,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.R
-import com.project.balpyo.data.EditScriptItem
+import com.project.balpyo.FlowController.data.EditScriptItem
 import com.project.balpyo.databinding.FragmentFlowControllerAddTimeBinding
 
 class FlowControllerAddTimeFragment : Fragment() {
     lateinit var binding: FragmentFlowControllerAddTimeBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var flowControllerViewModel: FlowControllerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding = FragmentFlowControllerAddTimeBinding.inflate(layoutInflater)
         initToolBar()
 
@@ -76,11 +77,13 @@ class FlowControllerAddTimeFragment : Fragment() {
         }
 
 
-        val items = mutableListOf<EditScriptItem>(
-            EditScriptItem.TextItem("텍스트 1"),
-            EditScriptItem.TextItem("텍스트 2"),
-            EditScriptItem.TextItem("텍스트 3"),
-        )
+        val items = mutableListOf<EditScriptItem>()
+        print(flowControllerViewModel.getSplitScriptToSentencesData().value)
+        for(i in 0 until flowControllerViewModel.getSplitScriptToSentencesData().value!!.size){
+            items.add(EditScriptItem.TextItem(flowControllerViewModel.getSplitScriptToSentencesData().value!![i]))
+        }
+        print(items)
+
         val recyclerView = binding.FCATRV
         val adapter = MultiTypeAdapter(items)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
@@ -93,6 +96,7 @@ class FlowControllerAddTimeFragment : Fragment() {
                 DragEvent.ACTION_DRAG_LOCATION -> {
                     // 드래그 위치 계산 및 업데이트
                     val targetPosition = calculateDragPosition(items, recyclerView, dragEvent.x, dragEvent.y)
+                    Log.d("",targetPosition.toString())
                     if(targetPosition > 0 && targetPosition < items.size){
                         Log.d("",targetPosition.toString())
                         adapter.showDragPosition(targetPosition)
@@ -109,7 +113,7 @@ class FlowControllerAddTimeFragment : Fragment() {
                         dragEvent.y
                     )
                     // 드롭된 위치에 아이템 추가
-                    val newItem = EditScriptItem.ButtonItem(itemText)
+                    val newItem = EditScriptItem.ButtonItem(itemText, "\n$itemText\n")
                     if (position >= 0 && position <= items.size) {
                         items.add(position, newItem)
                         adapter.notifyItemInserted(position)
@@ -130,6 +134,7 @@ class FlowControllerAddTimeFragment : Fragment() {
         }
 
         binding.FCATNextBtn.setOnClickListener {
+            flowControllerViewModel.setCustomScript(concatenateTexts(items))
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             val FlowControllerPreviewFragment = FlowControllerPreviewFragment()
@@ -182,9 +187,6 @@ class FlowControllerAddTimeFragment : Fragment() {
             if (distance < minDistance) {
                 minDistance = distance
                 closestPosition = recyclerView.getChildAdapterPosition(child)
-                if (y > bounds.centerY()) {
-                    closestPosition++
-                }
             }
         }
 
@@ -192,8 +194,15 @@ class FlowControllerAddTimeFragment : Fragment() {
         return closestPosition.coerceIn(0, items.size)
     }
 
-
-
+    fun concatenateTexts(items: MutableList<EditScriptItem>): String {
+        return items.mapNotNull { item ->
+            when (item) {
+                is EditScriptItem.TextItem -> item.text
+                is EditScriptItem.ButtonItem -> item.sText
+                else -> null
+            }
+        }.joinToString(separator = "")
+    }
 
     fun initToolBar() {
         binding.run {

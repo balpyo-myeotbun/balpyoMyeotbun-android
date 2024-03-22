@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.R
-import com.project.balpyo.data.EditScriptItem
+import com.project.balpyo.FlowController.data.EditScriptItem
 
 class MultiTypeAdapter(val items: MutableList<EditScriptItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -17,6 +17,13 @@ class MultiTypeAdapter(val items: MutableList<EditScriptItem>) : RecyclerView.Ad
         private const val TYPE_TEXT = 0
         private const val TYPE_BUTTON = 1
         private const val TYPE_DIVIDER = 3
+    }
+    // 아이템 제거 메소드
+    fun removeItemAt(position: Int) {
+        if (position >= 0 && position < items.size) {
+            items.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 
     private var dragPosition = -1 // 드래그 위치를 나타내는 변수
@@ -65,7 +72,7 @@ class MultiTypeAdapter(val items: MutableList<EditScriptItem>) : RecyclerView.Ad
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TextViewHolder -> holder.bind((items[position] as EditScriptItem.TextItem).text)
-            is ButtonViewHolder -> holder.bind((items[position] as EditScriptItem.ButtonItem).text)
+            is ButtonViewHolder -> holder.bind((items[position] as EditScriptItem.ButtonItem).text, this, position)
         }
     }
 
@@ -78,8 +85,12 @@ class MultiTypeAdapter(val items: MutableList<EditScriptItem>) : RecyclerView.Ad
     }
 
     class ButtonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(text: String){
+        fun bind(text: String,  adapter: MultiTypeAdapter, position: Int){
             itemView.findViewById<Button>(R.id.sButton).text = text
+            itemView.findViewById<Button>(R.id.sButton).setOnClickListener {
+                // 버튼 클릭 시 해당 아이템 제거
+                adapter.removeItemAt(position)
+            }
         }
     }
 

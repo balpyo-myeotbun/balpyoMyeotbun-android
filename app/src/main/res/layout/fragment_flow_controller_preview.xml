@@ -33,22 +33,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/FCPRV"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/FCPScript"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="20dp"
-            android:fadingEdge="horizontal"
-            android:requiresFadingEdge="horizontal"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarSize="2dp"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="50dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:padding="32dp"
+            android:paddingBottom="0dp"
+            android:requiresFadingEdge="vertical"
             android:scrollbarThumbVertical="@color/primary"
-            android:scrollbarTrackVertical="@color/gray3"
+            android:scrollbarTrackVertical="@color/gray2"
             android:scrollbars="vertical"
+            android:text="TextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextView"
+            android:textColor="@color/text"
+            android:textSize="22sp"
             app:layout_constraintBottom_toTopOf="@+id/FCPEditBtn"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/FCPTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/FCPTitle"
+            app:layout_constraintVertical_bias="0.0"
+            app:lineHeight="46sp" />
 
         <Button
             android:id="@+id/FCPEditBtn"

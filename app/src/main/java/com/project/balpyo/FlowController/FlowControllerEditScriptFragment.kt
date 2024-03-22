@@ -1,23 +1,35 @@
 package com.project.balpyo.FlowController
 
+import kr.bydelta.koala.okt.SentenceSplitter
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.databinding.FragmentFlowControllerEditScriptBinding
 
-class FlowControllerEditScriptFragment : Fragment() {
+class FlowControllerEditScriptFragment() : Fragment() {
     lateinit var binding: FragmentFlowControllerEditScriptBinding
-
+    private lateinit var flowControllerViewModel: FlowControllerViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding = FragmentFlowControllerEditScriptBinding.inflate(layoutInflater)
         initToolBar()
+        binding.FCESScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
         binding.FCEDNextBtn.setOnClickListener {
+            flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
+
+            //대본을 문장으로 나눔
+            val splitter = SentenceSplitter()
+            val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
+            flowControllerViewModel.setSplitScriptToSentences(paragraph)
             val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             val FlowControllerAddTimeFragment = FlowControllerAddTimeFragment()
