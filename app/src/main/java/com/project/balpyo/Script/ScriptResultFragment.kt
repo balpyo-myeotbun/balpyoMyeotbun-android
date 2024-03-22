@@ -16,7 +16,16 @@ import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.api.ApiClient
+import com.project.balpyo.api.TokenManager
+import com.project.balpyo.api.request.GenerateScriptRequest
+import com.project.balpyo.api.request.StoreScriptRequest
+import com.project.balpyo.api.response.GenerateScriptResponse
+import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.databinding.FragmentScriptResultBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ScriptResultFragment : Fragment() {
 
@@ -26,6 +35,7 @@ class ScriptResultFragment : Fragment() {
     lateinit var viewModel: GenerateScriptViewModel
 
     var editable = false
+    var scriptGptId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +50,10 @@ class ScriptResultFragment : Fragment() {
             script.observe(mainActivity) {
                 binding.editTextScript.setText(it)
                 Log.d("발표몇분", "${it}")
+            }
+            gptId.observe(mainActivity) {
+                scriptGptId = it.toString()
+                Log.d("발표몇분", "${scriptGptId}")
             }
         }
 
@@ -86,6 +100,10 @@ class ScriptResultFragment : Fragment() {
                 }
                 editable = !editable
             }
+
+            buttonStore.setOnClickListener {
+                storeScript()
+            }
         }
 
         return binding.root
@@ -104,5 +122,38 @@ class ScriptResultFragment : Fragment() {
                 // 닫기 버튼 클릭시 동작
             }
         }
+    }
+
+    fun storeScript() {
+        var apiClient = ApiClient(mainActivity)
+        var tokenManager = TokenManager(mainActivity)
+
+        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), scriptGptId, MyApplication.scriptTitle, MyApplication.scrpitTime)
+        Log.d("##", "script info : ${inputScriptInfo}")
+
+        apiClient.apiService.storeScript("${tokenManager.getUid()}",inputScriptInfo)?.enqueue(object :
+            Callback<StoreScriptResponse> {
+            override fun onResponse(call: Call<StoreScriptResponse>, response: Response<StoreScriptResponse>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: StoreScriptResponse? = response.body()
+                    Log.d("##", "onResponse 성공: " + result?.toString())
+
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: StoreScriptResponse? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<StoreScriptResponse>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
     }
 }

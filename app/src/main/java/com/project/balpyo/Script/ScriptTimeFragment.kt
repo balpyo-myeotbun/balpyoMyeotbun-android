@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.project.balpyo.LoadingFragment
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
@@ -74,13 +75,12 @@ class ScriptTimeFragment : Fragment() {
 
                 viewModel.generateScript(mainActivity)
 
-                Handler().postDelayed({
-                    val transaction: FragmentTransaction =
-                        requireActivity().supportFragmentManager.beginTransaction()
-                    val ScriptResultFragment = ScriptResultFragment()
-                    transaction.replace(com.project.balpyo.R.id.fragmentContainerView, ScriptResultFragment)
-                    transaction.commit()
-                }, 10000)
+
+                val transaction: FragmentTransaction =
+                    requireActivity().supportFragmentManager.beginTransaction()
+                val LoadingFragment = LoadingFragment()
+                transaction.replace(com.project.balpyo.R.id.fragmentContainerView, LoadingFragment)
+                transaction.commit()
             }
         }
 

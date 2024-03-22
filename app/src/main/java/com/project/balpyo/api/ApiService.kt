@@ -2,8 +2,10 @@ package com.project.balpyo.api
 
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
+import com.project.balpyo.api.request.StoreScriptRequest
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
+import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.api.response.VerifyUidResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,6 +27,14 @@ interface ApiService {
     // 스크립트 생성
     @POST("user/ai/script")
     fun generateScript(
+        @Header("UID") uid: String,
         @Body parameters: GenerateScriptRequest
     ): Call<GenerateScriptResponse>
+
+    // 스크립트 저장
+    @POST("every/manage/script")
+    fun storeScript(
+        @Header("UID") uid: String,
+        @Body parameters: StoreScriptRequest
+    ): Call<StoreScriptResponse>
 }
