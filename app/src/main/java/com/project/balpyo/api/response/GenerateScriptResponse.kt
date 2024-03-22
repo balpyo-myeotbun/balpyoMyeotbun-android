@@ -5,10 +5,15 @@ import com.google.gson.annotations.SerializedName
 data class GenerateScriptResponse(
     val code: String,
     val message: String,
-    val result: List<Result>
+    val result: GenerateScrpitResult
 )
 
-data class Result(
+data class GenerateScrpitResult(
+    val resultScript: List<ResultScript>,
+    val gptId: String
+)
+
+data class ResultScript(
     val index: Long,
     val message: Message,
     val logprobs: Any?,
@@ -19,4 +24,3 @@ data class Message(
     val role: String,
     val content: String
 )
-
