@@ -25,6 +25,7 @@ interface ApiService {
     // 스크립트 생성
     @POST("user/ai/script")
     fun generateScript(
+        @Header("UID") uid: String,
         @Body parameters: GenerateScriptRequest
     ): Call<GenerateScriptResponse>
 }
