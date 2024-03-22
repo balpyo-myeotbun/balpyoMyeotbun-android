@@ -17,6 +17,7 @@ import retrofit2.Response
 
 class GenerateScriptViewModel() : ViewModel() {
     var script = MutableLiveData<String>()
+    var gptId = MutableLiveData<String>()
 
     fun generateScript(mainActivity: MainActivity) {
         var apiClient = ApiClient(mainActivity)
@@ -34,6 +35,7 @@ class GenerateScriptViewModel() : ViewModel() {
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
                     script.value = result?.result!!.resultScript.get(0).message.content
+                    gptId.value = result?.result!!.gptId
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
