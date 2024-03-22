@@ -2,10 +2,13 @@ package com.project.balpyo.Script.ViewModel
 
 import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.balpyo.MainActivity
+import com.project.balpyo.Script.ScriptResultFragment
+import com.project.balpyo.Script.ScriptTimeFragment
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
@@ -37,6 +40,12 @@ class GenerateScriptViewModel() : ViewModel() {
                     script.value = result?.result!!.resultScript.get(0).message.content
                     gptId.value = result?.result!!.gptId
 
+                    val transaction: FragmentTransaction =
+                        mainActivity.supportFragmentManager.beginTransaction()
+                    val ScriptResultFragment = ScriptResultFragment()
+                    transaction.replace(com.project.balpyo.R.id.fragmentContainerView, ScriptResultFragment)
+                    transaction.commit()
+
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: GenerateScriptResponse? = response.body()
@@ -45,12 +54,24 @@ class GenerateScriptViewModel() : ViewModel() {
                     Log.d("##", "onResponse 실패: " + response.body())
                     val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                     Log.d("##", "Error Response: $errorBody")
+
+                    val transaction: FragmentTransaction =
+                        mainActivity.supportFragmentManager.beginTransaction()
+                    val ScriptTimeFragment = ScriptTimeFragment()
+                    transaction.replace(com.project.balpyo.R.id.fragmentContainerView, ScriptTimeFragment)
+                    transaction.commit()
                 }
             }
 
             override fun onFailure(call: Call<GenerateScriptResponse>, t: Throwable) {
                 // 통신 실패
                 Log.d("##", "onFailure 에러: " + t.message.toString());
+
+                val transaction: FragmentTransaction =
+                    mainActivity.supportFragmentManager.beginTransaction()
+                val ScriptTimeFragment = ScriptTimeFragment()
+                transaction.replace(com.project.balpyo.R.id.fragmentContainerView, ScriptTimeFragment)
+                transaction.commit()
             }
         })
     }
