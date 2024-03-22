@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.project.balpyo"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -39,7 +39,6 @@ android {
         enable = true
     }
 
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -52,7 +51,6 @@ android {
 fun getApiKey(propertyKey:String) : String {
     return  gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
 }
-
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -80,6 +78,14 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //문당 분리기
+    implementation ("kr.bydelta:koalanlp-okt:2.1.4")
+
+    // ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+    // LiveData (선택적, 데이터 변화를 관찰할 경우 사용)
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
 
 
 }

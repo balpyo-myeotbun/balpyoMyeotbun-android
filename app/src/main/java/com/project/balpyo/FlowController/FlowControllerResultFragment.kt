@@ -10,30 +10,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerResultBinding
-import com.project.balpyo.ScriptSync.ScriptSynchronizer
+import com.project.balpyo.FlowController.ScriptSync.ScriptSynchronizer
+import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 
 class FlowControllerResultFragment() : Fragment() {
     private lateinit var viewDataBinding: FragmentFlowControllerResultBinding
-    private var script = "안녕하세요, 발표 몇분입니다.빠르기를 조정해드릴게요."
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var flowControllerViewModel: FlowControllerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewDataBinding = DataBindingUtil.inflate(
             LayoutInflater.from(context),
             R.layout.fragment_flow_controller_result,
             null,
             false
         )
+        val script = flowControllerViewModel.getCustomScriptData().value.toString()
         initToolBar()
+        viewDataBinding.toolbar.textViewTitle.text = flowControllerViewModel.getTitleData().value
         val spannable = SpannableStringBuilder(script)
 
         // 특정 텍스트 패턴을 찾아서 회색으로 변경합니다.
@@ -60,6 +62,14 @@ class FlowControllerResultFragment() : Fragment() {
                 viewDataBinding.PCTimeBar, viewDataBinding.PCPlayBtn, viewDataBinding.PCStartTimeTextView, viewDataBinding.PCEndTimeTextView,
                 500.toLong(), 150.toLong()
             )
+        }
+
+        viewDataBinding.PCEditBtn.setOnClickListener {
+            val transaction: FragmentTransaction =
+                requireActivity().supportFragmentManager.beginTransaction()
+            val flowControllerEditScriptFragment = FlowControllerEditScriptFragment()
+            transaction.replace(com.project.balpyo.R.id.fragmentContainerView, flowControllerEditScriptFragment)
+            transaction.commit()
         }
         viewDataBinding.PCPlayBtn.setOnClickListener {
             if (scriptSynchronizer != null) {
