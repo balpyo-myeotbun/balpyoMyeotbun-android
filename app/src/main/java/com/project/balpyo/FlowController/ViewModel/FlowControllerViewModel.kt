@@ -15,6 +15,17 @@ class FlowControllerViewModel : ViewModel() {
     private var scriptId : MutableLiveData<String> = MutableLiveData()
     private var audioUrl : MutableLiveData<String> = MutableLiveData()
 
+    fun initialize() {
+        title = MutableLiveData()
+        normalScript = MutableLiveData("")
+        customScript = MutableLiveData()
+        serviceCustomScript = MutableLiveData()
+        splitScriptToSentences = MutableLiveData()
+        speed = MutableLiveData(0)
+        isEdit = MutableLiveData(false)
+        scriptId = MutableLiveData()
+        audioUrl = MutableLiveData()
+    }
     fun getTitleData(): MutableLiveData<String> = title
     fun getNormalScriptData(): MutableLiveData<String> = normalScript
     fun getCustomScriptData(): MutableLiveData<String> = customScript

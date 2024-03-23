@@ -50,7 +50,7 @@ class ScriptSynchronizer(
         }
         //mPlayer.prepare()
         activity?.runOnUiThread {
-            pcTimeBar.max = totalDuration.toInt()
+            pcTimeBar.max = mPlayer.duration
             pcEndTimeTextView.text = convertMsToMinutesSeconds(totalDuration)
             setupSeekBarListener()
         }
@@ -298,16 +298,28 @@ class ScriptSynchronizer(
 
     //tts와 스크립트 하이라이팅 시작
     fun play() {
-        if (!isPlaying) {
-            mPlayer.start()
-            mPlayer.seekTo(pcTimeBar.progress)
-            mPlayer.isLooping = false
-            timer = Timer()
-            isPlaying = true
-            activity?.runOnUiThread {
-                pcPlayBtn.setImageDrawable(activity.getDrawable(R.drawable.pause))
+        try {
+            if (!isPlaying) {
+                if (mPlayer.isPlaying) {
+                    mPlayer.stop()
+                }
+                mPlayer.reset()
+                mPlayer.setDataSource(url)
+                mPlayer.prepare() // 비동기 prepareAsync() 사용을 고려할 수도 있음
+                mPlayer.start()
+                mPlayer.seekTo(pcTimeBar.progress)
+                mPlayer.isLooping = false
+                timer = Timer()
+                isPlaying = true
+                activity?.runOnUiThread {
+                    pcPlayBtn.setImageDrawable(activity.getDrawable(R.drawable.pause))
+                }
+                scheduleNextCharacter()
             }
-            scheduleNextCharacter()
+        } catch (e: IOException) {
+            e.printStackTrace() // URL이 잘못되었거나, 다른 I/O 문제 발생
+        } catch (e: IllegalStateException) {
+            e.printStackTrace() // MediaPlayer 상태 오류 처리
         }
     }
     fun pause() {
@@ -322,10 +334,10 @@ class ScriptSynchronizer(
     }
 
     fun stop() {
-        mPlayer.stop()      //음악 정지
+        pcTimeBar.progress = 0
+        mPlayer.stop()
         mPlayer.seekTo(0)
         timer?.cancel()
-        pcTimeBar.progress = 0
         currentIndex = 0
         isPlaying = false
         activity?.runOnUiThread {
