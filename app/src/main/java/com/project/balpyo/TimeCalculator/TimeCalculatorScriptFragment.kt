@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -50,7 +51,7 @@ class TimeCalculatorScriptFragment : Fragment() {
             }
 
             buttonStorage.setOnClickListener {
-                viewModel.getStorageListForBottomSheet(mainActivity.supportFragmentManager, mainActivity)
+                Toast.makeText(mainActivity, "이후 추가될 기능입니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
