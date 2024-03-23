@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.LoadingFragment
 import com.project.balpyo.R
+import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentTimeCalculatorSpeedBinding
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
@@ -61,6 +62,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
 
                     when(seekParams.tickText.toString()) {
                         "-2" -> {
+                            MyApplication.timeCalculatorSpeed = "-2"
                             mediaPlayerMinusTwo = MediaPlayer.create(requireContext(), R.raw.minustwo)
                             mediaPlayerMinusOne.stop()
                             mediaPlayerZero.stop()
@@ -70,6 +72,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
                             Log.d("발표몇분","-2")
                         }
                         "-1" -> {
+                            MyApplication.timeCalculatorSpeed = "-1"
                             mediaPlayerMinusOne = MediaPlayer.create(requireContext(), R.raw.minusone)
                             mediaPlayerMinusTwo.stop()
                             mediaPlayerZero.stop()
@@ -78,6 +81,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
                             mediaPlayerMinusOne.start()
                         }
                         "0" -> {
+                            MyApplication.timeCalculatorSpeed = "0"
                             mediaPlayerZero = MediaPlayer.create(requireContext(), R.raw.zero)
                             mediaPlayerMinusTwo.stop()
                             mediaPlayerMinusOne.stop()
@@ -86,6 +90,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
                             mediaPlayerZero.start()
                         }
                         "1" -> {
+                            MyApplication.timeCalculatorSpeed = "1"
                             mediaPlayerOne = MediaPlayer.create(requireContext(), R.raw.one)
                             mediaPlayerMinusTwo.stop()
                             mediaPlayerMinusOne.stop()
@@ -94,6 +99,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
                             mediaPlayerOne.start()
                         }
                         "2" -> {
+                            MyApplication.timeCalculatorSpeed = "2"
                             mediaPlayerTwo = MediaPlayer.create(requireContext(), R.raw.two)
                             mediaPlayerMinusTwo.stop()
                             mediaPlayerMinusOne.stop()

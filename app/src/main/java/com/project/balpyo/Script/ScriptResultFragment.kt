@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getColorStateList
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -122,6 +123,12 @@ class ScriptResultFragment : Fragment() {
 
             toolbar.buttonClose.setOnClickListener {
                 // 닫기 버튼 클릭시 동작
+                val navController = findNavController()
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
+                    .build()
+
+                navController.navigate(R.id.homeFragment, null, navOptions)
             }
         }
     }
@@ -140,6 +147,13 @@ class ScriptResultFragment : Fragment() {
                     // 정상적으로 통신이 성공된 경우
                     var result: StoreScriptResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
+
+                    val navController = findNavController()
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
+                        .build()
+
+                    navController.navigate(R.id.homeFragment, null, navOptions)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

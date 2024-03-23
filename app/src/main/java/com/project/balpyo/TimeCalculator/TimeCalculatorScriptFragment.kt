@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.project.balpyo.Home.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Script.ScriptResultFragment
@@ -21,12 +23,21 @@ class TimeCalculatorScriptFragment : Fragment() {
     lateinit var binding: FragmentTimeCalculatorScriptBinding
     lateinit var mainActivity: MainActivity
 
+    lateinit var viewModel: StorageViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTimeCalculatorScriptBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
+        viewModel.run {
+            storageDetailForBottomSheet.observe(mainActivity) {
+                binding.editTextScript.setText(it.script)
+            }
+        }
 
         initToolBar()
 
@@ -36,6 +47,10 @@ class TimeCalculatorScriptFragment : Fragment() {
                 MyApplication.timeCalculatorScript = editTextScript.text.toString()
 
                 findNavController().navigate(R.id.timeCalculatorTimeFragment)
+            }
+
+            buttonStorage.setOnClickListener {
+                viewModel.getStorageListForBottomSheet(mainActivity.supportFragmentManager, mainActivity)
             }
         }
 
