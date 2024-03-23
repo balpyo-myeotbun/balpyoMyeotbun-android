@@ -64,9 +64,10 @@ class FlowControllerResultFragment() : Fragment() {
         }
         viewDataBinding.FCRScript.text = spannable
 
+
         var scriptSynchronizer = context?.resources?.let {
             ScriptSynchronizer(
-                script,
+                flowControllerViewModel.getCustomScriptData().value.toString(),
                 viewDataBinding.FCRScript, activity, it.getColor(R.color.primary),
                 viewDataBinding.PCTimeBar, viewDataBinding.PCPlayBtn, viewDataBinding.PCStartTimeTextView, viewDataBinding.PCEndTimeTextView,
                 500.toLong(), 150.toLong(), flowControllerViewModel.getAudioUrlData().value!!, 600.toLong(),800.toLong(), 300.toLong()
@@ -107,6 +108,7 @@ class FlowControllerResultFragment() : Fragment() {
                     .build()
 
                 navController.navigate(R.id.homeFragment, null, navOptions)
+                flowControllerViewModel.initialize()
             }
         }
     }

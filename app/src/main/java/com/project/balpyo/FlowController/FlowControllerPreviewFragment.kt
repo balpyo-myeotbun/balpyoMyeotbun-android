@@ -65,6 +65,7 @@ class FlowControllerPreviewFragment : Fragment() {
         }
 
         binding.FCPScript.text = spannable
+        Log.d("script", flowControllerViewModel.getCustomScriptData().value.toString())
 
         binding.FCPNextBtn.setOnClickListener {
             generateAudio(requireActivity())
@@ -97,7 +98,7 @@ class FlowControllerPreviewFragment : Fragment() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), flowControllerViewModel.getSpeedData().value!!, "1234")
+        val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), 0, "1234")
         apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
             Callback<GenerateAudioResponse> {
             override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
