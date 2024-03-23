@@ -90,4 +90,6 @@ dependencies {
     //네비게이션
     implementation ("androidx.navigation:navigation-fragment-ktx:2.3.5")
     implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
+    //바텀네비게이션
+    implementation ("com.google.android.material:material:1.4.0")
 }
