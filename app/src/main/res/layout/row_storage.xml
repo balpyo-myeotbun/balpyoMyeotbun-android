@@ -5,86 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_storage"
-    android:elevation="0.5dp"
     android:layout_marginTop="20dp"
     android:padding="18dp">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <TextView
+        android:id="@+id/textView_script_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:text="타이틀"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView_script_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_semi_bold"
-            android:text="타이틀"
-            android:textColor="@color/text"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/textView_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_regular"
-            android:text="기능"
-            android:textColor="@color/gray4"
-            android:textSize="12sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_script_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout3"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout3"
+        app:layout_constraintStart_toEndOf="@+id/textView_script_title"
+        app:layout_constraintTop_toTopOf="@+id/textView_script_title"
         app:srcCompat="@drawable/ic_play" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="18dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_play">
-
-        <Button
-            android:id="@+id/button_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/pretendard_regular"
-            android:text="수정하기"
-            android:textColor="@color/primary"
-            android:textSize="12sp"
-            app:cornerRadius="4dp"
-            app:strokeColor="@color/primary"
-            app:strokeWidth="1dp" />
-
-        <Button
-            android:id="@+id/button_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/pretendard_regular"
-            android:text="삭제하기"
-            android:textColor="@color/gray3"
-            android:textSize="12sp"
-            app:cornerRadius="4dp"
-            app:strokeColor="@color/gray3"
-            app:strokeWidth="1dp" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
