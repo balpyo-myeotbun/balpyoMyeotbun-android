@@ -133,6 +133,11 @@ class TimeCalculatorSpeedFragment : Fragment() {
             })
 
             buttonNext.setOnClickListener {
+                mediaPlayerMinusTwo.stop()
+                mediaPlayerMinusOne.stop()
+                mediaPlayerZero.stop()
+                mediaPlayerOne.stop()
+                mediaPlayerTwo.stop()
                 generateAudio(mainActivity)
 //                findNavController().navigate(R.id.loadingFragment)
             }
