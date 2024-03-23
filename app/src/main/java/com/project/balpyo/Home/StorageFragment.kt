@@ -50,7 +50,6 @@ class StorageFragment : Fragment() {
                             object : StorageAdapter.OnItemClickListener {
                                 override fun onItemClick(position: Int) {
                                     viewModel.getStorageDetail(this@StorageFragment, mainActivity, it.get(position).scriptId.toInt())
-                                    findNavController().navigate(R.id.storageEditDeleteFragment)
                                 }
                             }
                     }

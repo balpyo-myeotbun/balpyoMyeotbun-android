@@ -1,10 +1,12 @@
 package com.project.balpyo.api
 
+import com.project.balpyo.api.request.EditScriptRequest
 import com.project.balpyo.api.request.GenerateAudioRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
 import com.project.balpyo.api.request.StoreScriptRequest
 import com.project.balpyo.api.response.GenerateAudioResponse
+import com.project.balpyo.api.response.EditScriptResponse
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.StorageDetailResponse
@@ -13,8 +15,10 @@ import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.api.response.VerifyUidResponse
 import okhttp3.ResponseBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -28,7 +32,7 @@ interface ApiService {
     // UID 인증
     @GET("guest/manage/uid")
     fun verifyUid(
-        @Header("UID") uid: String
+        @Header("UID") uid: String?
     ): Call<VerifyUidResponse>
 
     // 스크립트 생성
@@ -63,4 +67,16 @@ interface ApiService {
         @Header("UID") uid: String,
         @Path("scriptId") scriptId:Int
     ): Call<StorageDetailResponse>
+
+    // 스크립트 수정
+    @PATCH("every/manage/script/detail/{scriptId}")
+    fun editScript(
+        @Header("UID") uid: String,
+        @Path("scriptId") scriptId:Int,
+        @Body parameters: EditScriptRequest
+    ): Call<EditScriptResponse>
+
+    // 스크립트 삭제
+    @DELETE("every/manage/script/detail/{scriptId}")
+    fun deleteScript(@Header("UID") uid: String, @Path("scriptId") scriptId: Int): Call<Void>
 }

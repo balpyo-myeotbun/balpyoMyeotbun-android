@@ -17,15 +17,14 @@
             android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/pretendard_medium"
-            android:text="인공지능의 역사"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:textColor="@color/text"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/button_back"
             app:layout_constraintEnd_toStartOf="@+id/button_close"
             app:layout_constraintStart_toEndOf="@+id/button_back"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/button_back" />
 
         <ImageView
             android:id="@+id/button_back"
