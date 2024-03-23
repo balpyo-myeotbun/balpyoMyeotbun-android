@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.project.balpyo.R
+import java.io.IOException
 import java.util.*
 
 class ScriptSynchronizer(
@@ -24,7 +25,11 @@ class ScriptSynchronizer(
     val pcStartTimeTextView: TextView,
     val pcEndTimeTextView: TextView,
     val restDuration : Long,
-    val normalCharacterDuration : Long
+    val normalCharacterDuration : Long,
+    val url : String,
+    val endAwsomeDuration : Long,
+    val questionDuration : Long,
+    val enterDuration : Long
 ) {
     var mPlayer: MediaPlayer
     private var currentIndex = 0
@@ -35,9 +40,15 @@ class ScriptSynchronizer(
     init {
         calculateTotalDuration()
         mPlayer = MediaPlayer()
-        val uri: Uri = Uri.parse("android.resource://" + activity!!.packageName + "/" + R.raw.speech)
-        mPlayer.setDataSource(activity!!.applicationContext, uri)
-        mPlayer.prepare()
+        //val uri: Uri = Uri.parse("android.resource://" + activity!!.packageName + "/" + R.raw.speech)
+        //mPlayer.setDataSource(activity!!.applicationContext, uri)
+        try {
+            mPlayer.setDataSource(url)
+            mPlayer.prepare()
+        } catch (e: IOException) {
+            e.printStackTrace() // URL이 잘못되었거나, 네트워크 문제 등으로 예외 처리
+        }
+        //mPlayer.prepare()
         activity?.runOnUiThread {
             pcTimeBar.max = totalDuration.toInt()
             pcEndTimeTextView.text = convertMsToMinutesSeconds(totalDuration)
@@ -59,12 +70,14 @@ class ScriptSynchronizer(
         totalDuration = script.fold(0L) { acc, c ->
             acc + when (c) {
                 ',' -> restDuration //띄어쓰기와 쉼표의 ms
-                '.', '\n' -> 0 //엔터와 온점의 ms
+                '.', '!' -> endAwsomeDuration //엔터와 온점의 ms
+                '?' -> questionDuration
+                '\n' -> enterDuration
                 else -> getSpecialTextDelay() ?: normalCharacterDuration //특정 텍스트의 지연시간 or 일반 문자의 지연시간
             }
         }
         // "숨 고르기 (1초)", "PPT 넘김 (2초)" 의 길이
-        val specialTexts = mapOf("숨 고르기 (1초)" to 1000L, "PPT 넘김 (2초)" to 2000L)
+        val specialTexts = mapOf("\n숨 고르기 (1초)\n" to 1000L, "\nPPT 넘김 (2초)\n" to 2000L)
         specialTexts.forEach { (text, delay) ->
             Regex(text).findAll(script).forEach { _ ->
                 totalDuration += delay
@@ -98,8 +111,10 @@ class ScriptSynchronizer(
         while (index < script.length && accumulatedTime < progress) {
             val currentChar = script[index].toString()
             val delay = when (currentChar) {
-                "," -> restDuration
-                ".", "\n" -> 0
+                "," -> restDuration //띄어쓰기와 쉼표의 ms
+                ".", "!" -> endAwsomeDuration //엔터와 온점의 ms
+                "?" -> questionDuration
+                "\n" -> enterDuration
                 else -> getSpecialTextDelayForSubstring(script.substring(index)) ?: normalCharacterDuration
             }
             accumulatedTime += delay
@@ -123,8 +138,8 @@ class ScriptSynchronizer(
     //특수 텍스트의 딜레이 값 반환
     private fun getSpecialTextDelayForSubstring(substring: String): Long? {
         val specialTexts = mapOf(
-            "숨 고르기 (1초)" to 1000L,
-            "PPT 넘김 (2초)" to 2000L
+            "\n숨 고르기 (1초)\n" to 1000L,
+            "\nPPT 넘김 (2초)\n" to 2000L
         )
 
         specialTexts.forEach { (text, delay) ->
@@ -138,7 +153,7 @@ class ScriptSynchronizer(
 
     //특수 텍스트의 길이 계산
     private fun getSpecialTextLengthStartingAt(substring: String): Int {
-        val specialTexts = listOf("숨 고르기 (1초)", "PPT 넘김 (2초)")
+        val specialTexts = listOf("\n숨 고르기 (1초)\n", "\nPPT 넘김 (2초)\n")
 
         specialTexts.forEach { text ->
             if (substring.startsWith(text)) {
@@ -151,8 +166,10 @@ class ScriptSynchronizer(
 
     private fun scheduleNextCharacter() {
         val delay: Long = when (val currentChar = script.getOrNull(currentIndex)) {
-            ',' -> restDuration
-            '.', '\n' -> 0
+            ',' -> restDuration //띄어쓰기와 쉼표의 ms
+            '.', '!' -> endAwsomeDuration //엔터와 온점의 ms
+            '?' -> questionDuration
+            '\n' -> enterDuration
             else -> getSpecialTextDelay() ?: normalCharacterDuration
         }
 
@@ -174,8 +191,8 @@ class ScriptSynchronizer(
     private fun getSpecialTextDelay(): Long? {
         // "숨 고르기 (1초)" 또는 "PPT 넘김 (2초)"와 같은 특정 문자열에 대한 지연 시간을 반환
         val specialTexts = mapOf(
-            "숨 고르기 (1초)" to 1000L,
-            "PPT 넘김 (2초)" to 2000L
+            "\n숨 고르기 (1초)\n" to 1000L,
+            "\nPPT 넘김 (2초)\n" to 2000L
         )
 
         specialTexts.forEach { (text, delay) ->
@@ -196,8 +213,10 @@ class ScriptSynchronizer(
         while (index < currentIndex) {
             val char = script.getOrNull(index)?.toString()
             currentTime += when (char) {
-                "," -> restDuration
-                ".", "\n" -> 0
+                "," -> restDuration //띄어쓰기와 쉼표의 ms
+                ".", "!" -> endAwsomeDuration //엔터와 온점의 ms
+                "?" -> questionDuration
+                "\n" -> enterDuration
                 else -> getSpecialTextDelayForSubstring(script.substring(index)) ?: normalCharacterDuration
             }
 

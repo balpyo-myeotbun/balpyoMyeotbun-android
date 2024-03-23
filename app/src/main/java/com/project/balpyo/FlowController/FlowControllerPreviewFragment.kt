@@ -22,6 +22,7 @@ import com.project.balpyo.R
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.GenerateAudioRequest
+import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.databinding.FragmentFlowControllerPreviewBinding
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -67,6 +68,9 @@ class FlowControllerPreviewFragment : Fragment() {
 
         binding.FCPNextBtn.setOnClickListener {
             generateAudio(requireActivity())
+            /*if(flowControllerViewModel.getIsEditData().value == true){
+                //스크립트 수정
+            }*/
         }
         binding.FCPEditBtn.setOnClickListener {
             findNavController().navigate(R.id.flowControllerEditScriptFragment)
@@ -93,30 +97,21 @@ class FlowControllerPreviewFragment : Fragment() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), 0, "1234")
+        val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), flowControllerViewModel.getSpeedData().value!!, "1234")
         apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
-            Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            Callback<GenerateAudioResponse> {
+            override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    var result: ResponseBody? = response.body()
+                    var result: GenerateAudioResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
-                    result?.let { responseBody ->
-                        // 오디오 파일 저장을 위한 스트림 생성
-                        val inputStream = responseBody.byteStream()
-                        val file = File(requireActivity.getExternalFilesDir(null), "audio.mp3")
-                        val outputStream = FileOutputStream(file)
-                        inputStream.use { input ->
-                            outputStream.use { output ->
-                                input.copyTo(output)
-                            }
-                        } }
+                    flowControllerViewModel.setAudioUrl(result!!.profileUrl)
                     findNavController().navigate(R.id.flowControllerResultFragment)
 
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: ResponseBody? = response.body()
+                    var result: GenerateAudioResponse? = response.body()
                     Log.d("##", "onResponse 실패")
                     Log.d("##", "onResponse 실패: " + response.code())
                     Log.d("##", "onResponse 실패: " + response.body())
@@ -125,7 +120,7 @@ class FlowControllerPreviewFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<GenerateAudioResponse>, t: Throwable) {
                 // 통신 실패
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }

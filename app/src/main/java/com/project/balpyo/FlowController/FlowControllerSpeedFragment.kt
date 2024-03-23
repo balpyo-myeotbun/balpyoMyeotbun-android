@@ -69,7 +69,7 @@ class FlowControllerSpeedFragment : Fragment() {
                             mediaPlayerTwo.stop()
                             mediaPlayerMinusTwo.start()
                             Log.d("발표몇분","-2")
-                            flowControllerViewModel.setSpeed("-2")
+                            flowControllerViewModel.setSpeed(-2)
                         }
                         "-1" -> {
                             mediaPlayerMinusOne = MediaPlayer.create(requireContext(), R.raw.minusone)
@@ -78,7 +78,7 @@ class FlowControllerSpeedFragment : Fragment() {
                             mediaPlayerOne.stop()
                             mediaPlayerTwo.stop()
                             mediaPlayerMinusOne.start()
-                            flowControllerViewModel.setSpeed("-1")
+                            flowControllerViewModel.setSpeed(-1)
                         }
                         "0" -> {
                             mediaPlayerZero = MediaPlayer.create(requireContext(), R.raw.zero)
@@ -87,7 +87,7 @@ class FlowControllerSpeedFragment : Fragment() {
                             mediaPlayerOne.stop()
                             mediaPlayerTwo.stop()
                             mediaPlayerZero.start()
-                            flowControllerViewModel.setSpeed("0")
+                            flowControllerViewModel.setSpeed(0)
                         }
                         "1" -> {
                             mediaPlayerOne = MediaPlayer.create(requireContext(), R.raw.one)
@@ -96,7 +96,7 @@ class FlowControllerSpeedFragment : Fragment() {
                             mediaPlayerZero.stop()
                             mediaPlayerTwo.stop()
                             mediaPlayerOne.start()
-                            flowControllerViewModel.setSpeed("1")
+                            flowControllerViewModel.setSpeed(1)
                         }
                         "2" -> {
                             mediaPlayerTwo = MediaPlayer.create(requireContext(), R.raw.two)
@@ -105,7 +105,7 @@ class FlowControllerSpeedFragment : Fragment() {
                             mediaPlayerZero.stop()
                             mediaPlayerOne.stop()
                             mediaPlayerTwo.start()
-                            flowControllerViewModel.setSpeed("2")
+                            flowControllerViewModel.setSpeed(2)
                         }
                     }
                 }

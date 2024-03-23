@@ -10,15 +10,22 @@ class FlowControllerViewModel : ViewModel() {
     private var customScript: MutableLiveData<String> = MutableLiveData()
     private var serviceCustomScript: MutableLiveData<String> = MutableLiveData()
     private var splitScriptToSentences: MutableLiveData<List<String>> = MutableLiveData()
-    private var speed: MutableLiveData<String> = MutableLiveData()
+    private var speed: MutableLiveData<Int> = MutableLiveData(0)
+    private var isEdit : MutableLiveData<Boolean> = MutableLiveData(false)
+    private var scriptId : MutableLiveData<String> = MutableLiveData()
+    private var audioUrl : MutableLiveData<String> = MutableLiveData()
 
     fun getTitleData(): MutableLiveData<String> = title
     fun getNormalScriptData(): MutableLiveData<String> = normalScript
     fun getCustomScriptData(): MutableLiveData<String> = customScript
     fun getServiceCustomScriptData(): MutableLiveData<String> = serviceCustomScript
-    fun getSpeedData(): MutableLiveData<String> = speed
+    fun getSpeedData(): MutableLiveData<Int> = speed
+    fun getIsEditData():MutableLiveData<Boolean> = isEdit
+
+    fun getScriptIdData():MutableLiveData<String> = scriptId
 
     fun getSplitScriptToSentencesData() : MutableLiveData<List<String>> = splitScriptToSentences
+    fun getAudioUrlData() : MutableLiveData<String> = audioUrl
     fun setTitle(text: String) {
         title.value = text
     }
@@ -36,7 +43,17 @@ class FlowControllerViewModel : ViewModel() {
         splitScriptToSentences.value = list
     }
 
-    fun setSpeed(value: String){
+    fun setSpeed(value: Int){
         speed.value = value
+    }
+    fun setIsEdit(value: Boolean){
+        isEdit.value = value
+    }
+
+    fun setScriptId(value: String){
+        scriptId.value = value
+    }
+    fun setAudioUrl(value: String){
+        audioUrl.value = value
     }
 }
