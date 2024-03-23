@@ -10,11 +10,13 @@ class FlowControllerViewModel : ViewModel() {
     private var customScript: MutableLiveData<String> = MutableLiveData()
     private var serviceCustomScript: MutableLiveData<String> = MutableLiveData()
     private var splitScriptToSentences: MutableLiveData<List<String>> = MutableLiveData()
+    private var speed: MutableLiveData<String> = MutableLiveData()
 
     fun getTitleData(): MutableLiveData<String> = title
     fun getNormalScriptData(): MutableLiveData<String> = normalScript
     fun getCustomScriptData(): MutableLiveData<String> = customScript
     fun getServiceCustomScriptData(): MutableLiveData<String> = serviceCustomScript
+    fun getSpeedData(): MutableLiveData<String> = speed
 
     fun getSplitScriptToSentencesData() : MutableLiveData<List<String>> = splitScriptToSentences
     fun setTitle(text: String) {
@@ -32,5 +34,9 @@ class FlowControllerViewModel : ViewModel() {
 
     fun setSplitScriptToSentences(list: List<String>){
         splitScriptToSentences.value = list
+    }
+
+    fun setSpeed(value: String){
+        speed.value = value
     }
 }

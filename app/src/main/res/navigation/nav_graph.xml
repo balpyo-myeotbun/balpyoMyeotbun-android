@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/flowControllerTitleFragment">
+
+    <fragment
+        android:id="@+id/flowControllerTitleFragment"
+        android:name="com.project.balpyo.FlowController.FlowControllerTitleFragment"
+        android:label="fragment_flow_controller_title"
+        tools:layout="@layout/fragment_flow_controller_title" >
+        <action
+            android:id="@+id/action_flowControllerTitleFragment_to_flowControllerEditScriptFragment"
+            app:destination="@id/flowControllerEditScriptFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/flowControllerAddTimeFragment2"
+        android:name="com.project.balpyo.FlowController.FlowControllerAddTimeFragment"
+        android:label="fragment_flow_controller_add_time"
+        tools:layout="@layout/fragment_flow_controller_add_time" >
+        <action
+            android:id="@+id/action_flowControllerAddTimeFragment2_to_flowControllerSpeedFragment"
+            app:destination="@id/flowControllerSpeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/flowControllerEditScriptFragment"
+        android:name="com.project.balpyo.FlowController.FlowControllerEditScriptFragment"
+        android:label="fragment_flow_controller_edit_script"
+        tools:layout="@layout/fragment_flow_controller_edit_script" >
+        <action
+            android:id="@+id/action_flowControllerEditScriptFragment_to_flowControllerAddTimeFragment2"
+            app:destination="@id/flowControllerAddTimeFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/flowControllerPreviewFragment"
+        android:name="com.project.balpyo.FlowController.FlowControllerPreviewFragment"
+        android:label="fragment_flow_controller_preview"
+        tools:layout="@layout/fragment_flow_controller_preview" >
+        <action
+            android:id="@+id/action_flowControllerPreviewFragment_to_flowControllerEditScriptFragment"
+            app:destination="@id/flowControllerEditScriptFragment" />
+        <action
+            android:id="@+id/action_flowControllerPreviewFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/flowControllerResultFragment"
+        android:name="com.project.balpyo.FlowController.FlowControllerResultFragment"
+        android:label="FlowControllerResultFragment" >
+        <action
+            android:id="@+id/action_flowControllerResultFragment_to_flowControllerEditScriptFragment"
+            app:destination="@id/flowControllerEditScriptFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/flowControllerSpeedFragment"
+        android:name="com.project.balpyo.FlowController.FlowControllerSpeedFragment"
+        android:label="fragment_flow_controller_speed"
+        tools:layout="@layout/fragment_flow_controller_speed" >
+        <action
+            android:id="@+id/action_flowControllerSpeedFragment_to_flowControllerPreviewFragment"
+            app:destination="@id/flowControllerPreviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.project.balpyo.LoadingFragment"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading" >
+        <action
+            android:id="@+id/action_loadingFragment_to_flowControllerResultFragment"
+            app:destination="@id/flowControllerResultFragment" />
+    </fragment>
+</navigation>

@@ -12,9 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
+import com.project.balpyo.LoadingFragment
 import com.project.balpyo.MainActivity
+import com.project.balpyo.R
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.GenerateAudioRequest
@@ -63,18 +67,9 @@ class FlowControllerPreviewFragment : Fragment() {
 
         binding.FCPNextBtn.setOnClickListener {
             generateAudio(requireActivity())
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager.beginTransaction()
-            val FlowControllerResultFragment = FlowControllerResultFragment()
-            transaction.replace(com.project.balpyo.R.id.fragmentContainerView, FlowControllerResultFragment)
-            transaction.commit()
         }
         binding.FCPEditBtn.setOnClickListener {
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager.beginTransaction()
-            val flowControllerEditScriptFragment = FlowControllerEditScriptFragment()
-            transaction.replace(com.project.balpyo.R.id.fragmentContainerView, flowControllerEditScriptFragment)
-            transaction.commit()
+            findNavController().navigate(R.id.flowControllerEditScriptFragment)
         }
         return binding.root
     }
@@ -83,15 +78,18 @@ class FlowControllerPreviewFragment : Fragment() {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.VISIBLE
-            toolbar.textViewPage.text = "4/4"
+            toolbar.textViewPage.text = "4/5"
             toolbar.buttonBack.setOnClickListener {
-                // Handle back button click
+                findNavController().popBackStack()
             }
         }
     }
 
+
+
     //TTS 받아오기 테스트
     fun generateAudio(requireActivity: FragmentActivity) {
+        findNavController().navigate(R.id.loadingFragment)
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
@@ -113,6 +111,8 @@ class FlowControllerPreviewFragment : Fragment() {
                                 input.copyTo(output)
                             }
                         } }
+                    findNavController().navigate(R.id.flowControllerResultFragment)
+
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

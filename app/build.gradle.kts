@@ -87,5 +87,7 @@ dependencies {
     // LiveData (선택적, 데이터 변화를 관찰할 경우 사용)
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
 
-
+    //네비게이션
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
 }

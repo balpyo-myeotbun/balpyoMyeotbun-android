@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
+import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerEditScriptBinding
 
 class FlowControllerEditScriptFragment() : Fragment() {
@@ -30,11 +32,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
             val splitter = SentenceSplitter()
             val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
             flowControllerViewModel.setSplitScriptToSentences(paragraph)
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager.beginTransaction()
-            val FlowControllerAddTimeFragment = FlowControllerAddTimeFragment()
-            transaction.replace(com.project.balpyo.R.id.fragmentContainerView, FlowControllerAddTimeFragment)
-            transaction.commit() }
+            findNavController().navigate(R.id.flowControllerAddTimeFragment2)}
         return binding.root
     }
 
@@ -43,9 +41,9 @@ class FlowControllerEditScriptFragment() : Fragment() {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.VISIBLE
-            toolbar.textViewPage.text = "2/4"
+            toolbar.textViewPage.text = "2/5"
             toolbar.buttonBack.setOnClickListener {
-                // Handle back button click
+                findNavController().popBackStack()
             }
         }
     }
