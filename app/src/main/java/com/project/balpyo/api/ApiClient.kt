@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.CookieManager
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -73,6 +74,9 @@ class ApiClient(val context: Context) {
         builder.addInterceptor(interceptor)
         builder.addInterceptor(logger)
         builder.cookieJar(JavaNetCookieJar(CookieManager()))
+        builder.connectTimeout(100, TimeUnit.SECONDS)
+        builder.readTimeout(100, TimeUnit.SECONDS)
+        builder.writeTimeout(100,TimeUnit.SECONDS)
 
         return builder
     }
