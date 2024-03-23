@@ -7,18 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.BottomSheetData.BottomSheetItem
 import com.project.balpyo.FlowController.data.EditScriptItem
+import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 
-class BottomSheetAdapter(private val items: MutableList<BottomSheetItem>) : RecyclerView.Adapter<BottomSheetAdapter.ViewHolder>() {
+class BottomSheetAdapter(private val items: MutableList<BottomSheetItem>, var scriptId: MutableList<Long>) : RecyclerView.Adapter<BottomSheetAdapter.ViewHolder>() {
     private var selectedPosition: Int = -1
 
     var onItemClick: ((BottomSheetItem) -> Unit)? = null
 
+    lateinit var viewModel: StorageViewModel
+    lateinit var mainActivity: MainActivity
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_item, parent, false)
+        mainActivity = MainActivity()
+
         return ViewHolder(view)
     }
 
@@ -27,8 +35,9 @@ class BottomSheetAdapter(private val items: MutableList<BottomSheetItem>) : Recy
 
         // 선택된 항목에 따라 테두리 색상 변경
         if (selectedPosition == position) {
+            viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
             holder.title.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.selectted_title)
-
+            viewModel.getStorageDetailForBottomSheet(mainActivity, scriptId.get(position).toInt())
         } else {
             holder.title.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.unselected_title)
         }
