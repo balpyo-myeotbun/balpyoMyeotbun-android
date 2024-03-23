@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="storage_menu">
+        <item>나의 보관함</item> <!--hint-->
+        <item>발표 시간 맞춤형 대본 생성</item>
+        <item>발표 시간 계산기</item>
+        <item>발표 훈련 플로우 컨트롤러</item>
+    </array>
+</resources>

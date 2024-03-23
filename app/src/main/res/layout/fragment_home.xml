@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home.HomeFragment" >
+
+    <TextView
+        android:id="@+id/textView_welcome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="대본을 만들고\n연습해보세요."
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView_storage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_storage"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView_welcome"
+        app:layout_constraintTop_toTopOf="@+id/textView_welcome" />
+
+    <LinearLayout
+        android:id="@+id/menu_generate_script"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="25dp"
+        android:background="@drawable/background_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_welcome">
+
+        <TextView
+            android:id="@+id/textView_title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="시간 맞춤형 발표대본 생성"
+            android:textColor="@color/text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/textView_info1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="내 마음에 꼭 드는 발표대본을 만들어보세요.\n주제, 소주제, 발표시간만 입력하면 완성이에요!"
+            android:textColor="@color/gray3"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_time_calculator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="25dp"
+        android:background="@drawable/background_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_generate_script">
+
+        <TextView
+            android:id="@+id/textView_title2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="단어당 발표 시간 계산기"
+            android:textColor="@color/text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/textView_info2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="지금 바로 대본의 소요시간을 확인하세요.\n목표한 시간을 초과하거나 부족하다면 알려드릴게요!"
+            android:textColor="@color/gray3"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_flow_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="25dp"
+        android:background="@drawable/background_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_time_calculator">
+
+        <TextView
+            android:id="@+id/textView_title3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="발표 훈련 플로우 컨트롤러"
+            android:textColor="@color/text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/textView_info3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="시간 안에 발표를 마칠 수 있도록 도와드릴게요.\n노래방에 온 것처럼 대본 플로우를 따라 읽어보세요!"
+            android:textColor="@color/gray3"
+            android:textSize="13sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
