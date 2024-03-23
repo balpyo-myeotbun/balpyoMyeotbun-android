@@ -107,6 +107,8 @@ class LoginFragment : Fragment() {
                     Log.d("##", "onResponse 실패: " + response.body())
                     val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                     Log.d("##", "Error Response: $errorBody")
+
+                    generateUid()
                 }
             }
 
