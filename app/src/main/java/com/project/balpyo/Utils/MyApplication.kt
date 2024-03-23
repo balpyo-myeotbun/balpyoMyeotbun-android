@@ -16,7 +16,7 @@ class MyApplication : Application() {
         var timeCalculatorTitle = ""
         var timeCalculatorScript = ""
         var timeCalculatorTime = 0L
-        var timeCalculatorSpeed = ""
+        var timeCalculatorSpeed = "0"
         var calculatedTimeMinute = 0
         var calculatedTimeSecond = 0
         var calculatedTime = 0L
