@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
+import com.project.balpyo.Script.ScriptTitleFragment
 import com.project.balpyo.TimeCalculator.TimeCalculatorScriptFragment
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.api.ApiClient
@@ -57,11 +59,7 @@ class LoginFragment : Fragment() {
                     tokenManager.saveUid("${result?.result?.uid}")
                     Log.d("발표몇분", "${tokenManager.getUid()}")
 
-                    val transaction: FragmentTransaction =
-                        requireActivity().supportFragmentManager.beginTransaction()
-                    val TimeCalculatorScriptFragment = TimeCalculatorScriptFragment()
-                    transaction.replace(com.project.balpyo.R.id.fragmentContainerView, TimeCalculatorScriptFragment)
-                    transaction.commit()
+                    findNavController().navigate(R.id.homeFragment)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -98,11 +96,7 @@ class LoginFragment : Fragment() {
                     } else {
                         Log.d("발표몇분", "${tokenManager.getUid()}")
 
-                        val transaction: FragmentTransaction =
-                            requireActivity().supportFragmentManager.beginTransaction()
-                        val TimeCalculatorScriptFragment = TimeCalculatorScriptFragment()
-                        transaction.replace(com.project.balpyo.R.id.fragmentContainerView, TimeCalculatorScriptFragment)
-                        transaction.commit()
+                        findNavController().navigate(R.id.homeFragment)
                     }
 
                 } else {
