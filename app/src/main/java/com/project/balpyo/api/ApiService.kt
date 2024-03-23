@@ -6,6 +6,7 @@ import com.project.balpyo.api.request.GenerateScriptRequest
 import com.project.balpyo.api.request.StoreScriptRequest
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
+import com.project.balpyo.api.response.StorageDetailResponse
 import com.project.balpyo.api.response.StorageListResponse
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.api.response.VerifyUidResponse
@@ -14,6 +15,8 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -52,4 +55,11 @@ interface ApiService {
     fun getStorageList(
         @Header("UID") uid: String
     ): Call<StorageListResponse>
+
+    // 보관함 상세 조회
+    @GET("every/manage/script/detail/{scriptId}")
+    fun getStorageDetail(
+        @Header("UID") uid: String,
+        @Path("scriptId") scriptId:Int
+    ): Call<StorageDetailResponse>
 }

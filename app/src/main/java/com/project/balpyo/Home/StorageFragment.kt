@@ -44,11 +44,12 @@ class StorageFragment : Fragment() {
                         var storageAdapter = StorageAdapter(it)
                         adapter = storageAdapter
 
-                        layoutManager = LinearLayoutManager(requireContext())
+                        layoutManager = LinearLayoutManager(mainActivity)
 
                         storageAdapter.itemClickListener =
                             object : StorageAdapter.OnItemClickListener {
                                 override fun onItemClick(position: Int) {
+                                    viewModel.getStorageDetail(this@StorageFragment, mainActivity, it.get(position).scriptId.toInt())
                                     findNavController().navigate(R.id.storageEditDeleteFragment)
                                 }
                             }
