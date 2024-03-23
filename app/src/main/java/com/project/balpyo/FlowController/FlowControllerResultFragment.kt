@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerResultBinding
 import com.project.balpyo.FlowController.ScriptSync.ScriptSynchronizer
@@ -26,6 +28,12 @@ class FlowControllerResultFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        requireActivity().onBackPressedDispatcher.addCallback(this.requireActivity(), object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
+
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewDataBinding = DataBindingUtil.inflate(
             LayoutInflater.from(context),
@@ -84,7 +92,6 @@ class FlowControllerResultFragment() : Fragment() {
 
         return viewDataBinding.root
     }
-
     fun initToolBar() {
         viewDataBinding.run {
             toolbar.textViewTitle.visibility = View.VISIBLE
@@ -96,4 +103,5 @@ class FlowControllerResultFragment() : Fragment() {
             }
         }
     }
+
 }
