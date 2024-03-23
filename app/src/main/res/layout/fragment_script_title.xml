@@ -22,7 +22,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/pretendard_bold"
-        android:text="시간에 딱! 맞는 대본 생성드려요\n보관함에 저장될 제목을 알려주세요"
+        android:text="발표 시간을 계산해드릴게요!\n보관함에 저장될 제목을 알려주세요"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
