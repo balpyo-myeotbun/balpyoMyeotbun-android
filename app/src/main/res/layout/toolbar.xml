@@ -17,12 +17,12 @@
             android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/pretendard_medium"
             android:text="인공지능의 역사"
             android:textColor="@color/text"
             android:textSize="16sp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_close"
             app:layout_constraintStart_toEndOf="@+id/button_back"
             app:layout_constraintTop_toTopOf="parent" />
