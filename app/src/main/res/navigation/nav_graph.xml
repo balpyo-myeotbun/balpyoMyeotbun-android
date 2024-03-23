@@ -179,7 +179,11 @@
         android:id="@+id/storageFragment"
         android:name="com.project.balpyo.Home.StorageFragment"
         android:label="fragment_storage"
-        tools:layout="@layout/fragment_storage" />
+        tools:layout="@layout/fragment_storage" >
+        <action
+            android:id="@+id/action_storageFragment_to_storageEditDeleteFragment"
+            app:destination="@id/storageEditDeleteFragment" />
+    </fragment>
     <fragment
         android:id="@+id/timeCalculatorTitleFragment"
         android:name="com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment"
@@ -189,4 +193,9 @@
             android:id="@+id/action_timeCalculatorTitleFragment_to_timeCalculatorScriptFragment"
             app:destination="@id/timeCalculatorScriptFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/storageEditDeleteFragment"
+        android:name="com.project.balpyo.Home.StorageEditDeleteFragment"
+        android:label="fragment_storage_edit_delete"
+        tools:layout="@layout/fragment_storage_edit_delete" />
 </navigation>

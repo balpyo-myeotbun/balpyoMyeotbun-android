@@ -22,7 +22,7 @@ class HomeFragment : Fragment() {
 
         binding.run {
             imageViewStorage.setOnClickListener {
-                
+                findNavController().navigate(R.id.storageFragment)
             }
             menuGenerateScript.setOnClickListener {
                 findNavController().navigate(R.id.scriptTitleFragment)
