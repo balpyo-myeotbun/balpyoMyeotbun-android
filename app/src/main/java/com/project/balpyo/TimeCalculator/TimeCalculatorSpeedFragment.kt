@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
+import com.project.balpyo.LoadingFragment
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentTimeCalculatorSpeedBinding
 import com.warkiz.widget.IndicatorSeekBar
@@ -24,6 +27,8 @@ class TimeCalculatorSpeedFragment : Fragment() {
     lateinit var mediaPlayerZero: MediaPlayer
     lateinit var mediaPlayerOne: MediaPlayer
     lateinit var mediaPlayerTwo: MediaPlayer
+
+    var selectedSpeed = "0"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +55,8 @@ class TimeCalculatorSpeedFragment : Fragment() {
                     //when tick count > 0
                     Log.i(TAG, seekParams.thumbPosition.toString())
                     Log.i(TAG, seekParams.tickText)
+
+                    selectedSpeed = seekParams.tickText.toString()
 
 
                     when(seekParams.tickText.toString()) {
@@ -100,6 +107,10 @@ class TimeCalculatorSpeedFragment : Fragment() {
                 override fun onStartTrackingTouch(seekBar: IndicatorSeekBar) {}
                 override fun onStopTrackingTouch(seekBar: IndicatorSeekBar) {}
             })
+
+            buttonNext.setOnClickListener {
+                findNavController().navigate(R.id.loadingFragment)
+            }
         }
         return binding.root
     }
@@ -110,10 +121,11 @@ class TimeCalculatorSpeedFragment : Fragment() {
             toolbar.buttonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
-                text = "3/3"
+                text = "4/4"
             }
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
         }
     }
