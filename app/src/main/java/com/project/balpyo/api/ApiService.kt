@@ -27,7 +27,7 @@ interface ApiService {
     // UID 인증
     @GET("guest/manage/uid")
     fun verifyUid(
-        @Header("UID") uid: String
+        @Header("UID") uid: String?
     ): Call<VerifyUidResponse>
 
     // 스크립트 생성
