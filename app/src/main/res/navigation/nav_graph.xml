@@ -19,8 +19,8 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_flowControllerTitleFragment"
-            app:destination="@id/flowControllerTitleFragment" />
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerTitleFragment"
@@ -86,5 +86,107 @@
         <action
             android:id="@+id/action_loadingFragment_to_flowControllerResultFragment"
             app:destination="@id/flowControllerResultFragment" />
+        <action
+            android:id="@+id/action_loadingFragment_to_scriptResultFragment"
+            app:destination="@id/scriptResultFragment" />
+        <action
+            android:id="@+id/action_loadingFragment_to_timeCalculatorResultFragment"
+            app:destination="@id/timeCalculatorResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.project.balpyo.Home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_flowControllerTitleFragment"
+            app:destination="@id/flowControllerTitleFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_scriptTitleFragment"
+            app:destination="@id/scriptTitleFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_storageFragment"
+            app:destination="@id/storageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_timeCalculatorTitleFragment"
+            app:destination="@id/timeCalculatorTitleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scriptTitleFragment"
+        android:name="com.project.balpyo.Script.ScriptTitleFragment"
+        android:label="fragment_script_title"
+        tools:layout="@layout/fragment_script_title" >
+        <action
+            android:id="@+id/action_scriptTitleFragment_to_scriptSubjectFragment"
+            app:destination="@id/scriptSubjectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scriptSubjectFragment"
+        android:name="com.project.balpyo.Script.ScriptSubjectFragment"
+        android:label="fragment_script_subject"
+        tools:layout="@layout/fragment_script_subject" >
+        <action
+            android:id="@+id/action_scriptSubjectFragment_to_scriptTimeFragment"
+            app:destination="@id/scriptTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scriptTimeFragment"
+        android:name="com.project.balpyo.Script.ScriptTimeFragment"
+        android:label="fragment_script_time"
+        tools:layout="@layout/fragment_script_time" >
+        <action
+            android:id="@+id/action_scriptTimeFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scriptResultFragment"
+        android:name="com.project.balpyo.Script.ScriptResultFragment"
+        android:label="fragment_script_result"
+        tools:layout="@layout/fragment_script_result" />
+    <fragment
+        android:id="@+id/timeCalculatorScriptFragment"
+        android:name="com.project.balpyo.TimeCalculator.TimeCalculatorScriptFragment"
+        android:label="fragment_time_calculator_script"
+        tools:layout="@layout/fragment_time_calculator_script" >
+        <action
+            android:id="@+id/action_timeCalculatorScriptFragment_to_timeCalculatorTimeFragment"
+            app:destination="@id/timeCalculatorTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeCalculatorTimeFragment"
+        android:name="com.project.balpyo.TimeCalculator.TimeCalculatorTimeFragment"
+        android:label="fragment_time_calculator_time"
+        tools:layout="@layout/fragment_time_calculator_time" >
+        <action
+            android:id="@+id/action_timeCalculatorTimeFragment_to_timeCalculatorSpeedFragment"
+            app:destination="@id/timeCalculatorSpeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeCalculatorResultFragment"
+        android:name="com.project.balpyo.TimeCalculator.TimeCalculatorResultFragment"
+        android:label="fragment_time_calculator_result"
+        tools:layout="@layout/fragment_time_calculator_result" />
+    <fragment
+        android:id="@+id/timeCalculatorSpeedFragment"
+        android:name="com.project.balpyo.TimeCalculator.TimeCalculatorSpeedFragment"
+        android:label="fragment_flow_controller_speed"
+        tools:layout="@layout/fragment_flow_controller_speed" >
+        <action
+            android:id="@+id/action_timeCalculatorSpeedFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storageFragment"
+        android:name="com.project.balpyo.Home.StorageFragment"
+        android:label="fragment_storage"
+        tools:layout="@layout/fragment_storage" />
+    <fragment
+        android:id="@+id/timeCalculatorTitleFragment"
+        android:name="com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment"
+        android:label="fragment_time_calculator_title"
+        tools:layout="@layout/fragment_time_calculator_title" >
+        <action
+            android:id="@+id/action_timeCalculatorTitleFragment_to_timeCalculatorScriptFragment"
+            app:destination="@id/timeCalculatorScriptFragment" />
     </fragment>
 </navigation>
