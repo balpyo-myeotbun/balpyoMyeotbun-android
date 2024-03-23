@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.FlowControllerResultFragment
 import com.project.balpyo.R
 import com.project.balpyo.Utils.MyApplication
@@ -26,11 +27,7 @@ class ScriptTitleFragment : Fragment() {
         binding.run {
             buttonNext.setOnClickListener {
                 MyApplication.scriptTitle = editTextTitle.text.toString()
-                val transaction: FragmentTransaction =
-                    requireActivity().supportFragmentManager.beginTransaction()
-                val ScriptSubjectFragment = ScriptSubjectFragment()
-                transaction.replace(com.project.balpyo.R.id.fragmentContainerView, ScriptSubjectFragment)
-                transaction.commit()
+                findNavController().navigate(R.id.scriptSubjectFragment)
             }
         }
 
@@ -47,6 +44,7 @@ class ScriptTitleFragment : Fragment() {
             }
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
         }
     }

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.LoadingFragment
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -42,7 +43,7 @@ class ScriptTimeFragment : Fragment() {
             spinnerMinute.run {
                 wrapSelectorWheel = false
                 minValue = 0
-                maxValue = 59
+                maxValue = 2
             }
             spinnerMinute.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
@@ -65,7 +66,7 @@ class ScriptTimeFragment : Fragment() {
 
             buttonNext.setOnClickListener {
                 if(noSuchTime) {
-                    MyApplication.scrpitTime = 120
+                    MyApplication.scrpitTime = 180
                 } else {
                     Log.d("발표몇분", "${spinnerMinute.value}")
                     Log.d("발표몇분", "${spinnerSecond.value}")
@@ -73,14 +74,9 @@ class ScriptTimeFragment : Fragment() {
                     MyApplication.scrpitTime = selectedTime.toLong()
                 }
 
-                viewModel.generateScript(mainActivity)
+                viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
 
-
-                val transaction: FragmentTransaction =
-                    requireActivity().supportFragmentManager.beginTransaction()
-                val LoadingFragment = LoadingFragment()
-                transaction.replace(com.project.balpyo.R.id.fragmentContainerView, LoadingFragment)
-                transaction.commit()
+                findNavController().navigate(R.id.loadingFragment)
             }
         }
 
@@ -97,6 +93,7 @@ class ScriptTimeFragment : Fragment() {
             }
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
         }
     }
