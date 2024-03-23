@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.balpyo.Home.Adapter.StorageAdapter
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentStorageBinding
 
@@ -53,6 +55,12 @@ class StorageFragment : Fragment() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
 
                 }
+            }
+
+            recyclerViewList.run {
+                adapter = StorageAdapter()
+
+                layoutManager = LinearLayoutManager(requireContext())
             }
         }
 
