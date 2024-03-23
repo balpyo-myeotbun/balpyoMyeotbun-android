@@ -8,20 +8,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.LoadingFragment
+import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.api.ApiClient
+import com.project.balpyo.api.TokenManager
+import com.project.balpyo.api.request.GenerateAudioRequest
+import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.databinding.FragmentTimeCalculatorSpeedBinding
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class TimeCalculatorSpeedFragment : Fragment() {
 
     lateinit var binding: FragmentTimeCalculatorSpeedBinding
+    lateinit var mainActivity: MainActivity
+
+    lateinit var flowControllerViewModel: FlowControllerViewModel
 
     lateinit var mediaPlayerMinusOne: MediaPlayer
     lateinit var mediaPlayerMinusTwo: MediaPlayer
@@ -37,6 +52,9 @@ class TimeCalculatorSpeedFragment : Fragment() {
     ): View? {
 
         binding = FragmentTimeCalculatorSpeedBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
+
+        flowControllerViewModel = ViewModelProvider(mainActivity)[FlowControllerViewModel::class.java]
 
         mediaPlayerMinusTwo = MediaPlayer.create(requireContext(), R.raw.minustwo)
         mediaPlayerMinusOne = MediaPlayer.create(requireContext(), R.raw.minusone)
@@ -115,7 +133,8 @@ class TimeCalculatorSpeedFragment : Fragment() {
             })
 
             buttonNext.setOnClickListener {
-                findNavController().navigate(R.id.loadingFragment)
+                generateAudio(mainActivity)
+//                findNavController().navigate(R.id.loadingFragment)
             }
         }
         return binding.root
@@ -134,5 +153,66 @@ class TimeCalculatorSpeedFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    //TTS 받아오기 테스트
+    fun generateAudio(requireActivity: FragmentActivity) {
+        findNavController().navigate(R.id.loadingFragment)
+        var apiClient = ApiClient(mainActivity)
+        var tokenManager = TokenManager(mainActivity)
+
+        val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt(), "1234")
+        apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
+            Callback<GenerateAudioResponse> {
+            override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: GenerateAudioResponse? = response.body()
+                    Log.d("##", "onResponse 성공: " + result?.toString())
+                    flowControllerViewModel.setAudioUrl(result!!.profileUrl)
+
+                    var mPlayer = MediaPlayer()
+                    //val uri: Uri = Uri.parse("android.resource://" + activity!!.packageName + "/" + R.raw.speech)
+                    //mPlayer.setDataSource(activity!!.applicationContext, uri)
+
+                    mPlayer.setDataSource(result!!.profileUrl)
+                    mPlayer.prepare()
+
+                    var durationTime = mPlayer.duration
+
+                    Log.d("##", "duration : ${convertMsToMinutesSeconds(durationTime.toLong())}")
+
+                    findNavController().navigate(R.id.timeCalculatorResultFragment)
+
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: GenerateAudioResponse? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<GenerateAudioResponse>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
+    }
+
+    //밀리 초를 mm:ss로 변환
+    fun convertMsToMinutesSeconds(milliseconds: Long): String {
+        val totalSeconds = milliseconds / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+
+        MyApplication.calculatedTimeMinute = minutes.toInt()
+        MyApplication.calculatedTimeSecond = seconds.toInt()
+
+        MyApplication.calculatedTime = totalSeconds.toLong()
+
+        return String.format("%02d:%02d", minutes, seconds)
     }
 }

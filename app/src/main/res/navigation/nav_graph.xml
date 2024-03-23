@@ -175,8 +175,8 @@
         android:label="fragment_flow_controller_speed"
         tools:layout="@layout/fragment_flow_controller_speed" >
         <action
-            android:id="@+id/action_timeCalculatorSpeedFragment_to_loadingFragment"
-            app:destination="@id/loadingFragment" />
+            android:id="@+id/action_timeCalculatorSpeedFragment_to_timeCalculatorResultFragment"
+            app:destination="@id/timeCalculatorResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/storageFragment"

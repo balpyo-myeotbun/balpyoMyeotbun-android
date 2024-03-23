@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.R
+import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentTimeCalculatorTitleBinding
 
 class TimeCalculatorTitleFragment : Fragment() {
@@ -24,6 +25,7 @@ class TimeCalculatorTitleFragment : Fragment() {
 
         binding.run {
             buttonNext.setOnClickListener {
+                MyApplication.timeCalculatorTitle = editTextTitle.text.toString()
                 findNavController().navigate(R.id.timeCalculatorScriptFragment)
             }
         }

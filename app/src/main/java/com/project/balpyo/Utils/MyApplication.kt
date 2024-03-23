@@ -13,8 +13,12 @@ class MyApplication : Application() {
         var scrpitTime = 180L
 
         // 2.  단어당 발표 시간 계산기(관리기)
+        var timeCalculatorTitle = ""
         var timeCalculatorScript = ""
         var timeCalculatorTime = 0L
         var timeCalculatorSpeed = ""
+        var calculatedTimeMinute = 0
+        var calculatedTimeSecond = 0
+        var calculatedTime = 0L
     }
 }
