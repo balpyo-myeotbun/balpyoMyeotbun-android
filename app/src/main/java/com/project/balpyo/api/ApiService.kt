@@ -6,6 +6,7 @@ import com.project.balpyo.api.request.GenerateScriptRequest
 import com.project.balpyo.api.request.StoreScriptRequest
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
+import com.project.balpyo.api.response.StorageListResponse
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.api.response.VerifyUidResponse
 import okhttp3.ResponseBody
@@ -45,4 +46,10 @@ interface ApiService {
         @Header("Accept") accept: String,
         @Body parameters: GenerateAudioRequest
     ): Call<ResponseBody>
+
+    // 보관함 리스트 조회
+    @GET("every/manage/script/all")
+    fun getStorageList(
+        @Header("UID") uid: String
+    ): Call<StorageListResponse>
 }
