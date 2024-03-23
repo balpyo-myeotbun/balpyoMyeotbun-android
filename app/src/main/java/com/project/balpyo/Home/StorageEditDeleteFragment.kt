@@ -1,4 +1,4 @@
-package com.project.balpyo.Utils
+package com.project.balpyo.Home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
