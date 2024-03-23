@@ -63,8 +63,6 @@ class TimeCalculatorResultFragment : Fragment() {
             } else {
                 var totalRemainTime = MyApplication.calculatedTime - MyApplication.timeCalculatorTime
 
-
-
                 var fullText = MyApplication.timeCalculatorScript
 
                 val spannableString = SpannableString(fullText)

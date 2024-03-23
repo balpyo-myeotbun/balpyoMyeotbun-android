@@ -9,16 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.BottomSheet.BottomSheetFragment
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
+import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerEditScriptBinding
 
 class FlowControllerEditScriptFragment() : Fragment() {
     lateinit var binding: FragmentFlowControllerEditScriptBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
+    lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,12 +29,14 @@ class FlowControllerEditScriptFragment() : Fragment() {
     ): View? {
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding = FragmentFlowControllerEditScriptBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
+
         initToolBar()
+
         binding.FCESScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
 
         binding.FCEDStoreBtn.setOnClickListener {
-            val bottomSheetFragment = BottomSheetFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+            Toast.makeText(mainActivity, "이후 추가될 기능입니다.", Toast.LENGTH_SHORT).show()
         }
         binding.FCEDNextBtn.setOnClickListener {
             flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
