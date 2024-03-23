@@ -1,10 +1,12 @@
 package com.project.balpyo.BottomSheetAdapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.BottomSheetData.BottomSheetItem
 import com.project.balpyo.FlowController.data.EditScriptItem
@@ -25,17 +27,29 @@ class BottomSheetAdapter(private val items: MutableList<BottomSheetItem>) : Recy
 
         // 선택된 항목에 따라 테두리 색상 변경
         if (selectedPosition == position) {
-            holder.title.setBackgroundResource(R.drawable.selectted_title)
+            holder.title.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.selectted_title)
+
         } else {
-            holder.title.setBackgroundResource(R.drawable.unselected_title)
+            holder.title.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.unselected_title)
         }
 
+        // itemView에 대한 클릭 리스너
         holder.itemView.setOnClickListener {
-            selectedPosition = holder.bindingAdapterPosition
-            notifyDataSetChanged()
-            onItemClick?.invoke(items[position])
+            handleItemClick(position, holder)
+        }
+
+        // Button에 대한 클릭 리스너 추가
+        holder.title.setOnClickListener {
+            handleItemClick(position, holder)
         }
     }
+
+    private fun handleItemClick(position: Int, holder: ViewHolder) {
+        selectedPosition = position
+        notifyDataSetChanged()  // 특정 아이템을 갱신하는 것으로 최적화 가능
+        onItemClick?.invoke(items[position])
+    }
+
 
     override fun getItemCount(): Int = items.size
 

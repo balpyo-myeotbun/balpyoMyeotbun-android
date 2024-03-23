@@ -1,6 +1,7 @@
 package  com.project.balpyo.BottomSheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +19,14 @@ class BottomSheetFragment() : BottomSheetDialogFragment() {
         val items = mutableListOf<BottomSheetItem>(
             BottomSheetItem("인공지능의 역사"),BottomSheetItem("인공지능의 역사")
         )
-        val recyclerView = binding.bottomsheetRV
         val adapter = BottomSheetAdapter(items)
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
-        recyclerView.adapter = adapter
-        binding.bottomsheetLoadBtn.setOnClickListener { print("클릭") }
+        binding.bottomsheetRV.adapter = adapter
+        binding.bottomsheetRV.layoutManager = LinearLayoutManager(this.context)
+        binding.bottomsheetRV.setOnClickListener {
+            Log.d("RV", "RV")
+        }
+
+        binding.bottomsheetLoadBtn.setOnClickListener {Log.d("RV", "불러오기") }
         return binding.root
     }
 
