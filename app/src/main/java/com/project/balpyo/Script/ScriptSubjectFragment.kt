@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -82,11 +83,7 @@ class ScriptSubjectFragment : Fragment() {
 
                 MyApplication.scriptSubject = editTextSubject.text.toString()
 
-                val transaction: FragmentTransaction =
-                    requireActivity().supportFragmentManager.beginTransaction()
-                val ScriptTimeFragment = ScriptTimeFragment()
-                transaction.replace(com.project.balpyo.R.id.fragmentContainerView, ScriptTimeFragment)
-                transaction.commit()
+                findNavController().navigate(R.id.scriptTimeFragment)
             }
         }
 
@@ -95,7 +92,19 @@ class ScriptSubjectFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.recyclerViewSubtopic.adapter?.notifyDataSetChanged()
+        binding.run {
+            MyApplication.scriptSubtopic = ""
+
+            recyclerViewSubtopic.run {
+
+                var subTopicAdapter = SubTopicAdapter(subtopicList)
+
+                adapter = subTopicAdapter
+
+                layoutManager = StaggeredGridLayoutManager(2, RecyclerView.HORIZONTAL)
+
+            }
+        }
     }
 
     fun initToolBar() {
@@ -108,6 +117,7 @@ class ScriptSubjectFragment : Fragment() {
             }
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
         }
     }

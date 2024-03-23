@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentHomeBinding
 
@@ -24,13 +25,13 @@ class HomeFragment : Fragment() {
                 
             }
             menuGenerateScript.setOnClickListener {
-
+                findNavController().navigate(R.id.scriptTitleFragment)
             }
             menuTimeCalculator.setOnClickListener {
-
+                findNavController().navigate(R.id.timeCalculatorTitleFragment)
             }
             menuFlowController.setOnClickListener {
-
+                findNavController().navigate(R.id.flowControllerTitleFragment)
             }
         }
 

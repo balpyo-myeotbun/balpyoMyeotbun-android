@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentTimeCalculatorResultBinding
 
@@ -31,9 +32,10 @@ class TimeCalculatorResultFragment : Fragment() {
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
             toolbar.buttonClose.setOnClickListener {
-                // 뒤로가기 버튼 클릭시 동작
+                // 닫기 버튼 클릭시 동작
             }
         }
     }

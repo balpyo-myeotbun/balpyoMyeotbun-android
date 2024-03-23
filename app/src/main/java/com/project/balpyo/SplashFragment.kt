@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.Script.ScriptResultFragment
 import com.project.balpyo.databinding.FragmentSplashBinding
 
@@ -23,11 +24,7 @@ class SplashFragment : Fragment() {
 
         binding.run {
             Handler().postDelayed({
-                val transaction: FragmentTransaction =
-                    requireActivity().supportFragmentManager.beginTransaction()
-                val LoginFragment = LoginFragment()
-                transaction.replace(com.project.balpyo.R.id.fragmentContainerView, LoginFragment)
-                transaction.commit()
+                findNavController().navigate(R.id.loginFragment)
             }, 1000)
         }
 

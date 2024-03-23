@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getColorStateList
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
@@ -116,6 +117,7 @@ class ScriptResultFragment : Fragment() {
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
 
             toolbar.buttonClose.setOnClickListener {
