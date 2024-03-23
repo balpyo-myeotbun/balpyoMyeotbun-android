@@ -4,6 +4,7 @@ import com.project.balpyo.api.request.GenerateAudioRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
 import com.project.balpyo.api.request.StoreScriptRequest
+import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.StorageDetailResponse
@@ -44,11 +45,11 @@ interface ApiService {
         @Body parameters: StoreScriptRequest
     ): Call<StoreScriptResponse>
 
-    @POST("polly/generateAudio")
+    @POST("polly/uploadSpeech")
     fun generateAudio(
         @Header("Accept") accept: String,
         @Body parameters: GenerateAudioRequest
-    ): Call<ResponseBody>
+    ): Call<GenerateAudioResponse>
 
     // 보관함 리스트 조회
     @GET("every/manage/script/all")

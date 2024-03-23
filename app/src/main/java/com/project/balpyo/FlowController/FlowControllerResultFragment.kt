@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerResultBinding
@@ -68,7 +69,7 @@ class FlowControllerResultFragment() : Fragment() {
                 script,
                 viewDataBinding.FCRScript, activity, it.getColor(R.color.primary),
                 viewDataBinding.PCTimeBar, viewDataBinding.PCPlayBtn, viewDataBinding.PCStartTimeTextView, viewDataBinding.PCEndTimeTextView,
-                500.toLong(), 150.toLong()
+                500.toLong(), 150.toLong(), flowControllerViewModel.getAudioUrlData().value!!, 600.toLong(),800.toLong(), 300.toLong()
             )
         }
 
@@ -100,8 +101,13 @@ class FlowControllerResultFragment() : Fragment() {
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonClose.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
+                val navController = findNavController()
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
+                    .build()
+
+                navController.navigate(R.id.homeFragment, null, navOptions)
             }
         }
     }
-
 }
