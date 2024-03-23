@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
+import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerTitleBinding
 
 
@@ -25,11 +26,7 @@ class FlowControllerTitleFragment : Fragment() {
         initToolBar()
         binding.FlowControllerNextBtn.setOnClickListener {
             flowControllerViewModel.setTitle(binding.FlowControllerEditTitle.text.toString())
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager.beginTransaction()
-            val FlowControllerEditScriptFragment = FlowControllerEditScriptFragment()
-            transaction.replace(com.project.balpyo.R.id.fragmentContainerView, FlowControllerEditScriptFragment)
-            transaction.commit() }
+            findNavController().navigate(R.id.flowControllerEditScriptFragment)}
 
         return binding.root
     }
@@ -39,9 +36,9 @@ class FlowControllerTitleFragment : Fragment() {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.VISIBLE
-            toolbar.textViewPage.text = "1/4"
+            toolbar.textViewPage.text = "1/5"
             toolbar.buttonBack.setOnClickListener {
-                // 뒤로가기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
         }
     }

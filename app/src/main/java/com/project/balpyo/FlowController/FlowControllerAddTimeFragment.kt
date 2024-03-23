@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
@@ -135,11 +136,8 @@ class FlowControllerAddTimeFragment : Fragment() {
 
         binding.FCATNextBtn.setOnClickListener {
             flowControllerViewModel.setCustomScript(concatenateTexts(items))
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager.beginTransaction()
-            val FlowControllerPreviewFragment = FlowControllerPreviewFragment()
-            transaction.replace(R.id.fragmentContainerView, FlowControllerPreviewFragment)
-            transaction.commit() }
+            findNavController().navigate(R.id.flowControllerSpeedFragment)
+        }
         return binding.root
     }
 
@@ -209,11 +207,12 @@ class FlowControllerAddTimeFragment : Fragment() {
             toolbar.buttonBack.visibility = View.INVISIBLE
             toolbar.buttonClose.visibility = View.VISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewPage.text = "3/5"
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
             }
             toolbar.buttonClose.setOnClickListener {
-                // 닫기 버튼 클릭시 동작
+                findNavController().popBackStack()
             }
         }
     }

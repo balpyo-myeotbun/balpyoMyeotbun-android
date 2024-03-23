@@ -1,5 +1,6 @@
 package com.project.balpyo.api
 
+import com.project.balpyo.api.request.GenerateAudioRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
 import com.project.balpyo.api.request.StoreScriptRequest
@@ -7,6 +8,7 @@ import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.api.response.VerifyUidResponse
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -37,4 +39,10 @@ interface ApiService {
         @Header("UID") uid: String,
         @Body parameters: StoreScriptRequest
     ): Call<StoreScriptResponse>
+
+    @POST("polly/generateAudio")
+    fun generateAudio(
+        @Header("Accept") accept: String,
+        @Body parameters: GenerateAudioRequest
+    ): Call<ResponseBody>
 }

@@ -5,16 +5,33 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
+import com.project.balpyo.LoadingFragment
+import com.project.balpyo.MainActivity
+import com.project.balpyo.R
+import com.project.balpyo.api.ApiClient
+import com.project.balpyo.api.TokenManager
+import com.project.balpyo.api.request.GenerateAudioRequest
 import com.project.balpyo.databinding.FragmentFlowControllerPreviewBinding
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
 
 class FlowControllerPreviewFragment : Fragment() {
+    lateinit var mainActivity: MainActivity
     lateinit var binding:FragmentFlowControllerPreviewBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
 
@@ -23,6 +40,7 @@ class FlowControllerPreviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        mainActivity = activity as MainActivity
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding = FragmentFlowControllerPreviewBinding.inflate(layoutInflater)
         initToolBar()
@@ -48,18 +66,10 @@ class FlowControllerPreviewFragment : Fragment() {
         binding.FCPScript.text = spannable
 
         binding.FCPNextBtn.setOnClickListener {
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager.beginTransaction()
-            val FlowControllerResultFragment = FlowControllerResultFragment()
-            transaction.replace(com.project.balpyo.R.id.fragmentContainerView, FlowControllerResultFragment)
-            transaction.commit()
+            generateAudio(requireActivity())
         }
         binding.FCPEditBtn.setOnClickListener {
-            val transaction: FragmentTransaction =
-                requireActivity().supportFragmentManager.beginTransaction()
-            val flowControllerEditScriptFragment = FlowControllerEditScriptFragment()
-            transaction.replace(com.project.balpyo.R.id.fragmentContainerView, flowControllerEditScriptFragment)
-            transaction.commit()
+            findNavController().navigate(R.id.flowControllerEditScriptFragment)
         }
         return binding.root
     }
@@ -68,10 +78,57 @@ class FlowControllerPreviewFragment : Fragment() {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.VISIBLE
-            toolbar.textViewPage.text = "4/4"
+            toolbar.textViewPage.text = "4/5"
             toolbar.buttonBack.setOnClickListener {
-                // Handle back button click
+                findNavController().popBackStack()
             }
         }
+    }
+
+
+
+    //TTS 받아오기 테스트
+    fun generateAudio(requireActivity: FragmentActivity) {
+        findNavController().navigate(R.id.loadingFragment)
+        var apiClient = ApiClient(mainActivity)
+        var tokenManager = TokenManager(mainActivity)
+
+        val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), 0, "1234")
+        apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
+            Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: ResponseBody? = response.body()
+                    Log.d("##", "onResponse 성공: " + result?.toString())
+                    result?.let { responseBody ->
+                        // 오디오 파일 저장을 위한 스트림 생성
+                        val inputStream = responseBody.byteStream()
+                        val file = File(requireActivity.getExternalFilesDir(null), "audio.mp3")
+                        val outputStream = FileOutputStream(file)
+                        inputStream.use { input ->
+                            outputStream.use { output ->
+                                input.copyTo(output)
+                            }
+                        } }
+                    findNavController().navigate(R.id.flowControllerResultFragment)
+
+
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: ResponseBody? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
     }
 }
