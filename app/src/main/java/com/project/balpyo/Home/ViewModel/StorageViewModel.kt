@@ -9,11 +9,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.project.balpyo.BottomSheet.BottomSheetFragment
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.GenerateScriptRequest
-import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.StorageDetailResponse
 import com.project.balpyo.api.response.StorageDetailResult
 import com.project.balpyo.api.response.StorageListResponse
@@ -228,5 +225,9 @@ class StorageViewModel: ViewModel() {
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }
         })
+    }
+
+    fun clearValueStorageDataForBottomSheet() {
+        storageDetailForBottomSheet = MutableLiveData<StorageDetailResult>()
     }
 }

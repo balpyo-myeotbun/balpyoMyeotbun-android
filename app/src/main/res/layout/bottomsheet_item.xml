@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/BottomSheetCL"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="6dp">
+    android:layout_margin="6dp"
+    android:background="@drawable/unselected_title">
 
     <Button
         android:id="@+id/BottomSheetBtn"
         android:layout_width="0dp"
         android:layout_height="64dp"
-        android:background="@drawable/unselected_title"
         android:fontFamily="@font/pretendard_semi_bold"
         android:gravity="start|center_vertical"
         android:text="인공지능의 역사"
@@ -19,7 +20,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/gray1"
-        app:strokeWidth="1dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,13 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.project.balpyo.BottomSheet.BottomSheetFragment
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
+import com.project.balpyo.Home.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerEditScriptBinding
@@ -22,6 +19,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
     lateinit var binding: FragmentFlowControllerEditScriptBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
     lateinit var mainActivity: MainActivity
+    lateinit var viewModel: StorageViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,13 +28,20 @@ class FlowControllerEditScriptFragment() : Fragment() {
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding = FragmentFlowControllerEditScriptBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
 
         initToolBar()
 
         binding.FCESScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
 
         binding.FCEDStoreBtn.setOnClickListener {
-            Toast.makeText(mainActivity, "이후 추가될 기능입니다.", Toast.LENGTH_SHORT).show()
+
+            viewModel.getStorageListForBottomSheet(this@FlowControllerEditScriptFragment.parentFragmentManager, mainActivity)
+
+        //Toast.makeText(mainActivity, "이후 추가될 기능입니다.", Toast.LENGTH_SHORT).show()
+        }
+        viewModel.storageDetailForBottomSheet.observe(mainActivity){
+            binding.FCESScript.setText(it.script)
         }
         binding.FCEDNextBtn.setOnClickListener {
             flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
@@ -64,4 +69,10 @@ class FlowControllerEditScriptFragment() : Fragment() {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.clearValueStorageDataForBottomSheet()
+    }
 }
+
