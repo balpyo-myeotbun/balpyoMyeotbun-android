@@ -36,8 +36,18 @@ class TimeCalculatorResultFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     private var totalDuration: Long = 0
+    var basetime = 0L
 
     var editable = false
+
+    val restDuration = 500L
+    val normalCharacterDuration = 150L
+    val endAwsomeDuration = 600L
+    val questionDuration = 800L
+    val enterDuration = 300L
+
+    var startIndex = 0
+    var endIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,36 +60,38 @@ class TimeCalculatorResultFragment : Fragment() {
         initToolBar()
 
         binding.run {
-            textViewGoalTime.text = "발표시간은 ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초에요!"
+            Log.d("##", "setting time : ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초")
+            textViewCalculateTime.text = "발표시간은 ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초에요!"
             editTextScript.setText(MyApplication.timeCalculatorScript)
+            basetime = (MyApplication.timeCalculatorTime * 1000).toLong()
 
             binding.editTextScript.isFocusableInTouchMode = false
 
             if(MyApplication.calculatedTime == MyApplication.timeCalculatorTime) {
-                textViewSuccess.text = "목표 발표 시간을 맞췄어요!"
-            } else if(MyApplication.calculatedTime < MyApplication.timeCalculatorTime) {
+                // 목표 발표 시간을 맞춘 경우
+                textViewGoalTime.text = "목표 발표 시간을 맞췄어요!"
+                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary))
+                layoutTimeNotMatch.visibility = View.GONE
+            }
+            else if(MyApplication.calculatedTime < MyApplication.timeCalculatorTime) {
+                // 목표 발표 시간보다 부족한 경우
                 var totalRemainTime = MyApplication.timeCalculatorTime - MyApplication.calculatedTime
-                textViewSuccess.text = "목표 발표 시간보다\n${totalRemainTime/60}분 ${totalRemainTime%60}초 부족해요"
-            } else {
+                layoutTimeNotMatch.visibility = View.VISIBLE
+                textViewGoalTime.text = "목표 발표 시간보다"
+                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.text))
+                textViewTimeNotMatch.text = "${totalRemainTime/60}분 ${totalRemainTime%60}초 부족"
+            }
+            else {
+                // 목표 발표 시간을 초과한 경우
+
                 var totalRemainTime = MyApplication.calculatedTime - MyApplication.timeCalculatorTime
 
-                var fullText = MyApplication.timeCalculatorScript
+                calculateOverTime()
 
-                val spannableString = SpannableString(fullText)
-
-                // 시작 인덱스와 끝 인덱스 사이의 텍스트에 다른 색상 적용
-                val startIndex = MyApplication.timeCalculatorScript.length - 0
-                val endIndex = MyApplication.timeCalculatorScript.length
-                spannableString.setSpan(
-                    ForegroundColorSpan(Color.parseColor("#EB2A63")), // 색상 설정
-                    startIndex, // 시작 인덱스
-                    endIndex, // 끝 인덱스 (exclusive)
-                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE // 스타일 적용 범위 설정
-                )
-
-                editTextScript.setText(spannableString)
-
-                textViewSuccess.text = "목표 발표 시간보다\n${totalRemainTime/60}분 ${totalRemainTime%60}초 초과해요"
+                layoutTimeNotMatch.visibility = View.VISIBLE
+                textViewGoalTime.text = "목표 발표 시간보다"
+                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.text))
+                textViewTimeNotMatch.text = "${totalRemainTime/60}분 ${totalRemainTime%60}초 초과"
             }
 
             buttonStore.setOnClickListener {
@@ -103,6 +115,49 @@ class TimeCalculatorResultFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    fun calculateOverTime() {
+        var currentDuration = 0L // 현재 누적된 시간을 추적하기 위한 변수입니다.
+
+        totalDuration = MyApplication.timeCalculatorScript.foldIndexed(0L) { index, acc, c ->
+            currentDuration += when (c) {
+                ',' -> restDuration
+                '.', '!' -> endAwsomeDuration
+                '?' -> questionDuration
+                '\n' -> enterDuration
+                else -> normalCharacterDuration
+            }
+            if (currentDuration > basetime) {
+                if(startIndex == 0) {
+
+                    Log.d("##", "basetime : ${basetime}")
+                    Log.d("##", "current duration : ${currentDuration}")
+
+                    Log.d("발표몇분","Character '$c' which is index $index reached threshold duration.")
+
+                    startIndex = index
+                    endIndex = MyApplication.timeCalculatorScript.length
+
+                    var fullText = MyApplication.timeCalculatorScript
+
+                    val spannableString = SpannableString(fullText)
+
+                    // 시작 인덱스와 끝 인덱스 사이의 텍스트에 다른 색상 적용
+                    spannableString.setSpan(
+                        ForegroundColorSpan(Color.parseColor("#EB2A63")), // 색상 설정
+                        index, // 시작 인덱스
+                        endIndex, // 끝 인덱스 (exclusive)
+                        SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE // 스타일 적용 범위 설정
+                    )
+
+                    Log.d("##", "index : ${index}, ${endIndex}")
+
+                    binding.editTextScript.setText(spannableString)
+                }
+            }
+            acc + currentDuration // 누적된 시간을 반환합니다.
+        }
     }
 
     fun initToolBar() {

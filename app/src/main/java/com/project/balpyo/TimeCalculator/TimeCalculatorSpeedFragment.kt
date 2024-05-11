@@ -174,18 +174,20 @@ class TimeCalculatorSpeedFragment : Fragment() {
                     // 정상적으로 통신이 성공된 경우
                     var result: GenerateAudioResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
-                    flowControllerViewModel.setAudioUrl(result!!.profileUrl)
-
-                    var mPlayer = MediaPlayer()
+//                    flowControllerViewModel.setAudioUrl(result!!.profileUrl)
+//
+//                    var mPlayer = MediaPlayer()
                     //val uri: Uri = Uri.parse("android.resource://" + activity!!.packageName + "/" + R.raw.speech)
                     //mPlayer.setDataSource(activity!!.applicationContext, uri)
+//
+//                    mPlayer.setDataSource(result!!.profileUrl)
+//                    mPlayer.prepare()
+//
+//                    var durationTime = mPlayer.duration
 
-                    mPlayer.setDataSource(result!!.profileUrl)
-                    mPlayer.prepare()
+                    convertMsToMinutesSeconds((result!!.playTime.toLong())*1000)
 
-                    var durationTime = mPlayer.duration
-
-                    Log.d("##", "duration : ${convertMsToMinutesSeconds(durationTime.toLong())}")
+                    Log.d("##", "duration : ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초")
 
                     findNavController().navigate(R.id.timeCalculatorResultFragment)
 

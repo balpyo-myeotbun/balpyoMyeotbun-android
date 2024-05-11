@@ -15,21 +15,53 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_success"
+    <LinearLayout
+        android:id="@+id/layout_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="목표 발표 시간을 맞췄어요!"
-        android:textColor="@color/primary"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView_goal_time"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/textView_calculate_time"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView_goal_time"
-        app:layout_constraintTop_toBottomOf="@+id/textView_goal_time" />
+        app:layout_constraintStart_toStartOf="@+id/textView_calculate_time"
+        app:layout_constraintTop_toBottomOf="@+id/textView_calculate_time">
+
+        <TextView
+            android:id="@+id/textView_goal_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="목표 발표 시간을 맞췄어요!"
+            android:textColor="@color/text"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:id="@+id/layout_time_not_match"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView_time_not_match"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="0분 0초 부족"
+                android:textColor="@color/primary"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/textView_time_not_match2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="해요"
+                android:textColor="@color/text"
+                android:textSize="22sp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/textView_goal_time"
+        android:id="@+id/textView_calculate_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -60,12 +92,12 @@
         android:padding="10dp"
         android:scrollbarThumbVertical="@drawable/custom_scrollbar"
         android:scrollbars="vertical"
-        android:textColor="@color/primary"
+        android:textColor="@color/gray4"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/button_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_success" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_text" />
 
     <Button
         android:id="@+id/button_edit"
