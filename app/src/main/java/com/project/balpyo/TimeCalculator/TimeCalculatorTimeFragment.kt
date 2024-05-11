@@ -30,14 +30,15 @@ class TimeCalculatorTimeFragment : Fragment() {
 
         binding.run {
             spinnerMinute.run {
-                wrapSelectorWheel = false
+//                wrapSelectorWheel = false
                 minValue = 0
-                maxValue = 4
+                maxValue = 3
+                value = 3
             }
             spinnerMinute.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
             spinnerSecond.run {
-                wrapSelectorWheel = false
+//                wrapSelectorWheel = false
                 minValue = 0
                 maxValue = 59
             }

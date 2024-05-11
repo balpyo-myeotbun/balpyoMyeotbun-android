@@ -41,14 +41,15 @@ class ScriptTimeFragment : Fragment() {
 
         binding.run {
             spinnerMinute.run {
-                wrapSelectorWheel = false
+//                wrapSelectorWheel = false
                 minValue = 0
                 maxValue = 2
+                value = 2
             }
             spinnerMinute.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
             spinnerSecond.run {
-                wrapSelectorWheel = false
+//                wrapSelectorWheel = false
                 minValue = 0
                 maxValue = 59
             }
