@@ -1,5 +1,9 @@
 package com.project.balpyo.Script
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
@@ -144,8 +148,24 @@ class ScriptResultFragment : Fragment() {
                 }
                 editable = !editable
             }
+
+            editTextScript.setOnLongClickListener {
+                copyStr(requireContext(), editTextScript.text.toString())
+            }
+
+            buttonStore.setOnClickListener {
+                storeScript()
+            }
         }
         return binding.root
+    }
+
+    private fun copyStr(context : Context, str : String): Boolean {
+        var clipboardManager : ClipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        var clipData = ClipData.newPlainText("copyScript", str)
+        clipboardManager.setPrimaryClip(clipData)
+
+        return true
     }
 
     fun initToolBar() {
