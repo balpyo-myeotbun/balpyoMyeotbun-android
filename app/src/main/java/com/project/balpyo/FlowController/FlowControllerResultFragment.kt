@@ -113,12 +113,12 @@ class FlowControllerResultFragment() : Fragment() {
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonClose.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
-                val navController = findNavController()
+                /*val navController = findNavController()
                 val navOptions = NavOptions.Builder()
                     .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
-                    .build()
+                    .build()*/
 
-                navController.navigate(R.id.homeFragment, null, navOptions)
+                findNavController().navigate(R.id.homeFragment)
                 flowControllerViewModel.initialize()
             }
         }

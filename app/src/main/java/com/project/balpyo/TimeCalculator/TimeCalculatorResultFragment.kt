@@ -171,12 +171,13 @@ class TimeCalculatorResultFragment : Fragment() {
             }
             toolbar.buttonClose.setOnClickListener {
                 // 닫기 버튼 클릭시 동작
-                val navController = findNavController()
+                /*val navController = findNavController()
                 val navOptions = NavOptions.Builder()
                     .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
                     .build()
 
-                navController.navigate(R.id.homeFragment, null, navOptions)
+                navController.navigate(R.id.homeFragment, null, navOptions)*/
+                findNavController().navigate(R.id.homeFragment)
             }
         }
     }
@@ -196,12 +197,13 @@ class TimeCalculatorResultFragment : Fragment() {
                     var result: StoreScriptResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    val navController = findNavController()
+                    /*val navController = findNavController()
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
                         .build()
 
-                    navController.navigate(R.id.homeFragment, null, navOptions)
+                    navController.navigate(R.id.homeFragment, null, navOptions)*/
+                    findNavController().navigate(R.id.homeFragment)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
