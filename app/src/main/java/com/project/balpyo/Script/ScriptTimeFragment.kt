@@ -1,5 +1,7 @@
 package com.project.balpyo.Script
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -8,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -39,6 +43,34 @@ class ScriptTimeFragment : Fragment() {
 
         initToolBar()
 
+        // 권한 요청용 Activity Callback 객체 만들기
+        val registerForActivityResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val deniedPermissionList = permissions.filter { !it.value }.map { it.key }
+            when {
+                deniedPermissionList.isNotEmpty() -> {
+                    val map = deniedPermissionList.groupBy { permission ->
+                        if (shouldShowRequestPermissionRationale(permission)) DENIED else EXPLAINED
+                    }
+                    map[DENIED]?.let {
+                        Toast.makeText(requireContext(), "앱을 종료하지 마세요",Toast.LENGTH_LONG).show()
+                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
+                        findNavController().navigate(R.id.loadingFragment)
+                    }
+                    map[EXPLAINED]?.let {
+                        Toast.makeText(requireContext(), "앱을 종료하지 마세요", Toast.LENGTH_LONG).show()
+                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
+                        findNavController().navigate(R.id.loadingFragment)
+                    }
+                }
+                else -> {
+                    // 모든 권한이 허가 되었을 때
+                    Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!",Toast.LENGTH_LONG).show()
+                    viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
+                    findNavController().navigate(R.id.homeFragment)
+                }
+            }
+        }
+
         binding.run {
             spinnerMinute.run {
                 wrapSelectorWheel = false
@@ -65,6 +97,11 @@ class ScriptTimeFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    registerForActivityResult.launch(
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+                    )
+                }
                 if(noSuchTime) {
                     MyApplication.scrpitTime = 180
                 } else {
@@ -73,10 +110,6 @@ class ScriptTimeFragment : Fragment() {
                     var selectedTime = spinnerMinute.value*60 + spinnerSecond.value
                     MyApplication.scrpitTime = selectedTime.toLong()
                 }
-
-                viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-
-                findNavController().navigate(R.id.loadingFragment)
             }
         }
 
@@ -96,5 +129,9 @@ class ScriptTimeFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+    }
+    companion object {
+        const val DENIED = "denied"
+        const val EXPLAINED = "explained"
     }
 }

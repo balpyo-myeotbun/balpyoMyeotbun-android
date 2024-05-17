@@ -12,7 +12,7 @@ class FlowControllerViewModel : ViewModel() {
     private var splitScriptToSentences: MutableLiveData<List<String>> = MutableLiveData()
     private var speed: MutableLiveData<Int> = MutableLiveData(0)
     private var isEdit : MutableLiveData<Boolean> = MutableLiveData(false)
-    private var scriptId : MutableLiveData<String> = MutableLiveData()
+    private var scriptId : MutableLiveData<Long> = MutableLiveData()
     private var audioUrl : MutableLiveData<String> = MutableLiveData()
 
     fun initialize() {
@@ -33,7 +33,7 @@ class FlowControllerViewModel : ViewModel() {
     fun getSpeedData(): MutableLiveData<Int> = speed
     fun getIsEditData():MutableLiveData<Boolean> = isEdit
 
-    fun getScriptIdData():MutableLiveData<String> = scriptId
+    fun getScriptIdData():MutableLiveData<Long> = scriptId
 
     fun getSplitScriptToSentencesData() : MutableLiveData<List<String>> = splitScriptToSentences
     fun getAudioUrlData() : MutableLiveData<String> = audioUrl
@@ -61,7 +61,7 @@ class FlowControllerViewModel : ViewModel() {
         isEdit.value = value
     }
 
-    fun setScriptId(value: String){
+    fun setScriptId(value: Long){
         scriptId.value = value
     }
     fun setAudioUrl(value: String){

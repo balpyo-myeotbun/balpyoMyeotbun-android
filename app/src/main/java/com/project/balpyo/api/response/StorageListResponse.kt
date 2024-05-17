@@ -12,5 +12,6 @@ data class StorageListResult(
     val gptId: String?,
     val uid: String,
     val title: String,
-    val secTime: Long
+    val secTime: Long,
+    val voiceFilePath: String?
 )

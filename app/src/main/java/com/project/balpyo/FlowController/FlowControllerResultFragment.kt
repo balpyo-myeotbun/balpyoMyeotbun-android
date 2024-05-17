@@ -68,9 +68,14 @@ class FlowControllerResultFragment() : Fragment() {
         var scriptSynchronizer = context?.resources?.let {
             ScriptSynchronizer(
                 flowControllerViewModel.getCustomScriptData().value.toString(),
-                viewDataBinding.FCRScript, activity, it.getColor(R.color.primary),
-                viewDataBinding.PCTimeBar, viewDataBinding.PCPlayBtn, viewDataBinding.PCStartTimeTextView, viewDataBinding.PCEndTimeTextView,
-                500.toLong(), 150.toLong(), flowControllerViewModel.getAudioUrlData().value!!, 600.toLong(),800.toLong(), 300.toLong()
+                viewDataBinding.FCRScript,
+                activity, it.getColor(R.color.primary),
+                viewDataBinding.PCTimeBar,
+                viewDataBinding.PCPlayBtn,
+                viewDataBinding.PCStartTimeTextView,
+                viewDataBinding.PCEndTimeTextView,
+                flowControllerViewModel.getAudioUrlData().value!!,
+                flowControllerViewModel.getSpeedData().value!!
             )
         }
 

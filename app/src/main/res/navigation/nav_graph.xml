@@ -140,12 +140,22 @@
         <action
             android:id="@+id/action_scriptTimeFragment_to_loadingFragment"
             app:destination="@id/loadingFragment" />
+        <action
+            android:id="@+id/action_scriptTimeFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_scriptTimeFragment_to_scriptResultFragment"
+            app:destination="@id/scriptResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/scriptResultFragment"
         android:name="com.project.balpyo.Script.ScriptResultFragment"
         android:label="fragment_script_result"
-        tools:layout="@layout/fragment_script_result" />
+        tools:layout="@layout/fragment_script_result" >
+        <action
+            android:id="@+id/action_scriptResultFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/timeCalculatorScriptFragment"
         android:name="com.project.balpyo.TimeCalculator.TimeCalculatorScriptFragment"
