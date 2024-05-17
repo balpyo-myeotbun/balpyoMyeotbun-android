@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.Home.HomeFragment
 import com.project.balpyo.MainActivity
@@ -77,6 +78,13 @@ class ScriptResultFragment : Fragment() {
             binding.textViewSuccess.text = spannableString
             binding.buttonStore.setOnClickListener {
                 storeScript(data)
+                var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+                var navController = navHostFragment.navController
+                navController.navigate(R.id.homeFragment)
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
+                    .build()
+                navController.navigate(R.id.homeFragment, null, navOptions)
             }
         } ?: run {
             // 번들에 포함된 argument가 없는 경우
@@ -155,20 +163,28 @@ class ScriptResultFragment : Fragment() {
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
-                val transaction: FragmentTransaction =
+                /*val transaction: FragmentTransaction =
                     mainActivity!!.supportFragmentManager.beginTransaction()
                 val homeFragment = HomeFragment()
                 transaction.replace(R.id.fragmentContainerView, homeFragment)
-                transaction.commit()
+                transaction.commit()*/
+                /*var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+                var navController = navHostFragment.navController
+                navController.navigate(R.id.homeFragment)*/
+                findNavController().popBackStack()
             }
 
             toolbar.buttonClose.setOnClickListener {
                 // 닫기 버튼 클릭시 동작
-                val transaction: FragmentTransaction =
+                /*val transaction: FragmentTransaction =
                     mainActivity!!.supportFragmentManager.beginTransaction()
                 val homeFragment = HomeFragment()
                 transaction.replace(R.id.fragmentContainerView, homeFragment)
-                transaction.commit()
+                transaction.commit()*/
+                /*var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+                var navController = navHostFragment.navController
+                navController.navigate(R.id.homeFragment)*/
+                findNavController().popBackStack()
             }
         }
     }
@@ -187,8 +203,9 @@ class ScriptResultFragment : Fragment() {
                     // 정상적으로 통신이 성공된 경우
                     var result: StoreScriptResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
-
-                    val navController = findNavController()
+                    var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+                    var navController = navHostFragment.navController
+                    navController.navigate(R.id.homeFragment)
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
                         .build()

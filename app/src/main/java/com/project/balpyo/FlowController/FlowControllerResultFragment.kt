@@ -23,7 +23,7 @@ import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 class FlowControllerResultFragment() : Fragment() {
     private lateinit var viewDataBinding: FragmentFlowControllerResultBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
-
+    private lateinit var scriptSynchronizer : ScriptSynchronizer
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +65,7 @@ class FlowControllerResultFragment() : Fragment() {
         viewDataBinding.FCRScript.text = spannable
 
 
-        var scriptSynchronizer = context?.resources?.let {
+        scriptSynchronizer = context?.resources?.let {
             ScriptSynchronizer(
                 flowControllerViewModel.getCustomScriptData().value.toString(),
                 viewDataBinding.FCRScript,
@@ -77,14 +77,14 @@ class FlowControllerResultFragment() : Fragment() {
                 flowControllerViewModel.getAudioUrlData().value!!,
                 flowControllerViewModel.getSpeedData().value!!
             )
-        }
+        }!!
 
         viewDataBinding.PCEditBtn.setOnClickListener {
-            val transaction: FragmentTransaction =
+            /*val transaction: FragmentTransaction =
                 requireActivity().supportFragmentManager.beginTransaction()
             val flowControllerEditScriptFragment = FlowControllerEditScriptFragment()
             transaction.replace(com.project.balpyo.R.id.fragmentContainerView, flowControllerEditScriptFragment)
-            transaction.commit()
+            transaction.commit()*/
         }
         viewDataBinding.PCPlayBtn.setOnClickListener {
             if (scriptSynchronizer != null) {
@@ -98,6 +98,12 @@ class FlowControllerResultFragment() : Fragment() {
         }
 
         return viewDataBinding.root
+    }
+
+    override fun onDestroyView() {
+        if(scriptSynchronizer.isPlaying)
+            scriptSynchronizer.stop()
+        super.onDestroyView()
     }
     fun initToolBar() {
         viewDataBinding.run {

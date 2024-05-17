@@ -8,10 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.project.balpyo.FlowController.FlowControllerTitleFragment
 import com.project.balpyo.Home.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Script.ScriptTimeFragment
+import com.project.balpyo.Script.ScriptTitleFragment
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
+import com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment
 import com.project.balpyo.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -38,12 +42,24 @@ class HomeFragment : Fragment() {
             }
             menuGenerateScript.setOnClickListener {
                 findNavController().navigate(R.id.scriptTitleFragment)
+                /*mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, ScriptTitleFragment())
+                    .addToBackStack(null)
+                    .commit()*/
             }
             menuTimeCalculator.setOnClickListener {
                 findNavController().navigate(R.id.timeCalculatorTitleFragment)
+                /*mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, TimeCalculatorTitleFragment())
+                    .addToBackStack(null)
+                    .commit()*/
             }
             menuFlowController.setOnClickListener {
                 findNavController().navigate(R.id.flowControllerTitleFragment)
+                /*mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, FlowControllerTitleFragment())
+                    .addToBackStack(null)
+                    .commit()*/
             }
         }
 
