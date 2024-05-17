@@ -52,6 +52,7 @@ class ScriptTimeFragment : Fragment() {
 //                wrapSelectorWheel = false
                 minValue = 0
                 maxValue = 59
+                value = 59
             }
             spinnerSecond.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
