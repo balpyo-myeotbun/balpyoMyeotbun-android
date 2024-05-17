@@ -62,8 +62,9 @@ class StorageViewModel: ViewModel() {
                         var uid = result?.result!!.get(i).uid
                         var title = result?.result!!.get(i).title
                         var secTime = result?.result!!.get(i).secTime
+                        var filePath = result?.result!!.get(i).voiceFilePath
 
-                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime)
+                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime, filePath)
                         tempList.add(s1)
                     }
 
@@ -106,10 +107,10 @@ class StorageViewModel: ViewModel() {
                     // 정상적으로 통신이 성공된 경우
                     var result: StorageDetailResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
-
-                    storageDetail.value = StorageDetailResult(result?.result!!.scriptId, result?.result!!.script,  result?.result!!.gptId,  result?.result!!.uid,  result?.result!!.title,  result?.result!!.secTime)
-
-                    NavHostFragment.findNavController(fragment).navigate(R.id.storageEditDeleteFragment)
+                    //ssml 태그를 제외한 일반 스크립트만을 저장하기 위함
+                    var normalScript = replaceScriptToNormal(result?.result!!.script)
+                    storageDetail.value = StorageDetailResult(result?.result!!.scriptId, normalScript,  result?.result!!.gptId,  result?.result!!.uid,  result?.result!!.title,  result?.result!!.secTime)
+                    //NavHostFragment.findNavController(fragment).navigate(R.id.storageEditDeleteFragment)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -166,8 +167,9 @@ class StorageViewModel: ViewModel() {
                         var uid = result?.result!!.get(i).uid
                         var title = result?.result!!.get(i).title
                         var secTime = result?.result!!.get(i).secTime
+                        var filePath = result?.result!!.get(i).voiceFilePath
 
-                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime)
+                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime, filePath)
                         tempList.add(s1)
                     }
 
@@ -226,8 +228,13 @@ class StorageViewModel: ViewModel() {
             }
         })
     }
-
-    fun clearValueStorageDataForBottomSheet() {
-        storageDetailForBottomSheet = MutableLiveData<StorageDetailResult>()
+    //ssml 태그를 제외한 일반 스크립트를 반환
+    fun replaceScriptToNormal(script: String): String {
+        val normalScript = script.replace("\n숨 고르기 (1초)\n", "").replace("\nPPT 넘김 (2초)\n", "")
+        return normalScript
+    }
+    //바텀시트 뷰모델 초기화
+    fun clearValueStorageDataForBottomSheet(uid : String) {
+        storageDetailForBottomSheet.value = StorageDetailResult(0,"","", uid,"",0)
     }
 }

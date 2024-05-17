@@ -36,7 +36,9 @@ class TimeCalculatorScriptFragment : Fragment() {
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.run {
             storageDetailForBottomSheet.observe(mainActivity) {
-                binding.editTextScript.setText(it.script)
+                if (it != null) {
+                    binding.editTextScript.setText(it.script)
+                }
             }
         }
 
@@ -51,7 +53,7 @@ class TimeCalculatorScriptFragment : Fragment() {
             }
 
             buttonStorage.setOnClickListener {
-                Toast.makeText(mainActivity, "이후 추가될 기능입니다.", Toast.LENGTH_SHORT).show()
+                viewModel.getStorageListForBottomSheet(this@TimeCalculatorScriptFragment.parentFragmentManager, mainActivity)
             }
         }
 

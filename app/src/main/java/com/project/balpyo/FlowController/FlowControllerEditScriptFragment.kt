@@ -35,13 +35,14 @@ class FlowControllerEditScriptFragment() : Fragment() {
         binding.FCESScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
 
         binding.FCEDStoreBtn.setOnClickListener {
-
             viewModel.getStorageListForBottomSheet(this@FlowControllerEditScriptFragment.parentFragmentManager, mainActivity)
-
-        //Toast.makeText(mainActivity, "이후 추가될 기능입니다.", Toast.LENGTH_SHORT).show()
         }
         viewModel.storageDetailForBottomSheet.observe(mainActivity){
-            binding.FCESScript.setText(it.script)
+            if (it != null) {
+                flowControllerViewModel.setNormalScript(it.script)
+                binding.FCESScript.setText(flowControllerViewModel.getNormalScriptData().value)
+                //binding.FCESScript.setText(it.script)
+            }
         }
         binding.FCEDNextBtn.setOnClickListener {
             flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
@@ -50,14 +51,11 @@ class FlowControllerEditScriptFragment() : Fragment() {
             val splitter = SentenceSplitter()
             val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
             flowControllerViewModel.setSplitScriptToSentences(paragraph)
-            findNavController().navigate(R.id.flowControllerAddTimeFragment2)}
+            findNavController().navigate(R.id.flowControllerAddTimeFragment2)
+        }
         return binding.root
     }
 
-    fun replaceScriptToNormal(script: String): String {
-        val normalScript = script.replace("\n숨 고르기 (1초)\n", "").replace("\nPPT 넘김 (2초)\n", "")
-        return normalScript
-    }
     fun initToolBar() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
@@ -70,9 +68,5 @@ class FlowControllerEditScriptFragment() : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.clearValueStorageDataForBottomSheet()
-    }
 }
 

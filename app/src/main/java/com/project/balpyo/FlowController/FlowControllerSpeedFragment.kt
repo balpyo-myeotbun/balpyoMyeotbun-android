@@ -1,12 +1,14 @@
 package com.project.balpyo.FlowController
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ class FlowControllerSpeedFragment : Fragment() {
 
     lateinit var binding: FragmentFlowControllerSpeedBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
+    private lateinit var callback: OnBackPressedCallback
 
     lateinit var mediaPlayerMinusOne: MediaPlayer
     lateinit var mediaPlayerMinusTwo: MediaPlayer
@@ -47,6 +50,7 @@ class FlowControllerSpeedFragment : Fragment() {
 
         binding.run {
             buttonNext.setOnClickListener {
+                stopMediaPlayers()
                 findNavController().navigate(R.id.flowControllerPreviewFragment)
             }
             seekbar.setOnSeekChangeListener(object : OnSeekChangeListener {
@@ -126,8 +130,33 @@ class FlowControllerSpeedFragment : Fragment() {
                 text = "4/5"
             }
             toolbar.buttonBack.setOnClickListener {
+                stopMediaPlayers()
                 findNavController().popBackStack()
             }
         }
+    }
+    private fun stopMediaPlayers() {
+        mediaPlayerMinusTwo.stop()
+        mediaPlayerMinusOne.stop()
+        mediaPlayerZero.stop()
+        mediaPlayerOne.stop()
+        mediaPlayerTwo.stop()
+    }
+
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                stopMediaPlayers()
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 }
