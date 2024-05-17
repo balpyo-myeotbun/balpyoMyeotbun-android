@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Home.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -29,6 +30,8 @@ class StorageEditDeleteFragment : Fragment() {
 
     lateinit var viewModel: StorageViewModel
 
+    private lateinit var flowControllerViewModel: FlowControllerViewModel
+
     var editable = false
 
     var scriptId = 0L
@@ -47,6 +50,7 @@ class StorageEditDeleteFragment : Fragment() {
         binding = FragmentStorageEditDeleteBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.run {
             storageDetail.observe(mainActivity) {
@@ -64,7 +68,15 @@ class StorageEditDeleteFragment : Fragment() {
         binding.run {
             buttonEdit.setOnClickListener {
                 if(editable) {
-                    editScript()
+                    if(flowControllerViewModel.getIsEditData().value == true)
+                    {
+                        flowControllerViewModel.setNormalScript(viewModel.storageDetail.value?.script!!)
+                        flowControllerViewModel.setTitle(viewModel.storageDetail.value?.title!!)
+                        flowControllerViewModel.setScriptId(viewModel.storageDetail.value?.scriptId!!)
+                        findNavController().navigate(R.id.flowControllerEditScriptFragment)
+                    }
+                    else
+                        editScript()
                 } else {
                     buttonEdit.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gray4)
                     buttonEdit.text = "대본 저장하기"

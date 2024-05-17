@@ -2,6 +2,7 @@ package com.project.balpyo.Home.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.Script.Adapter.SubTopicAdapter
@@ -34,6 +35,9 @@ class StorageAdapter (var result: List<StorageListResult>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = result?.get(position)!!.title
+        if(result?.get(position)!!.voiceFilePath == null){
+            holder.player.visibility = View.INVISIBLE
+        }
     }
 
     override fun getItemCount() = result.size

@@ -2,7 +2,6 @@ package com.project.balpyo.FlowController.ScriptSync
 
 import android.graphics.Color
 import android.media.MediaPlayer
-import android.net.Uri
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
@@ -13,7 +12,8 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.project.balpyo.R
 import java.io.IOException
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 
 class ScriptSynchronizer(
     val script: String,
@@ -24,19 +24,29 @@ class ScriptSynchronizer(
     val pcPlayBtn: ImageView,
     val pcStartTimeTextView: TextView,
     val pcEndTimeTextView: TextView,
-    val restDuration : Long,
-    val normalCharacterDuration : Long,
     val url : String,
-    val endAwsomeDuration : Long,
-    val questionDuration : Long,
-    val enterDuration : Long
+    val speed : Int
 ) {
     var mPlayer: MediaPlayer
     private var currentIndex = 0
     private var timer: Timer? = null
     var isPlaying = false
     private var totalDuration: Long = 0
-
+    var speedToFloat = calculateRelativeSpeed(speed)
+    val restDuration : Long = 500.toLong()
+    val normalCharacterDuration : Long = 150.toLong()
+    val endAwsomeDuration : Long = 600.toLong()
+    val questionDuration : Long = 800.toLong()
+    val enterDuration : Long =  300.toLong()
+    fun calculateRelativeSpeed(speed: Int): Float {
+        return when (speed) {
+            -2 -> 0.9f //0.9배
+            -1 -> 0.975f //0.975배
+            1 -> 1.125f //1.125배
+            2 -> 1.15f //1.15배
+            else -> 1.0f
+        }
+    }
     init {
         calculateTotalDuration()
         mPlayer = MediaPlayer()
@@ -69,11 +79,11 @@ class ScriptSynchronizer(
     private fun calculateTotalDuration() {
         totalDuration = script.fold(0L) { acc, c ->
             acc + when (c) {
-                ',' -> restDuration //띄어쓰기와 쉼표의 ms
-                '.', '!' -> endAwsomeDuration //엔터와 온점의 ms
-                '?' -> questionDuration
-                '\n' -> enterDuration
-                else -> getSpecialTextDelay() ?: normalCharacterDuration //특정 텍스트의 지연시간 or 일반 문자의 지연시간
+                ',' -> (restDuration * speedToFloat).toLong()
+                '.', '!' -> (endAwsomeDuration * speedToFloat).toLong()
+                '?' -> (questionDuration * speedToFloat).toLong()
+                '\n' -> (enterDuration * speedToFloat).toLong()
+                else -> (getSpecialTextDelay() ?: (normalCharacterDuration * speedToFloat)).toLong()//특정 텍스트의 지연시간 or 일반 문자의 지연시간
             }
         }
         // "숨 고르기 (1초)", "PPT 넘김 (2초)" 의 길이
@@ -111,11 +121,11 @@ class ScriptSynchronizer(
         while (index < script.length && accumulatedTime < progress) {
             val currentChar = script[index].toString()
             val delay = when (currentChar) {
-                "," -> restDuration //띄어쓰기와 쉼표의 ms
-                ".", "!" -> endAwsomeDuration //엔터와 온점의 ms
-                "?" -> questionDuration
-                "\n" -> enterDuration
-                else -> getSpecialTextDelayForSubstring(script.substring(index)) ?: normalCharacterDuration
+                "," -> (restDuration * speedToFloat).toLong()//띄어쓰기와 쉼표의 ms
+                ".", "!" -> (endAwsomeDuration * speedToFloat).toLong() //엔터와 온점의 ms
+                "?" -> (questionDuration * speedToFloat).toLong()
+                "\n" ->(enterDuration * speedToFloat).toLong()
+                else -> (getSpecialTextDelayForSubstring(script.substring(index)) ?: (normalCharacterDuration * speedToFloat)).toLong()
             }
             accumulatedTime += delay
 
@@ -166,11 +176,11 @@ class ScriptSynchronizer(
 
     private fun scheduleNextCharacter() {
         val delay: Long = when (val currentChar = script.getOrNull(currentIndex)) {
-            ',' -> restDuration //띄어쓰기와 쉼표의 ms
-            '.', '!' -> endAwsomeDuration //엔터와 온점의 ms
-            '?' -> questionDuration
-            '\n' -> enterDuration
-            else -> getSpecialTextDelay() ?: normalCharacterDuration
+            ',' -> (restDuration * speedToFloat).toLong()
+            '.', '!' -> (endAwsomeDuration * speedToFloat).toLong()
+            '?' -> (questionDuration * speedToFloat).toLong()
+            '\n' -> (enterDuration * speedToFloat).toLong()
+            else -> (getSpecialTextDelay() ?: (normalCharacterDuration * speedToFloat)).toLong()//특정 텍스트의 지연시간 or 일반 문자의 지연시간
         }
 
         timer?.schedule(object : TimerTask() {
@@ -213,11 +223,11 @@ class ScriptSynchronizer(
         while (index < currentIndex) {
             val char = script.getOrNull(index)?.toString()
             currentTime += when (char) {
-                "," -> restDuration //띄어쓰기와 쉼표의 ms
-                ".", "!" -> endAwsomeDuration //엔터와 온점의 ms
-                "?" -> questionDuration
-                "\n" -> enterDuration
-                else -> getSpecialTextDelayForSubstring(script.substring(index)) ?: normalCharacterDuration
+                "," -> (restDuration * speedToFloat).toLong()//띄어쓰기와 쉼표의 ms
+                ".", "!" -> (endAwsomeDuration * speedToFloat).toLong() //엔터와 온점의 ms
+                "?" -> (questionDuration * speedToFloat).toLong()
+                "\n" ->(enterDuration * speedToFloat).toLong()
+                else -> (getSpecialTextDelayForSubstring(script.substring(index)) ?: (normalCharacterDuration * speedToFloat)).toLong()
             }
 
             // 특수 텍스트의 지연 시간을 확인하고 추가
