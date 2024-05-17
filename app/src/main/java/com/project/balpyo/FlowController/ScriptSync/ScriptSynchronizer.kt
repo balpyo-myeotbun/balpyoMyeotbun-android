@@ -33,17 +33,17 @@ class ScriptSynchronizer(
     var isPlaying = false
     private var totalDuration: Long = 0
     var speedToFloat = calculateRelativeSpeed(speed)
-    val restDuration : Long = 500.toLong()
-    val normalCharacterDuration : Long = 150.toLong()
+    val restDuration : Long = 400.toLong()
+    val normalCharacterDuration : Long = 120.toLong()
     val endAwsomeDuration : Long = 600.toLong()
     val questionDuration : Long = 800.toLong()
     val enterDuration : Long =  300.toLong()
     fun calculateRelativeSpeed(speed: Int): Float {
         return when (speed) {
-            -2 -> 0.9f //0.9배
-            -1 -> 0.975f //0.975배
-            1 -> 1.125f //1.125배
-            2 -> 1.15f //1.15배
+            2 -> 0.9f //0.9배
+            1 -> 0.95f //0.975배
+            -1 -> 1.1f //1.125배
+            -2 -> 1.125f //1.15배
             else -> 1.0f
         }
     }
@@ -82,7 +82,7 @@ class ScriptSynchronizer(
                 ',' -> (restDuration * speedToFloat).toLong()
                 '.', '!' -> (endAwsomeDuration * speedToFloat).toLong()
                 '?' -> (questionDuration * speedToFloat).toLong()
-                '\n' -> (enterDuration * speedToFloat).toLong()
+                '\'' -> 0L
                 else -> (getSpecialTextDelay() ?: (normalCharacterDuration * speedToFloat)).toLong()//특정 텍스트의 지연시간 or 일반 문자의 지연시간
             }
         }
@@ -124,7 +124,7 @@ class ScriptSynchronizer(
                 "," -> (restDuration * speedToFloat).toLong()//띄어쓰기와 쉼표의 ms
                 ".", "!" -> (endAwsomeDuration * speedToFloat).toLong() //엔터와 온점의 ms
                 "?" -> (questionDuration * speedToFloat).toLong()
-                "\n" ->(enterDuration * speedToFloat).toLong()
+                "\'" -> 0L
                 else -> (getSpecialTextDelayForSubstring(script.substring(index)) ?: (normalCharacterDuration * speedToFloat)).toLong()
             }
             accumulatedTime += delay
@@ -179,7 +179,7 @@ class ScriptSynchronizer(
             ',' -> (restDuration * speedToFloat).toLong()
             '.', '!' -> (endAwsomeDuration * speedToFloat).toLong()
             '?' -> (questionDuration * speedToFloat).toLong()
-            '\n' -> (enterDuration * speedToFloat).toLong()
+            '\'' -> 0L
             else -> (getSpecialTextDelay() ?: (normalCharacterDuration * speedToFloat)).toLong()//특정 텍스트의 지연시간 or 일반 문자의 지연시간
         }
 
@@ -226,7 +226,7 @@ class ScriptSynchronizer(
                 "," -> (restDuration * speedToFloat).toLong()//띄어쓰기와 쉼표의 ms
                 ".", "!" -> (endAwsomeDuration * speedToFloat).toLong() //엔터와 온점의 ms
                 "?" -> (questionDuration * speedToFloat).toLong()
-                "\n" ->(enterDuration * speedToFloat).toLong()
+                "\'" -> 0L
                 else -> (getSpecialTextDelayForSubstring(script.substring(index)) ?: (normalCharacterDuration * speedToFloat)).toLong()
             }
 

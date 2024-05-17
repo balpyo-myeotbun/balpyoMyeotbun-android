@@ -124,7 +124,7 @@ class GenerateScriptViewModel : ViewModel() {
                                 MyApplication.scrpitTime = MyApplication.scrpitTime
                                 var viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
                                 findNavController(fragment).navigate(R.id.scriptResultFragment)
-                                showNotification(mainActivity, MyApplication.scriptTitle, MyApplication.scrpitTime, TokenManager(mainActivity).getUid()!!, result?.result!!.resultScript.get(0).message.content, viewModel.gptId.value!! )
+                                //showNotification(mainActivity, MyApplication.scriptTitle, MyApplication.scrpitTime, TokenManager(mainActivity).getUid()!!, result?.result!!.resultScript.get(0).message.content, viewModel.gptId.value!! )
                             } else {
                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                                 var result: GenerateScriptResponse? = response.body()
