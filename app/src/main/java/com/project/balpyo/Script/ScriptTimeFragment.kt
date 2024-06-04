@@ -43,7 +43,8 @@ class ScriptTimeFragment : Fragment() {
 
         initToolBar()
 
-        // 권한 요청용 Activity Callback 객체 만들기
+        //알림 권한을 요청하기 위함
+        //현재 이 코드 수행하지 않음
         val registerForActivityResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val deniedPermissionList = permissions.filter { !it.value }.map { it.key }
             when {
@@ -51,6 +52,7 @@ class ScriptTimeFragment : Fragment() {
                     val map = deniedPermissionList.groupBy { permission ->
                         if (shouldShowRequestPermissionRationale(permission)) DENIED else EXPLAINED
                     }
+                    //권한이 없으면 기존처럼 로딩 프래그먼트
                     map[DENIED]?.let {
                         Toast.makeText(requireContext(), "앱을 종료하지 마세요",Toast.LENGTH_LONG).show()
                         viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
@@ -64,6 +66,7 @@ class ScriptTimeFragment : Fragment() {
                 }
                 else -> {
                     // 모든 권한이 허가 되었을 때
+                    // 홈으로 이동
                     Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!",Toast.LENGTH_LONG).show()
                     viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
                     findNavController().navigate(R.id.homeFragment)
@@ -103,6 +106,7 @@ class ScriptTimeFragment : Fragment() {
                     /*registerForActivityResult.launch(
                         arrayOf(Manifest.permission.POST_NOTIFICATIONS)
                     )*/
+                    //대본 생성 요청 후 바로 홈으로 이동
                     Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!",Toast.LENGTH_LONG).show()
                     viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
                     findNavController().navigate(R.id.homeFragment)

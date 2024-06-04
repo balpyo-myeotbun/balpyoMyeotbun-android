@@ -52,6 +52,8 @@ class ScriptResultFragment : Fragment() {
         binding = FragmentScriptResultBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        //알림 클릭 후 펜딩인텐트로 메인 액티비티에서 넘어왔을 시 수행 코드
+        //현재 펜딩인텐트 관련 코드 주석처리로 동작하지 않음
         arguments?.let { bundle ->
             viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
             val data = bundle.getSerializable("data") as ScriptResultData // "key"를 사용하여 데이터를 가져옴
@@ -75,8 +77,8 @@ class ScriptResultFragment : Fragment() {
             val endIndex = data.title.length
             spannableString.setSpan(
                 ForegroundColorSpan(Color.parseColor("#EB2A63")), // 색상 설정
-                startIndex, // 시작 인덱스
-                endIndex, // 끝 인덱스 (exclusive)
+                startIndex,
+                endIndex,
                 SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )// 스타일 적용 범위 설정
             binding.textViewSuccess.text = spannableString
@@ -91,9 +93,7 @@ class ScriptResultFragment : Fragment() {
                 navController.navigate(R.id.homeFragment, null, navOptions)
             }
         } ?: run {
-            // 번들에 포함된 argument가 없는 경우
-            // 다른 처리를 수행함
-            viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
+            //기존 코드
             viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
             viewModel.run {
                 script.observe(mainActivity) {
@@ -120,7 +120,6 @@ class ScriptResultFragment : Fragment() {
 
                 val spannableString = SpannableString(fullText)
 
-                // 시작 인덱스와 끝 인덱스 사이의 텍스트에 다른 색상 적용
                 val startIndex = 0
                 val endIndex = MyApplication.scriptTitle.length
                 spannableString.setSpan(

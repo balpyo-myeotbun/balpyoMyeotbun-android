@@ -36,6 +36,9 @@ import retrofit2.Response
 class GenerateScriptViewModel : ViewModel() {
     var script = MutableLiveData<String>()
     var gptId = MutableLiveData<String>()
+
+    //알림을 띄워 클릭 시 메인액티비티로 이동, 메인액티비티에서 대본 결과 프래그먼트로 이동시키려했으나 실패하여
+    //현재 안쓰임
     fun showNotification(context : Context, title: String, secTime : Long, uid : String, script : String, gptId : String ) {
 
         val intent = Intent(context, MainActivity::class.java)
@@ -91,6 +94,7 @@ class GenerateScriptViewModel : ViewModel() {
             notify(0, notification)
         }
     }
+    //대본 생성이 완료되면 결과 프래그먼트로 이동하도록 설정, 코루틴
     fun generateScript(fragment: Fragment, mainActivity: MainActivity) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

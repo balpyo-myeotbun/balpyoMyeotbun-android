@@ -30,7 +30,9 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        //비동기 코드
+        //비동기 코드, 리림 클릭 시 mainactivity에서 argument를 포함하여 대본 생성 결과로 이동,
+        //이곳에서는 네비게이션 코드가 작동하지 않아 beginTransaction을 사용하려 했으나
+        //네비게이션과 혼용 시 에러 발생하여 전부 주석 처리
         /*if (intent.getBooleanExtra("isNotification", false)) {
             var uid = intent.getStringExtra("uid")
             var title = intent.getStringExtra("title")
