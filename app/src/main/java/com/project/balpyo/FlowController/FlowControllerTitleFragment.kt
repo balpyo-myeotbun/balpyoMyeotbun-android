@@ -42,6 +42,8 @@ class FlowControllerTitleFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = "발표 연습"
             toolbar.textViewPage.visibility = View.VISIBLE
             toolbar.textViewPage.text = "1/5"
             toolbar.buttonBack.setOnClickListener {

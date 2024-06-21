@@ -6,6 +6,149 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".TimeCalculator.TimeCalculatorSpeedFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FCIV">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FCSpeedCL0_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:background="@drawable/unselected_speed_icon"
+            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL0_5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/FCSpeed0_3Tv"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="X 0.3"
+                android:textAlignment="center"
+                android:textColor="@color/disabled"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FCSpeedCL0_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:background="@drawable/unselected_speed_icon"
+            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL1"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL0_3"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/FCSpeed0_5Tv"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="X 0.5"
+                android:textAlignment="center"
+                android:textColor="@color/disabled"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FCSpeedCL1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:background="@drawable/unselected_speed_icon"
+            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL1_5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL0_5"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/FCSpeed1Tv"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="X 1"
+                android:textAlignment="center"
+                android:textColor="@color/disabled"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FCSpeedCL1_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:background="@drawable/unselected_speed_icon"
+            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL1"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/FCSpeed1_5Tv"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="X 1.5"
+                android:textAlignment="center"
+                android:textColor="@color/disabled"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FCSpeedCL2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/unselected_speed_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL1_5"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/FCSpeed2Tv"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="X 2"
+                android:textAlignment="center"
+                android:textColor="@color/disabled"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
@@ -17,66 +160,46 @@
 
     <TextView
         android:id="@+id/textView"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="미르미님의 목소리의\n빠르기는 어느 정도인가요?"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="66dp"
+        android:text="목소리의 빠르기를 알려주세요"
         android:textColor="@color/text"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <com.warkiz.widget.IndicatorSeekBar
-        android:id="@+id/seekbar"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/Medium"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="40dp"
-        android:elevation="3dp"
-        app:isb_indicator_color="#D9D9D9"
-        app:isb_indicator_text_color="@color/primary"
-        app:isb_indicator_text_size="18sp"
-        app:isb_max="2"
-        app:isb_min="-2"
-        app:isb_only_thumb_draggable="false"
-        app:isb_progress="25"
-        app:isb_seek_smoothly="true"
-        app:isb_show_indicator="rounded_rectangle"
-        app:isb_show_tick_marks_type="oval"
-        app:isb_show_tick_texts="true"
-        app:isb_thumb_color="@color/white"
-        app:isb_thumb_size="20dp"
-        app:isb_tick_marks_color="@drawable/color_indicator_marker"
-        app:isb_tick_marks_size="13dp"
-        app:isb_tick_texts_color="@color/primary"
-        app:isb_tick_texts_size="12sp"
-        app:isb_ticks_count="5"
-        app:isb_track_background_color="#D9D9D9"
-        app:isb_track_background_size="6dp"
-        app:isb_track_progress_color="@color/primary"
-        app:isb_track_progress_size="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:text="TTS가 나오고 있어요! 소리를 키워주세요"
+        android:textColor="@color/disabled"
+        app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/FCIV"
+        android:layout_width="102dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="125dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/animation_list_volume"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
         android:id="@+id/button_next"
+        style="@style/BottomNextButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="20dp"
-        android:fontFamily="@font/pretendard_medium"
-        android:text="다음"
-        android:textSize="16sp"
-        app:cornerRadius="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="46dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekbar" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
