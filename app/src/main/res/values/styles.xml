@@ -1,11 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Font -->
+    <!-- Small Font Styles -->
+    <style name="XXSmall">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:lineSpacingExtra">0dp</item>
 
-    <declare-styleable name="LyricsView">
-        <attr name="normalTextColor" format="color" />
-        <attr name="highlightTextColor" format="color" />
-        <attr name="textSize" format="dimension"/>
-        <attr name="lineHeight" format="dimension"/>
-    </declare-styleable>
+    </style>
 
+    <style name="XSmall">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
+    <style name="Small">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <!-- Medium Font Style -->
+    <style name="Medium">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <!-- Large Font Styles -->
+    <style name="Large">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="XLarge">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
+    <!-- Title Font Style -->
+    <style name="Title">
+        <item name="android:fontFamily">@font/pretendard_semi_bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+    </style>
+
+    <!--  EditText -->
+    <!-- Title, Topic, SubTopic -->
+    <style name="OneLineEditText" parent="Large">
+        <item name="android:layout_height">47dp</item>
+        <item name="android:maxLength">15</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColor">@color/input_text</item>
+        <item name="android:textColorHint">@color/disabled</item>
+        <item name="android:background">@drawable/edit_text_underline</item>
+    </style>
+
+    <!-- Script -->
+    <style name="MultiLineEditText" parent="Medium">
+        <item name="android:padding">14dp</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:gravity">top|start</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:textColor">@color/input_text</item>
+        <item name="android:textColorHint">@color/disabled</item>
+        <item name="android:background">@drawable/edittext_script_rounded_corner_rectangle</item>
+    </style>
+
+    <!-- Button -->
+    <!-- Bottom Next Button -->
+    <style name="BottomNextButton" parent="Large">
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">다음</item>
+        <item name="android:backgroundTint">@drawable/selector_next_button</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <!-- KeyBoard Next Button -->
+    <!-- Bottom Next Button -->
+    <style name="KeyBoardNextButton" parent="Large">
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">다음</item>
+        <item name="android:backgroundTint">@drawable/selector_next_button</item>
+    </style>
 </resources>

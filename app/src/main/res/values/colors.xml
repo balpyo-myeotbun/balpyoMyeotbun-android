@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic & System color -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="error">#F33D3D</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="primary">#EB2A63</color>
-    <color name="error">#FE4444</color>
     <color name="positive">#1BC049</color>
-    <color name="gray1">#F7F7F7</color>
-    <color name="gray2">#D0D0D0</color>
-    <color name="gray3">#818181</color>
-    <color name="gray4">#4B4B4B</color>
-    <color name="text">#292929</color>
+
+    <!-- Primary&secondary color -->
+    <color name="primary">#EB2A63</color>
+    <color name="secondary">#FF8CAE</color>
+    <color name="primary_disable">#FADCE6</color>
+
+    <!-- Gray Scale -->
+    <color name="gray1">#F1F1F1</color>
+    <color name="gray2">#DDDDDD</color>
+    <color name="gray3">#8B8B8B</color>
+    <color name="gray4">#434343</color>
+
+    <!-- Text -->
+    <color name="text">#1C1C1C</color>
+    <color name="input_text">#2D2D2D</color>
+    <color name="disabled">#B1B1B1</color>
 </resources>

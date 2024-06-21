@@ -64,7 +64,7 @@ class FlowControllerResultFragment : Fragment() {
             false
         )
         initToolBar()
-        binding.toolbar.textViewTitle.text = flowControllerViewModel.getTitleData().value
+
         val speed = flowControllerViewModel.getSpeedData().value
         when(speed) {
             -2 -> {binding.FCSpeedCL03.setBackgroundResource(R.drawable.selected_speed)
@@ -412,9 +412,10 @@ class FlowControllerResultFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.buttonBack.visibility = View.INVISIBLE
             toolbar.buttonClose.visibility = View.VISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = flowControllerViewModel.getTitleData().value
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonClose.setOnClickListener {
                 findNavController().navigate(R.id.homeFragment)

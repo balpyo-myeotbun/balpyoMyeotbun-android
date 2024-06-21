@@ -206,6 +206,8 @@ class FlowControllerAddTimeFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.INVISIBLE
             toolbar.buttonClose.visibility = View.VISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = "발표 연습"
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.textViewPage.text = "3/5"
             toolbar.buttonBack.setOnClickListener {

@@ -15,48 +15,45 @@
 
         <TextView
             android:id="@+id/textView_title"
+            style="@style/Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_semi_bold"
-            android:textColor="@color/text"
-            android:textSize="18sp"
+            android:textColor="@color/gray4"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/button_back"
             app:layout_constraintEnd_toStartOf="@+id/button_close"
-            app:layout_constraintStart_toEndOf="@+id/button_back"
-            app:layout_constraintTop_toTopOf="@+id/button_back" />
+            app:layout_constraintStart_toEndOf="@+id/button_back" />
 
         <ImageView
             android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back" />
 
         <ImageView
             android:id="@+id/button_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/button_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_close" />
 
         <TextView
             android:id="@+id/textView_page"
+            style="@style/Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/pretendard_medium"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="16dp"
             android:text="1/3"
-            android:textColor="@color/gray3"
-            android:textSize="16sp"
+            android:textColor="@color/gray4"
+            app:layout_constraintBottom_toBottomOf="@+id/button_back"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_back" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
