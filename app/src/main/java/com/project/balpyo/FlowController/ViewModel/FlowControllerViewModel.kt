@@ -2,6 +2,7 @@ package com.project.balpyo.FlowController.ViewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.project.balpyo.api.response.SpeechMark
 
 class FlowControllerViewModel : ViewModel() {
 
@@ -14,6 +15,7 @@ class FlowControllerViewModel : ViewModel() {
     private var isEdit : MutableLiveData<Boolean> = MutableLiveData(false)
     private var scriptId : MutableLiveData<Long> = MutableLiveData()
     private var audioUrl : MutableLiveData<String> = MutableLiveData()
+    private var speechMarks : MutableLiveData<List<SpeechMark>> = MutableLiveData()
 
     fun initialize() {
         title = MutableLiveData()
@@ -25,6 +27,7 @@ class FlowControllerViewModel : ViewModel() {
         isEdit = MutableLiveData(false)
         scriptId = MutableLiveData()
         audioUrl = MutableLiveData()
+        speechMarks = MutableLiveData()
     }
     fun getTitleData(): MutableLiveData<String> = title
     fun getNormalScriptData(): MutableLiveData<String> = normalScript
@@ -37,6 +40,7 @@ class FlowControllerViewModel : ViewModel() {
 
     fun getSplitScriptToSentencesData() : MutableLiveData<List<String>> = splitScriptToSentences
     fun getAudioUrlData() : MutableLiveData<String> = audioUrl
+    fun getSpeechMarks() : MutableLiveData<List<SpeechMark>> = speechMarks
     fun setTitle(text: String) {
         title.value = text
     }
@@ -66,5 +70,8 @@ class FlowControllerViewModel : ViewModel() {
     }
     fun setAudioUrl(value: String){
         audioUrl.value = value
+    }
+    fun setSpeechMarks(value: List<SpeechMark>){
+        speechMarks.value = value
     }
 }

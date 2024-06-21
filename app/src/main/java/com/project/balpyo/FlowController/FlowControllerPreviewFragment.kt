@@ -165,6 +165,7 @@ class FlowControllerPreviewFragment : Fragment() {
                         //스크립트 수정
                         editScript()
                     }
+                    flowControllerViewModel.setSpeechMarks(result.speechMarks)
                     findNavController().navigate(R.id.flowControllerResultFragment)
 
 

@@ -199,7 +199,7 @@ class FlowControllerAddTimeFragment : Fragment() {
                 is EditScriptItem.ButtonItem -> item.sText
                 else -> null
             }
-        }.joinToString(separator = "")
+        }.joinToString(separator = " ")
     }
 
     fun initToolBar() {
