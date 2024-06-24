@@ -27,7 +27,7 @@ class ScriptTitleFragment : Fragment() {
         binding.run {
             buttonNext.setOnClickListener {
                 MyApplication.scriptTitle = editTextTitle.text.toString()
-                findNavController().navigate(R.id.scriptSubjectFragment)
+                findNavController().navigate(R.id.scriptTitleFragment)
             }
         }
 
@@ -38,9 +38,10 @@ class ScriptTitleFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.textViewTitle.text = "대본 생성"
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
-                text = "1/3"
+                text = "1/5"
             }
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
