@@ -8,7 +8,7 @@ class MyApplication : Application() {
 
         // 1. 발표 시간 맞춤형 스크립트 생성
         var scriptTitle = ""
-        var scriptSubject = ""
+        var scriptTopic = ""
         var scriptSubtopic = ""
         var scrpitTime = 180L
 

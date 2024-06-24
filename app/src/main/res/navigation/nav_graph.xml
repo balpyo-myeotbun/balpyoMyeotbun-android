@@ -120,17 +120,8 @@
         android:label="fragment_script_title"
         tools:layout="@layout/fragment_script_title" >
         <action
-            android:id="@+id/action_scriptTitleFragment_to_scriptSubjectFragment"
-            app:destination="@id/scriptSubjectFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/scriptSubjectFragment"
-        android:name="com.project.balpyo.Script.ScriptSubjectFragment"
-        android:label="fragment_script_subject"
-        tools:layout="@layout/fragment_script_subject" >
-        <action
-            android:id="@+id/action_scriptSubjectFragment_to_scriptTimeFragment"
-            app:destination="@id/scriptTimeFragment" />
+            android:id="@+id/action_scriptTitleFragment_to_scriptTopicFragment"
+            app:destination="@id/scriptTopicFragment" />
     </fragment>
     <fragment
         android:id="@+id/scriptTimeFragment"
@@ -211,4 +202,22 @@
         android:name="com.project.balpyo.Home.StorageEditDeleteFragment"
         android:label="fragment_storage_edit_delete"
         tools:layout="@layout/fragment_storage_edit_delete" />
+    <fragment
+        android:id="@+id/scriptTopicFragment"
+        android:name="com.project.balpyo.Script.ScriptTopicFragment"
+        android:label="fragment_script_topic"
+        tools:layout="@layout/fragment_script_topic" >
+        <action
+            android:id="@+id/action_scriptTopicFragment_to_scriptSubtopicFragment"
+            app:destination="@id/scriptSubtopicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scriptSubtopicFragment"
+        android:name="com.project.balpyo.Script.ScriptSubtopicFragment"
+        android:label="fragment_script_subtopic"
+        tools:layout="@layout/fragment_script_subtopic" >
+        <action
+            android:id="@+id/action_scriptSubtopicFragment_to_scriptTimeFragment"
+            app:destination="@id/scriptTimeFragment" />
+    </fragment>
 </navigation>

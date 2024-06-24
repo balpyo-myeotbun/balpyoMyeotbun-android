@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Script.ScriptTopicFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="66dp"
+        style="@style/Title"
+        android:text="발표의 주제를 알려주세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <EditText
+        android:id="@+id/editText_topic"
+        style="OneLineEditText"
+        android:layout_width="0dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="22dp"
+        android:hint="주제"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_information" />
+
+    <Button
+        android:id="@+id/button_next"
+        style="@style/BottomNextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="46dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="다음"
+        android:textSize="16sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView_info"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="13dp"
+        android:src="@drawable/ic_information"
+        app:layout_constraintStart_toStartOf="@+id/editText_topic"
+        app:layout_constraintTop_toBottomOf="@+id/editText_topic" />
+
+    <TextView
+        android:id="@+id/textView_info"
+        style="@style/Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="공백 포함 15자"
+        android:textColor="@color/gray3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_info"
+        app:layout_constraintStart_toEndOf="@+id/imageView_info"
+        app:layout_constraintTop_toTopOf="@+id/imageView_info" />
+</androidx.constraintlayout.widget.ConstraintLayout>
