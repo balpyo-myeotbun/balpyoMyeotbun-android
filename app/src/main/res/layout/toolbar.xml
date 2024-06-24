@@ -18,8 +18,9 @@
             style="@style/Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
             android:textColor="@color/gray4"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/button_back"
             app:layout_constraintEnd_toStartOf="@+id/button_close"
             app:layout_constraintStart_toEndOf="@+id/button_back" />
