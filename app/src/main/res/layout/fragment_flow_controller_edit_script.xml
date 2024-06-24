@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FCESLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FlowController.FlowControllerEditScriptFragment">
@@ -71,6 +72,16 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="46dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <!-- 키보드 위 버튼 -->
+        <Button
+            android:id="@+id/FCEDKeyboardNextBtn"
+            style="@style/KeyBoardNextButton"
+            android:layout_gravity="bottom"
+            android:lineSpacingExtra="4dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
