@@ -27,7 +27,7 @@ class ScriptTitleFragment : Fragment() {
         binding.run {
             buttonNext.setOnClickListener {
                 MyApplication.scriptTitle = editTextTitle.text.toString()
-                findNavController().navigate(R.id.scriptTitleFragment)
+                findNavController().navigate(R.id.scriptTopicFragment)
             }
         }
 
