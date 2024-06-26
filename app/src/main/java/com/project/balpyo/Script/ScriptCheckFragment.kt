@@ -36,6 +36,8 @@ class ScriptCheckFragment : Fragment() {
         binding = FragmentScriptCheckBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        initToolBar()
+
         /*
         viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
 

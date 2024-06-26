@@ -21,6 +21,8 @@ class ScriptTopicFragment : Fragment() {
 
         binding = FragmentScriptTopicBinding.inflate(layoutInflater)
 
+        initToolBar()
+
         binding.run {
             buttonNext.setOnClickListener {
                 MyApplication.scriptTopic = editTextTopic.text.toString()
