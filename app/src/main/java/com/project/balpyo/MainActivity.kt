@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.findFragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.project.balpyo.Script.Data.ScriptResultData
@@ -30,47 +31,40 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        //비동기 코드, 리림 클릭 시 mainactivity에서 argument를 포함하여 대본 생성 결과로 이동,
-        //이곳에서는 네비게이션 코드가 작동하지 않아 beginTransaction을 사용하려 했으나
-        //네비게이션과 혼용 시 에러 발생하여 전부 주석 처리
-        /*if (intent.getBooleanExtra("isNotification", false)) {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //비동기 코드, 리림 클릭 시 mainactivity에서 argument를 포함하여 대본 생성 결과로 이동
+        if (intent.getBooleanExtra("isNotification", false)) {
             var uid = intent.getStringExtra("uid")
             var title = intent.getStringExtra("title")
             var secTime = intent.getLongExtra("secTime", 0)
             var script = intent.getStringExtra("script")
             var gptId = intent.getStringExtra("gptId")
+            var fragment = intent.getStringExtra("fragment")
             var data = ScriptResultData(uid!!, title!!, secTime, script!!, gptId!!)
 
             val bundle = Bundle()
             bundle.apply {
                 this.putSerializable("data", data)
             }
-            if (intent.getBooleanExtra("isNotification", false)) {
-                val uid = intent.getStringExtra("uid")
-                val title = intent.getStringExtra("title")
-                val secTime = intent.getLongExtra("secTime", 0)
-                val script = intent.getStringExtra("script")
-                val gptId = intent.getStringExtra("gptId")
-                val data = ScriptResultData(uid!!, title!!, secTime, script!!, gptId!!)
 
-                val bundle = Bundle().apply {
-                    putSerializable("data", data)
+            // 인텐트에서 데이터 가져오기
+            val fragmentToLoad = intent.getStringExtra("fragment_to_load")
+
+            var navController = binding.fragmentContainerView.findFragment<NavHostFragment>().navController
+
+            if (fragment != null) {
+                when (fragmentToLoad) {
+                    "DetailFragment" -> navController.navigate(R.id.scriptResultFragment)
+                    else -> navController.navigate(R.id.homeFragment)
                 }
-                /*var navController = binding.fragmentContainerView.findFragment<NavHostFragment>().navController
-                navController.navigate(
-                    R.id.action_splashFragment_to_scriptResultFragment,
-                    bundle
-                )*/
-                val fragment = ScriptResultFragment().apply {
-                    arguments = bundle
-                }
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, fragment)
-                    .addToBackStack(null)
-                    .commit()
             }
-        }*/
+        }
     }
+
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         val imm: InputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

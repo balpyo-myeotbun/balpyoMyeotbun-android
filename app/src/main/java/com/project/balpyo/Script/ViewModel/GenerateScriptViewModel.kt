@@ -37,8 +37,7 @@ class GenerateScriptViewModel : ViewModel() {
     var script = MutableLiveData<String>()
     var gptId = MutableLiveData<String>()
 
-    //알림을 띄워 클릭 시 메인액티비티로 이동, 메인액티비티에서 대본 결과 프래그먼트로 이동시키려했으나 실패하여
-    //현재 안쓰임
+    //알림을 띄워 클릭 시 메인액티비티로 이동, 메인액티비티에서 대본 결과 프래그먼트로 이동시키려했으나 실패하여 현재 안쓰임
     fun showNotification(context : Context, title: String, secTime : Long, uid : String, script : String, gptId : String ) {
 
         val intent = Intent(context, MainActivity::class.java)
@@ -48,9 +47,10 @@ class GenerateScriptViewModel : ViewModel() {
         intent.putExtra("uid", uid)
         intent.putExtra("script", script)
         intent.putExtra("gptId", gptId)
+        intent.putExtra("fragment", "DetailFragment")
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent,
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
         // 알림 채널 생성
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -94,6 +94,7 @@ class GenerateScriptViewModel : ViewModel() {
             notify(0, notification)
         }
     }
+
     //대본 생성이 완료되면 결과 프래그먼트로 이동하도록 설정, 코루틴
     fun generateScript(fragment: Fragment, mainActivity: MainActivity) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -102,7 +103,7 @@ class GenerateScriptViewModel : ViewModel() {
                 var tokenManager = TokenManager(mainActivity)
 
                 var inputScriptInfo = GenerateScriptRequest(
-                    MyApplication.scriptSubject,
+                    MyApplication.scriptTopic,
                     MyApplication.scriptSubtopic,
                     MyApplication.scrpitTime,
                     "1234",
@@ -127,8 +128,8 @@ class GenerateScriptViewModel : ViewModel() {
                                 MyApplication.scriptTitle = MyApplication.scriptTitle
                                 MyApplication.scrpitTime = MyApplication.scrpitTime
                                 var viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
-                                findNavController(fragment).navigate(R.id.scriptResultFragment)
-                                //showNotification(mainActivity, MyApplication.scriptTitle, MyApplication.scrpitTime, TokenManager(mainActivity).getUid()!!, result?.result!!.resultScript.get(0).message.content, viewModel.gptId.value!! )
+//                                findNavController(fragment).navigate(R.id.scriptResultFragment)
+                                showNotification(mainActivity, MyApplication.scriptTitle, MyApplication.scrpitTime, TokenManager(mainActivity).getUid()!!, result?.result!!.resultScript.get(0).message.content, viewModel.gptId.value!! )
                             } else {
                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                                 var result: GenerateScriptResponse? = response.body()
