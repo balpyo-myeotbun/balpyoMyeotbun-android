@@ -22,4 +22,14 @@
     <color name="text">#1C1C1C</color>
     <color name="input_text">#2D2D2D</color>
     <color name="disabled">#B1B1B1</color>
+
+    <!-- Tag -->
+    <color name="tag_note_bg">#E5E5E5</color>
+    <color name="tag_note_text">#3B3B3B</color>
+    <color name="tag_flow_bg">#FFDEE8</color>
+    <color name="tag_flow_text">#F44479</color>
+    <color name="tag_time_bg">#F4E1FF</color>
+    <color name="tag_time_text">#57008C</color>
+    <color name="tag_script_bg">#DEEEFF</color>
+    <color name="tag_script_text">#0F2B4B</color>
 </resources>
