@@ -1,9 +1,8 @@
 package com.project.balpyo.TimeCalculator
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
+import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -21,14 +18,12 @@ import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.GenerateAudioRequest
 import com.project.balpyo.api.request.StoreScriptRequest
+import com.project.balpyo.api.response.SpeechMark
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.databinding.FragmentTimeCalculatorResultBinding
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
 
 class TimeCalculatorResultFragment : Fragment() {
 
@@ -39,15 +34,6 @@ class TimeCalculatorResultFragment : Fragment() {
     var basetime = 0L
 
     var editable = false
-
-    val restDuration = 500L
-    val normalCharacterDuration = 150L
-    val endAwsomeDuration = 600L
-    val questionDuration = 800L
-    val enterDuration = 300L
-
-    var startIndex = 0
-    var endIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +46,13 @@ class TimeCalculatorResultFragment : Fragment() {
         initToolBar()
 
         binding.run {
+            val breakTimeToRealWord = breakTimeToRealWord(MyApplication.speechMarks)
+            Log.d("breakTimeToRealWord", breakTimeToRealWord.toString())
+            val endByteToRealEndByte = endByteToRealEndByte(breakTimeToRealWord)
+            Log.d("endByteToRealEndByte", endByteToRealEndByte.toString())
+            val generateRealSpeechMark = generateRealSpeechMark(MyApplication.timeCalculatorScript, endByteToRealEndByte)
+            Log.d("generateRealSpeechMark", generateRealSpeechMark.toString())
+
             Log.d("##", "setting time : ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초")
             textViewCalculateTime.text = "발표시간은 ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초에요!"
             editTextScript.setText(MyApplication.timeCalculatorScript)
@@ -86,7 +79,9 @@ class TimeCalculatorResultFragment : Fragment() {
 
                 var totalRemainTime = MyApplication.calculatedTime - MyApplication.timeCalculatorTime
 
-                calculateOverTime()
+                val index = findIndex(generateRealSpeechMark, basetime.toInt())
+                val highlightScript = highlightOverString(MyApplication.timeCalculatorScript, index)
+                binding.editTextScript.setText(highlightScript)
 
                 layoutTimeNotMatch.visibility = View.VISIBLE
                 textViewGoalTime.text = "목표 발표 시간보다"
@@ -117,7 +112,95 @@ class TimeCalculatorResultFragment : Fragment() {
         return binding.root
     }
 
-    fun calculateOverTime() {
+    //Break Time에서 "---ms"를 분리하여 반환
+    private fun extractBreakTime(breakMarkup: String): String {
+        val regex = "<break time=\"([0-9]+ms)\"/>".toRegex()
+        val matchResult = regex.find(breakMarkup)
+        val breakTime = matchResult?.groups?.get(1)?.value
+        return breakTime ?: ""
+    }
+
+    //기존 단어로 치환하기 위한 맵
+    private val breakTimeMap = mapOf(
+        "601ms" to listOf("."),
+        "400ms" to listOf(","),
+        "600ms" to listOf("!"),
+        "801ms" to listOf("?"),
+        "800ms" to listOf("\n"),
+    )
+    //스피치 마크의 <break time="---ms"/>를 기존의 단어로 변환한 스피치마크 반환
+    private fun breakTimeToRealWord(speechMarks : List<SpeechMark>) : List<SpeechMark>{
+        val speechMark = mutableListOf<SpeechMark>()
+        val firstByte = speechMarks[0].start
+        speechMarks.forEach { mark ->
+            val breakTime = extractBreakTime(mark.value)
+            if(breakTime != "") {
+                val realWord = breakTimeMap[breakTime]?.firstOrNull() ?: ""
+                speechMark.add(SpeechMark(mark.start - firstByte, mark.end - firstByte , mark.time, mark.type, realWord))
+            }
+            else if(mark.value == "<amazon:breath/>"){
+                speechMark.add(SpeechMark(mark.start - firstByte, mark.end - firstByte , mark.time, mark.type, "\n\n"))
+            }
+            else {
+                speechMark.add(SpeechMark(mark.start - firstByte, mark.end - firstByte, mark.time, mark.type, mark.value))
+            }
+        }
+        return speechMark
+    }
+    private fun endByteToRealEndByte(speechMarks : List<SpeechMark>): List<SpeechMark>{
+        val speechMark = mutableListOf<SpeechMark>()
+        var byteOffset = 0
+        for (mark in speechMarks) {
+            val byte = mark.value.toByteArray(Charsets.UTF_8).size
+            val originalByte = mark.end - mark.start
+            byteOffset += byte - originalByte
+            val start = mark.start + byteOffset
+            val end = mark.end+ byteOffset
+            val time = mark.time
+            speechMark.add(SpeechMark(start, end, time, mark.type, mark.value))
+        }
+        return speechMark
+    }
+    fun byteIndexToCharIndex(text: String, byteIndex: Int): Int {
+        val bytes = text.toByteArray(Charsets.UTF_8)
+        val subBytes = bytes.sliceArray(0 until byteIndex)
+        return subBytes.toString(Charsets.UTF_8).length
+    }
+    private fun generateRealSpeechMark(originalText: String, speechMarks : List<SpeechMark>) : List<SpeechMark> {
+        val speechMark = mutableListOf<SpeechMark>()
+        for (mark in speechMarks) {
+            val start = byteIndexToCharIndex(originalText, mark.start)
+            val end = byteIndexToCharIndex(originalText, mark.end)
+            speechMark.add(SpeechMark(start, end, mark.time, mark.type, mark.value))
+        }
+        return speechMark
+    }
+    fun findIndex(speechMarks: List<SpeechMark>, time: Int): Int {
+        Log.d("Time", time.toString())
+        var index = speechMarks.last().end
+        var previousMark: SpeechMark? = null
+
+        for (mark in speechMarks) {
+            if (mark.time > time) {
+                index = previousMark?.end ?: mark.end
+                Log.d("Index", index.toString())
+                break
+            } else {
+                previousMark = mark
+            }
+        }
+        return index
+    }
+
+    fun highlightOverString(originalText: String, fromIndex: Int): SpannableString {
+        val spannableString = SpannableString(originalText)
+        val length = originalText.length
+        spannableString.setSpan(android.text.style.StyleSpan(android.graphics.Typeface.NORMAL), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(ForegroundColorSpan(requireContext().getColor(R.color.primary)), fromIndex, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return spannableString
+    }
+
+    /*fun calculateOverTime() {
         var currentDuration = 0L // 현재 누적된 시간을 추적하기 위한 변수입니다.
 
         totalDuration = MyApplication.timeCalculatorScript.foldIndexed(0L) { index, acc, c ->
@@ -158,7 +241,7 @@ class TimeCalculatorResultFragment : Fragment() {
             }
             acc + currentDuration // 누적된 시간을 반환합니다.
         }
-    }
+    }*/
 
     fun initToolBar() {
         binding.run {

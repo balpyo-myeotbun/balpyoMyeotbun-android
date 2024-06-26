@@ -9,14 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.LoadingFragment
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
@@ -186,7 +183,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
 //                    var durationTime = mPlayer.duration
 
                     convertMsToMinutesSeconds((result!!.playTime.toLong())*1000)
-
+                    MyApplication.speechMarks = result.speechMarks
                     Log.d("##", "duration : ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초")
 
                     findNavController().navigate(R.id.timeCalculatorResultFragment)
