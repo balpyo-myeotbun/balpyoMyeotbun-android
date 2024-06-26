@@ -105,14 +105,11 @@ class ScriptTimeFragment : Fragment() {
 
             buttonNext.setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    /*registerForActivityResult.launch(
+                    /* registerForActivityResult.launch(
                         arrayOf(Manifest.permission.POST_NOTIFICATIONS)
-                    )*/
+                    ) */
 
-                    //대본 생성 요청 후 바로 홈으로 이동
-                    Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!",Toast.LENGTH_LONG).show()
-                    viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                    findNavController().navigate(R.id.homeFragment)
+                    findNavController().navigate(R.id.scriptCheckFragment)
                 }
                 if(noSuchTime) {
                     MyApplication.scrpitTime = 180
