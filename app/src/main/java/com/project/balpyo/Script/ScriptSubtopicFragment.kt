@@ -133,11 +133,10 @@ class ScriptSubtopicFragment : Fragment() {
         binding.run {
             editTextSubtopic.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    TODO("Not yet implemented")
+
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    TODO("Not yet implemented")
                     editTextSubtopic.run {
                         if(text.toString() != "") {
                             buttonRegister.visibility = View.VISIBLE
@@ -148,7 +147,7 @@ class ScriptSubtopicFragment : Fragment() {
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    TODO("Not yet implemented")
+
                 }
 
             })
