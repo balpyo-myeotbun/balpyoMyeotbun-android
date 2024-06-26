@@ -89,8 +89,6 @@ class FlowControllerResultFragment : Fragment() {
         scriptTextView.text = script
         speechMarks = flowControllerViewModel.getSpeechMarks().value!!
 
-        //val parsingScript = parsingScript(script)
-        //Log.d("parsingScript", parsingScript.toString())
         val breakTimeToRealWord = breakTimeToRealWord(speechMarks)
         Log.d("breakTimeToRealWord", breakTimeToRealWord.toString())
         val endByteToRealEndByte = endByteToRealEndByte(breakTimeToRealWord)
@@ -127,6 +125,13 @@ class FlowControllerResultFragment : Fragment() {
         binding.FCSpeedCL2.setOnClickListener {
             flowControllerViewModel.setSpeed(2)
             generateAudio()
+        }
+
+        binding.PCEditBtn.setOnClickListener {
+            findNavController().popBackStack(R.id.flowControllerTitleFragment, false)
+        }
+        binding.PCStoreBtn.setOnClickListener {
+            findNavController().navigate(R.id.storageFragment)
         }
 
         return binding.root
