@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -47,6 +48,16 @@ class FlowControllerEditScriptFragment() : Fragment() {
                 //binding.FCESScript.setText(it.script)
             }
         }
+        binding.FCESScript.addTextChangedListener {
+            if(binding.FCESScript.text.isNotEmpty()){
+                binding.FCEDNextBtn.isEnabled = true
+                binding.FCEDKeyboardNextBtn.isEnabled = true
+            }
+            else{
+                binding.FCEDNextBtn.isEnabled = false
+                binding.FCEDKeyboardNextBtn.isEnabled = false
+            }
+        }
         binding.FCEDNextBtn.setOnClickListener {
             flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
 
@@ -57,6 +68,8 @@ class FlowControllerEditScriptFragment() : Fragment() {
             findNavController().navigate(R.id.flowControllerAddTimeFragment2)
         }
         binding.FCEDKeyboardNextBtn.setOnClickListener {
+            flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
+
             //대본을 문장으로 나눔
             val splitter = SentenceSplitter()
             val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
@@ -68,6 +81,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
 
         return binding.root
     }
+
     private fun observeKeyboardState() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             var originHeight = -1
@@ -86,10 +100,6 @@ class FlowControllerEditScriptFragment() : Fragment() {
                 binding.FCEDKeyboardNextBtn.visibility = View.VISIBLE
                 binding.FCEDNextBtn.visibility = View.GONE
                 binding.FCEDKeyboardNextBtn.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
-                /*binding.FCESScript.postDelayed({
-                    binding.FCESScript.scrollTo(0, binding.FCESScript.height)
-                }, 100)*/
-
             } else {
                 // 키보드가 내려감
                 binding.FCEDKeyboardNextBtn.visibility = View.GONE

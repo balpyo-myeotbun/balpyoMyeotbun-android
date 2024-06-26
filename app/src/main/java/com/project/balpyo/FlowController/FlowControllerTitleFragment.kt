@@ -1,9 +1,12 @@
 package com.project.balpyo.FlowController
 
+import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,6 +16,7 @@ import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.databinding.FragmentFlowControllerTitleBinding
+import kr.bydelta.koala.okt.SentenceSplitter
 
 
 class FlowControllerTitleFragment : Fragment() {
@@ -33,11 +37,60 @@ class FlowControllerTitleFragment : Fragment() {
         initToolBar()
         binding.FlowControllerNextBtn.setOnClickListener {
             flowControllerViewModel.setTitle(binding.FlowControllerEditTitle.text.toString())
-            findNavController().navigate(R.id.flowControllerEditScriptFragment)}
+            findNavController().navigate(R.id.flowControllerEditScriptFragment)
+        }
+        binding.FlowControllerKeyboardNextBtn.setOnClickListener {
+            flowControllerViewModel.setTitle(binding.FlowControllerEditTitle.text.toString())
+            findNavController().navigate(R.id.flowControllerEditScriptFragment)
+        }
 
+        binding.FlowControllerDeleteBtn.setOnClickListener {
+            binding.FlowControllerEditTitle.text.clear()
+            binding.FlowControllerNextBtn.isEnabled = false
+            binding.FlowControllerKeyboardNextBtn.isEnabled = false
+        }
+
+        binding.FlowControllerEditTitle.addTextChangedListener {
+            if(binding.FlowControllerEditTitle.text.isNotEmpty()){
+                binding.FlowControllerNextBtn.isEnabled = true
+                binding.FlowControllerKeyboardNextBtn.isEnabled = true
+                binding.FlowControllerDeleteBtn.visibility = View.VISIBLE
+            }
+            else{
+                binding.FlowControllerNextBtn.isEnabled = false
+                binding.FlowControllerKeyboardNextBtn.isEnabled = false
+                binding.FlowControllerDeleteBtn.visibility = View.GONE
+            }
+        }
+
+        observeKeyboardState()
         return binding.root
     }
+    private fun observeKeyboardState() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            var originHeight = -1
+            if ( binding.root.height > originHeight) {
+                originHeight =  binding.root.height
+            }
 
+            val visibleFrameSize = Rect()
+            binding.root.getWindowVisibleDisplayFrame(visibleFrameSize)
+
+            val visibleFrameHeight = visibleFrameSize.bottom - visibleFrameSize.top
+            val keyboardHeight = originHeight - visibleFrameHeight
+
+            if (keyboardHeight > visibleFrameHeight * 0.15) {
+                // 키보드가 올라옴
+                binding.FlowControllerKeyboardNextBtn.visibility = View.VISIBLE
+                binding.FlowControllerNextBtn.visibility = View.GONE
+                binding.FlowControllerKeyboardNextBtn.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
+            } else {
+                // 키보드가 내려감
+                binding.FlowControllerKeyboardNextBtn.visibility = View.GONE
+                binding.FlowControllerNextBtn.visibility = View.VISIBLE
+            }
+        }
+    }
     fun initToolBar() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE

@@ -32,15 +32,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FCPTitle" />
+
         <TextView
             android:id="@+id/FCPScript"
             style="@style/Title"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="22dp"
             android:fadingEdge="vertical"
             android:fadingEdgeLength="50dp"
             android:lineSpacingExtra="13dp"
-            android:padding="32dp"
+            android:padding="6dp"
             android:paddingBottom="0dp"
             android:requiresFadingEdge="vertical"
             android:scrollbarThumbVertical="@color/primary"
@@ -52,8 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/FCPTitle"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         <Button
             android:id="@+id/FCPEditBtn"
