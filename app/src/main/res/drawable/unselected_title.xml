@@ -5,5 +5,5 @@
     <stroke
         android:width="2dp"
         android:color="#F7F7F7"/> <!-- 테두리 색상 -->
-    <corners android:radius="10dp"/> <!-- 모서리 둥글기 -->
+    <corners android:radius="14dp"/> <!-- 모서리 둥글기 -->
 </shape>

@@ -1,24 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/BottomSheetCL"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    android:background="@drawable/unselected_title">
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/unselected_title"
+    android:minWidth="0dp"
+    android:minHeight="0dp"
+    android:padding="20dp">
 
-    <Button
-        android:id="@+id/BottomSheetBtn"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
+    <TextView
+        android:id="@+id/bs_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_semi_bold"
-        android:gravity="start|center_vertical"
-        android:text="인공지능의 역사"
+        android:text="대본 타이틀"
         android:textColor="@color/text"
-        android:textSize="18sp"
-        app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bs_content_tv"
+        style="@style/XSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="대본을 미리 볼 수 있습니다. 최대 20자까지 보여주면 좋겠 ••"
+        android:textColor="@color/gray4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bs_title_tv" />
+
+    <TextView
+        android:id="@+id/bs_time_tv"
+        style="@style/XSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="05.24 수 오전 11:40"
+        android:textColor="@color/gray4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bs_content_tv" />
+
+    <include
+        layout="@layout/tag_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

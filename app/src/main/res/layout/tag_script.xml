@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TagStyle"
+        android:backgroundTint="@color/tag_script_bg"
+        android:text="대본 생성"
+        android:textColor="@color/tag_script_text" />
+</FrameLayout>

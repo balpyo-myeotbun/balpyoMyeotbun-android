@@ -1,57 +1,57 @@
-package  com.project.balpyo.BottomSheet
+package com.project.balpyo.BottomSheet
 
 import android.os.Bundle
-import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.balpyo.BottomSheetAdapter.BottomSheetAdapter
 import com.project.balpyo.BottomSheetData.BottomSheetItem
 import com.project.balpyo.Home.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
-import com.project.balpyo.R
 import com.project.balpyo.databinding.BottomsheetBinding
+
 interface BottomSheetListener {
     fun onItemClicked(position: Int)
 }
-class BottomSheetFragment() : BottomSheetDialogFragment(), BottomSheetListener {
+
+class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
     lateinit var binding: BottomsheetBinding
     lateinit var mainActivity: MainActivity
     var scriptId = mutableListOf<Long>()
-    var position : Int? = null
+    var position: Int? = null
     lateinit var viewModel: StorageViewModel
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // 바텀시트의 레이아웃을 인플레이션
-        binding = BottomsheetBinding.inflate(layoutInflater)
-        mainActivity = activity as MainActivity
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = BottomsheetBinding.inflate(inflater, container, false)
+        mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
+
+        // 데이터 관찰 및 설정
         viewModel.run {
             storageListForBottomSheet.observe(mainActivity) {
                 val items = mutableListOf<BottomSheetItem>()
 
-                for (i in 0 until it.size) {
-                    Log.d("발표몇분", "${it.get(i).title.toString()}")
-                    items.add(BottomSheetItem(it.get(i).title.toString()))
-                    Log.d("발표몇분", "${items}")
-
-                    scriptId.add(it.get(i).scriptId)
+                for (i in it.indices) {
+                    items.add(BottomSheetItem(it[i].title))
+                    scriptId.add(it[i].scriptId)
                 }
 
                 val adapter = BottomSheetAdapter(items, scriptId, viewModel, mainActivity, this@BottomSheetFragment)
                 binding.bottomsheetRV.adapter = adapter
                 binding.bottomsheetRV.layoutManager = LinearLayoutManager(mainActivity)
+
                 binding.bottomsheetWriteBtn.setOnClickListener {
                     dismiss()
                 }
                 binding.bottomsheetLoadBtn.setOnClickListener {
-                    viewModel.getStorageDetailForBottomSheet(
-                            mainActivity,
-                            scriptId[position!!].toInt()
-                        )
+                    viewModel.getStorageDetailForBottomSheet(mainActivity, scriptId[position!!].toInt())
                     dismiss()
                 }
             }
@@ -60,9 +60,76 @@ class BottomSheetFragment() : BottomSheetDialogFragment(), BottomSheetListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupBottomSheetBehavior(view)
+    }
+
     override fun onItemClicked(position: Int) {
-        binding.bottomsheetLoadBtn.isEnabled = true // 아이템이 클릭되면 버튼 활성화
-        binding.bottomsheetLoadLayout.setBackgroundResource(R.drawable.background_load_script_selected)
-        this.position = position
+        if (position != -1) {
+            binding.bottomsheetLoadBtn.isEnabled = true
+            this.position = position
+        }
+    }
+
+    private fun setupBottomSheetBehavior(view: View) {
+        val bottomSheet = view.parent as View
+        val behavior = BottomSheetBehavior.from(bottomSheet)
+
+        // 화면의 절반 크기
+        val halfScreenHeight = resources.displayMetrics.heightPixels / 2
+        behavior.peekHeight = halfScreenHeight
+
+        // 드래그 이벤트 리스너
+        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // 상태 변경 시
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // 슬라이드 중인 경우 레이아웃 높이 조정
+                val layoutParams = bottomSheet.layoutParams
+                val newHeight = halfScreenHeight + (slideOffset * halfScreenHeight).toInt()
+                layoutParams.height = newHeight
+                bottomSheet.layoutParams = layoutParams
+
+                // 리사이클러뷰 높이 조정 (조정 안하면 리사이클러 뷰에 의해 하단 버튼이 잘림) (핸들, 하단 버튼을 제외하고 남는 공간 만큼)
+                val recyclerViewParams = binding.bottomsheetRV.layoutParams
+                recyclerViewParams.height = newHeight - calculateRemainingSpace()
+                binding.bottomsheetRV.layoutParams = recyclerViewParams
+            }
+        })
+
+        // 바텀시트 초기 상태 설정 (화면의 절반)
+        behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        behavior.isFitToContents = false // 크기 고정
+        behavior.skipCollapsed = true // 축소 상태 x
+
+        // 초기 리사이클러뷰 높이 설정 (화면 절반 크기에서 핸들, 하단 버튼을 제외하고 남는 공간 만큼 차지)
+        val recyclerViewParams = binding.bottomsheetRV.layoutParams
+        recyclerViewParams.height = halfScreenHeight - calculateRemainingSpace()
+        binding.bottomsheetRV.layoutParams = recyclerViewParams
+    }
+
+    // dp를 px로 변환
+    private fun Int.dpToPx(): Float {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this.toFloat(),
+            resources.displayMetrics
+        )
+    }
+
+    //핸들, 하단 버튼 제외 남은 공간 계산
+    private fun calculateRemainingSpace(): Int {
+        binding.bottomsheetLoadBtn.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        binding.bottomsheetWriteBtn.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        binding.bottomsheetHandle.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+        val buttonHeight = binding.bottomsheetLoadBtn.measuredHeight + binding.bottomsheetLoadBtn.marginBottom
+        val writeButtonHeight = binding.bottomsheetWriteBtn.measuredHeight + binding.bottomsheetWriteBtn.marginBottom
+        val handleHeight = binding.bottomsheetHandle.measuredHeight + binding.bottomsheetHandle.marginTop + binding.bottomsheetHandle.marginBottom
+
+        return buttonHeight + writeButtonHeight + handleHeight + binding.bottomsheetRV.marginBottom + binding.bottomsheet.paddingTop + binding.bottomsheet.paddingBottom
     }
 }

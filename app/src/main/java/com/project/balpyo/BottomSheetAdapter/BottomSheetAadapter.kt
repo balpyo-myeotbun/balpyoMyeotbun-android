@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -18,43 +19,65 @@ class BottomSheetAdapter(
     var viewModel: StorageViewModel,
     var mainActivity: MainActivity,
     var listener: BottomSheetListener
-) : RecyclerView.Adapter<BottomSheetAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private var selectedPosition: Int = -1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_item, parent, false)
-
-        return ViewHolder(view)
+    companion object {
+        private const val TYPE_HEADER = 0
+        private const val TYPE_ITEM = 1
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.title.text = items[position].title
-
-        // 선택된 항목에 따라 테두리 색상 변경
-        if (selectedPosition == position) {
-            holder.background.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.selectted_title)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == TYPE_HEADER) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_item_header, parent, false)
+            HeaderViewHolder(view)
         } else {
-            holder.background.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.unselected_title)
-        }
-
-
-        // Button에 대한 클릭 리스너 추가
-        holder.title.setOnClickListener {
-            handleItemClick(position, holder)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_item, parent, false)
+            ItemViewHolder(view)
         }
     }
 
-    private fun handleItemClick(position: Int, holder: ViewHolder) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is ItemViewHolder) {
+            val actualPosition = position - 1
+            val item = items[actualPosition]
+
+            holder.title.text = item.title
+            holder.content.text = item.content
+            holder.timeStamp.text = item.timeStamp
+
+            if (selectedPosition == position) {
+                holder.background.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.selectted_title)
+            } else {
+                holder.background.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.unselected_title)
+            }
+
+            holder.background.setOnClickListener {
+                handleItemClick(position)
+            }
+        }
+    }
+
+    private fun handleItemClick(position: Int) {
         selectedPosition = position
         notifyDataSetChanged()
-        listener.onItemClicked(position)
+        listener.onItemClicked(position - 1)
     }
 
+    override fun getItemCount(): Int = items.size + 1
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) TYPE_HEADER else TYPE_ITEM
+    }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var background : ConstraintLayout  = itemView.findViewById(R.id.BottomSheetCL)
-        val title: Button = itemView.findViewById(R.id.BottomSheetBtn)
+    inner class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    }
+
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val background: ConstraintLayout = itemView.findViewById(R.id.BottomSheetCL)
+        val title: TextView = itemView.findViewById(R.id.bs_title_tv)
+        val content: TextView = itemView.findViewById(R.id.bs_content_tv)
+        val timeStamp: TextView = itemView.findViewById(R.id.bs_time_tv)
     }
 }
