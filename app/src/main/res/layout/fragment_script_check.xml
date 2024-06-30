@@ -83,7 +83,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_subtopic_check"
-                android:layout_marginLeft="-10dp"
+                android:layout_marginLeft="-4dp"
+                android:descendantFocusability="afterDescendants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </androidx.recyclerview.widget.RecyclerView>

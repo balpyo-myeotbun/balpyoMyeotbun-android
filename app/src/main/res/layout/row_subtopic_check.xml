@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_subtopic_check"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="6dp"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="8dp"
+    android:background="@drawable/background_edittext"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditText
-        android:id="@+id/textView_subtopic"
+        android:id="@+id/editText_subtopic"
+        style="@style/Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/background_edittext"
-        android:fontFamily="@font/pretendard_medium"
-        android:paddingVertical="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="35dp"
-        android:text="소주제"
-        android:textColor="@color/text"
+        android:background="@drawable/background_dialog"
+        android:clickable="true"
+        android:editable="true"
+        android:enabled="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:hint="소주제를 입력해주세요"
+        android:textColor="@color/input_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,10 +33,22 @@
         android:id="@+id/button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_subtopic"
-        app:layout_constraintEnd_toEndOf="@+id/textView_subtopic"
-        app:layout_constraintTop_toTopOf="@+id/textView_subtopic"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_subtopic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editText_subtopic"
+        app:layout_constraintTop_toTopOf="@+id/editText_subtopic"
+        app:layout_constraintVertical_bias="0.571"
         app:srcCompat="@drawable/ic_delete" />
+
+    <ImageView
+        android:id="@+id/imageView_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_plus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

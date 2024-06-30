@@ -29,6 +29,7 @@ import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Script.Adapter.SubTopicAdapter
+import com.project.balpyo.Script.Adapter.SubTopicCheckAdapter
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentScriptCheckBinding
@@ -94,7 +95,7 @@ class ScriptCheckFragment : Fragment() {
 
             subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
 
-            var subTopicAdapter = SubTopicAdapter(subtopicList)
+            var subTopicAdapter = SubTopicCheckAdapter(subtopicList)
 
             var spannedGridLayoutManager = SpannedGridLayoutManager(
                 orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
@@ -122,16 +123,25 @@ class ScriptCheckFragment : Fragment() {
 
 //                    layoutManager = LinearLayoutManager(context)
                 layoutManager = StaggeredGridLayoutManager(2, RecyclerView.HORIZONTAL)
+                setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS)
 
 //                    layoutManager = spannedGridLayoutManager
 //                    layoutManager.itemOrderIsStable = true
             }
 
 
-            subTopicAdapter.itemClickListener =
-                object : SubTopicAdapter.OnItemClickListener {
+            subTopicAdapter.itemClickDeleteListener =
+                object : SubTopicCheckAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
                         subtopicList.removeAt(position)
+                        recyclerViewSubtopicCheck.adapter?.notifyDataSetChanged()
+                    }
+                }
+
+            subTopicAdapter.itemClickAddListener =
+                object : SubTopicCheckAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
                         recyclerViewSubtopicCheck.adapter?.notifyDataSetChanged()
                     }
                 }
@@ -143,6 +153,7 @@ class ScriptCheckFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initView()
+        subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
     }
 
     fun initToolBar() {

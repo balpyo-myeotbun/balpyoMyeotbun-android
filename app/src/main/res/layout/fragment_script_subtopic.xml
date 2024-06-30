@@ -77,11 +77,12 @@
         android:id="@+id/recyclerView_subtopic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="38dp"
-        app:layout_constraintEnd_toEndOf="@+id/editText_subtopic"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editText_subtopic"
-        app:layout_constraintTop_toBottomOf="@+id/textView_info" >
+        android:layout_marginEnd="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_info">
 
     </androidx.recyclerview.widget.RecyclerView>
 
