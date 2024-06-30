@@ -286,43 +286,6 @@ class FlowControllerResultFragment : Fragment() {
         }
         return speechMark
     }
-    //원래 단어로 변환된 스피치 마크와, 파싱한 스크립트를 비교하여 새로운 스피치마크 생성
-    private fun generateNewSpeechMark(parsingScript: List<String>, speechMarks: List<SpeechMark>): List<SpeechMark> {
-        val speechMark = mutableListOf<SpeechMark>()
-        var currentSpeechMarkIndex = 0
-        var scriptIndex = 0
-        for (script in parsingScript) {
-
-            // start와 end 인덱스 구하기
-            val start = scriptIndex
-            val end = start + script.length
-            scriptIndex = end
-
-            // script와 speechmark의 value 값이 일치하면 해당 값 적용, 인덱스 증가
-            if (currentSpeechMarkIndex < speechMarks.size) { //여기를 contains로 바꿔서 예외처리?
-                val mark = speechMarks[currentSpeechMarkIndex]
-                if (script == mark.value) {
-                    speechMark.add(SpeechMark(start, end, mark.time, mark.type, script))
-                    currentSpeechMarkIndex++
-                    if (currentSpeechMarkIndex >= speechMarks.size) {
-                        currentSpeechMarkIndex--
-                    }
-                } else if (currentSpeechMarkIndex == 0) {
-                    //이전 스피치 마크가 없으면,
-                    speechMark.add(SpeechMark(start, end, 0, mark.type, script))
-                } else {
-                    // 일치하지 않으면 이전 값을 그대로 적용
-                    val previousMark = speechMarks[currentSpeechMarkIndex - 1]
-                    speechMark.add(SpeechMark(start, end, previousMark.time, previousMark.type, script))
-                }
-            } else {
-                // speechMarks 리스트를 벗어나면 이전 값 그대로 적용
-                val previousMark = speechMarks[currentSpeechMarkIndex - 1]
-                speechMark.add(SpeechMark(start, end, previousMark.time, previousMark.type, script))
-            }
-        }
-        return speechMark
-    }
 
     private fun highlightText(progress: Int) {
         /*val zeroSpeechMark = firstStartToZero(speechMarks)
@@ -442,8 +405,8 @@ class FlowControllerResultFragment : Fragment() {
                     Log.d("##", "onResponse 성공: " + result?.toString())
                     flowControllerViewModel.setAudioUrl(result!!.profileUrl)
                     flowControllerViewModel.setSpeechMarks(result.speechMarks)
+                    stopPlayback()
                     findNavController().navigate(R.id.flowControllerResultFragment)
-
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: GenerateAudioResponse? = response.body()
@@ -470,7 +433,7 @@ class FlowControllerResultFragment : Fragment() {
 
     //    return regex.findAll(originalText).map { it.value }.toList()
     //}
-    /*//gpt
+    /*
     private fun findPunctuationIndex(originalText: String, breakTime: String, startIndex: Int): Int {
         val punctuationList = breakTimeMap[breakTime]
         if (punctuationList != null) {
@@ -483,7 +446,6 @@ class FlowControllerResultFragment : Fragment() {
         }
         return -1
     }
-    //내가 짠 코드
 
     private fun firstStartToZero(speechMarks: List<SpeechMark>) : List<SpeechMark> {
         val indexSpeechMark = mutableListOf<SpeechMark>()
@@ -625,5 +587,43 @@ class FlowControllerResultFragment : Fragment() {
             index++
         }
         return index
-    }*/
+    }
+    //원래 단어로 변환된 스피치 마크와, 파싱한 스크립트를 비교하여 새로운 스피치마크 생성
+    private fun generateNewSpeechMark(parsingScript: List<String>, speechMarks: List<SpeechMark>): List<SpeechMark> {
+        val speechMark = mutableListOf<SpeechMark>()
+        var currentSpeechMarkIndex = 0
+        var scriptIndex = 0
+        for (script in parsingScript) {
+
+            // start와 end 인덱스 구하기
+            val start = scriptIndex
+            val end = start + script.length
+            scriptIndex = end
+
+            // script와 speechmark의 value 값이 일치하면 해당 값 적용, 인덱스 증가
+            if (currentSpeechMarkIndex < speechMarks.size) { //여기를 contains로 바꿔서 예외처리?
+                val mark = speechMarks[currentSpeechMarkIndex]
+                if (script == mark.value) {
+                    speechMark.add(SpeechMark(start, end, mark.time, mark.type, script))
+                    currentSpeechMarkIndex++
+                    if (currentSpeechMarkIndex >= speechMarks.size) {
+                        currentSpeechMarkIndex--
+                    }
+                } else if (currentSpeechMarkIndex == 0) {
+                    //이전 스피치 마크가 없으면,
+                    speechMark.add(SpeechMark(start, end, 0, mark.type, script))
+                } else {
+                    // 일치하지 않으면 이전 값을 그대로 적용
+                    val previousMark = speechMarks[currentSpeechMarkIndex - 1]
+                    speechMark.add(SpeechMark(start, end, previousMark.time, previousMark.type, script))
+                }
+            } else {
+                // speechMarks 리스트를 벗어나면 이전 값 그대로 적용
+                val previousMark = speechMarks[currentSpeechMarkIndex - 1]
+                speechMark.add(SpeechMark(start, end, previousMark.time, previousMark.type, script))
+            }
+        }
+        return speechMark
+    }
+    */
 }
