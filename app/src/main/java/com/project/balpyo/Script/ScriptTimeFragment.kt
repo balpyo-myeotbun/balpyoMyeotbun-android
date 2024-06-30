@@ -112,12 +112,18 @@ class ScriptTimeFragment : Fragment() {
                     findNavController().navigate(R.id.scriptCheckFragment)
                 }
                 if(noSuchTime) {
-                    MyApplication.scrpitTime = 180
+                    MyApplication.scriptTime = 180
+                    MyApplication.scriptTimeString = "원하는 발표 시간 없음"
                 } else {
                     Log.d("발표몇분", "${spinnerMinute.value}")
                     Log.d("발표몇분", "${spinnerSecond.value}")
                     var selectedTime = spinnerMinute.value*60 + spinnerSecond.value
-                    MyApplication.scrpitTime = selectedTime.toLong()
+                    MyApplication.scriptTime = selectedTime.toLong()
+                    if(spinnerMinute.value != 0) {
+                        MyApplication.scriptTimeString = "${spinnerMinute.value}분 ${spinnerSecond.value}초"
+                    } else {
+                        MyApplication.scriptTimeString = "${spinnerSecond.value}초"
+                    }
                 }
             }
         }

@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <NumberPicker
-            android:id="@+id/spinner_minute"
+            android:id="@+id/spinner_minute_check"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:baselineAligned="false"
@@ -38,7 +38,7 @@
             android:textSize="18sp" />
 
         <NumberPicker
-            android:id="@+id/spinner_second"
+            android:id="@+id/spinner_second_check"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:baselineAligned="false"
@@ -58,7 +58,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_no_specific_time"
+        android:id="@+id/button_no_specific_time_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

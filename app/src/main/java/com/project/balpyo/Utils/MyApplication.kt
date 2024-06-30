@@ -10,7 +10,8 @@ class MyApplication : Application() {
         var scriptTitle = ""
         var scriptTopic = ""
         var scriptSubtopic = ""
-        var scrpitTime = 180L
+        var scriptTime = 180L
+        var scriptTimeString = ""
 
         // 2.  단어당 발표 시간 계산기(관리기)
         var timeCalculatorTitle = ""

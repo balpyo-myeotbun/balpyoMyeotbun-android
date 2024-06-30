@@ -110,8 +110,8 @@ class ScriptResultFragment : Fragment() {
             binding.editTextScript.isFocusableInTouchMode = false
 
             binding.run {
-                var minute = (MyApplication.scrpitTime.toInt()) / 60
-                var second = (MyApplication.scrpitTime.toInt()) % 60
+                var minute = (MyApplication.scriptTime.toInt()) / 60
+                var second = (MyApplication.scriptTime.toInt()) % 60
 
                 textViewGoalTime.text = "${minute}분 ${second}초에 맞는"
                 textViewSuccess.text = "${MyApplication.scriptTitle} 대본이\n완성되었어요!"
@@ -212,7 +212,7 @@ class ScriptResultFragment : Fragment() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), scriptGptId, MyApplication.scriptTitle, MyApplication.scrpitTime)
+        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), scriptGptId, MyApplication.scriptTitle, MyApplication.scriptTime)
         Log.d("##", "script info : ${inputScriptInfo}")
 
         apiClient.apiService.storeScript("${tokenManager.getUid()}",inputScriptInfo)?.enqueue(object :

@@ -83,6 +83,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_subtopic_check"
+                android:layout_marginLeft="-10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </androidx.recyclerview.widget.RecyclerView>
@@ -98,12 +99,12 @@
 
             <EditText
                 android:id="@+id/editText_time_check"
-                style="OneLineEditText"
-                android:layout_marginBottom="16dp"
-                android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="47dp"
-                android:layout_marginTop="6dp"/>
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/input_text" />
+
         </LinearLayout>
     </ScrollView>
 

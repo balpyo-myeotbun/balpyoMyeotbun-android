@@ -1,13 +1,26 @@
 package com.project.balpyo.Script
 
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Point
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.Spinner
+import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -26,7 +39,10 @@ class ScriptCheckFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: GenerateScriptViewModel
 
-    var subtopicList = mutableListOf(MyApplication.scriptSubtopic)
+    var isDialogShowing = false
+    var noSuchTime = false
+
+    var subtopicList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +53,7 @@ class ScriptCheckFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         initToolBar()
+        initView()
 
         /*
         viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
@@ -75,11 +92,25 @@ class ScriptCheckFragment : Fragment() {
 
         binding.run {
 
+            subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
+
             var subTopicAdapter = SubTopicAdapter(subtopicList)
 
             var spannedGridLayoutManager = SpannedGridLayoutManager(
                 orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
                 spans = 4)
+
+            editTextTimeCheck.setOnTouchListener { view, motionEvent ->
+                // 클릭 시 실행할 동작
+                Log.d("발표몇분", "시간 변경")
+
+                if (motionEvent.action == MotionEvent.ACTION_UP && !isDialogShowing) {
+                    isDialogShowing = true
+                    showDialog()
+                }
+
+                true
+            }
 
             recyclerViewSubtopicCheck.run {
 
@@ -109,6 +140,11 @@ class ScriptCheckFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        initView()
+    }
+
     fun initToolBar() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
@@ -122,6 +158,120 @@ class ScriptCheckFragment : Fragment() {
                 // 뒤로가기 버튼 클릭시 동작
                 findNavController().popBackStack()
             }
+        }
+    }
+
+    fun initView() {
+        binding.run {
+            editTextTitleCheck.setText(MyApplication.scriptTitle)
+            editTextTopicCheck.setText(MyApplication.scriptTopic)
+            editTextTimeCheck.setText(MyApplication.scriptTimeString)
+        }
+    }
+
+    fun showDialog() {
+        val dialog = Dialog(mainActivity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_script_time)
+//        requireContext().dialogFragmentResize(dialogFragment = scriptTimeDialog, 0.9f, 0.8f)
+        dialog.window?.apply {
+            setBackgroundDrawable(getResources().getDrawable(R.drawable.background_dialog))
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            setGravity(Gravity.BOTTOM)
+        }
+
+        var spinnerMinute: NumberPicker = dialog.findViewById(R.id.spinner_minute_check)
+        var spinnerSecond: NumberPicker = dialog.findViewById(R.id.spinner_second_check)
+        var buttonNoSpecificTime: LinearLayout = dialog.findViewById(R.id.button_no_specific_time_check)
+        var imageViewCheck: ImageView = dialog.findViewById(R.id.imageView_check)
+
+        dialog.setOnDismissListener {
+            isDialogShowing = false
+            if(noSuchTime) {
+                MyApplication.scriptTimeString = "원하는 발표 시간 없음"
+                MyApplication.scriptTime = 180
+            } else {
+                Log.d("발표몇분", "${spinnerMinute.value}")
+                Log.d("발표몇분", "${spinnerSecond.value}")
+                var selectedTime = spinnerMinute.value*60 + spinnerSecond.value
+                MyApplication.scriptTime = selectedTime.toLong()
+                if(spinnerMinute.value != 0) {
+                    MyApplication.scriptTimeString = "${spinnerMinute.value}분 ${spinnerSecond.value}초"
+                } else {
+                    MyApplication.scriptTimeString = "${spinnerSecond.value}초"
+                }
+            }
+
+            binding.editTextTimeCheck.setText(MyApplication.scriptTimeString)
+        }
+
+        if(MyApplication.scriptTimeString == "원하는 발표 시간 없음") {
+            noSuchTime = true
+            imageViewCheck.setImageResource(R.drawable.ic_check_selected)
+            buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_selected)
+        } else {
+            noSuchTime = false
+            imageViewCheck.setImageResource(R.drawable.ic_check_unselected)
+            buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_unselected)
+        }
+
+        spinnerMinute.run {
+//                wrapSelectorWheel = false
+            minValue = 0
+            maxValue = 2
+            value = (MyApplication.scriptTime/60).toInt()
+        }
+        spinnerMinute.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
+        spinnerSecond.run {
+//                wrapSelectorWheel = false
+            minValue = 0
+            maxValue = 59
+            value = (MyApplication.scriptTime%60).toInt()
+        }
+        spinnerSecond.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
+        buttonNoSpecificTime.setOnClickListener {
+            if(noSuchTime) {
+                imageViewCheck.setImageResource(R.drawable.ic_check_unselected)
+                buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_unselected)
+                noSuchTime = false
+            } else {
+                imageViewCheck.setImageResource(R.drawable.ic_check_selected)
+                buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_selected)
+                noSuchTime = true
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun Context.dialogFragmentResize(
+        dialogFragment: DialogFragment,
+        width: Float,
+        height: Float,
+    ) {
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        if (Build.VERSION.SDK_INT < 30) {
+            val display = windowManager.defaultDisplay
+            val size = Point()
+
+            display.getSize(size)
+
+            val window = dialogFragment.dialog?.window
+
+            val x = (size.x * width).toInt()
+            val y = (size.y * height).toInt()
+            window?.setLayout(x, y)
+        } else {
+            val rect = windowManager.currentWindowMetrics.bounds
+
+            val window = dialogFragment.dialog?.window
+
+            val x = (rect.width() * width).toInt()
+            val y = (rect.height() * height).toInt()
+
+            window?.setLayout(x, y)
         }
     }
 }
