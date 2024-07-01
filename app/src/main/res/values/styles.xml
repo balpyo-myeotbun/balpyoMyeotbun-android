@@ -67,6 +67,12 @@
         <item name="android:inputType">textMultiLine</item>
         <item name="android:textColor">@color/input_text</item>
         <item name="android:textColorHint">@color/disabled</item>
+        <item name="android:scrollbarThumbVertical">@drawable/custom_scrollbar</item>
+        <item name="android:scrollbarThumbHorizontal">@drawable/custom_scrollbar</item>
+        <item name="android:scrollbarTrackVertical">@drawable/custom_scrollbar_track</item>
+        <item name="android:scrollbarTrackHorizontal">@drawable/custom_scrollbar_track</item>
+        <item name="android:scrollbarSize">2dp</item>
+        <item name="android:scrollbars">vertical</item>
         <item name="android:background">@drawable/edittext_script_rounded_corner_rectangle</item>
     </style>
 
@@ -112,4 +118,5 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:textSize">12sp</item>
     </style>
+
 </resources>
