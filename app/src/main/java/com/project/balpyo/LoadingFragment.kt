@@ -34,6 +34,8 @@ class LoadingFragment : Fragment() {
             textViewSubLoading.setText(comment)
         }
 
+        initToolBar()
+
         return binding.root
     }
 
