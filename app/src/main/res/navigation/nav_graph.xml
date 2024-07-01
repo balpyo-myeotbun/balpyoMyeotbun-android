@@ -95,6 +95,12 @@
         <action
             android:id="@+id/action_loadingFragment_to_timeCalculatorResultFragment"
             app:destination="@id/timeCalculatorResultFragment" />
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+        <argument
+            android:name="comment"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -187,6 +193,9 @@
         <action
             android:id="@+id/action_timeCalculatorSpeedFragment_to_timeCalculatorResultFragment"
             app:destination="@id/timeCalculatorResultFragment" />
+        <action
+            android:id="@+id/action_timeCalculatorSpeedFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
     </fragment>
     <fragment
         android:id="@+id/storageFragment"

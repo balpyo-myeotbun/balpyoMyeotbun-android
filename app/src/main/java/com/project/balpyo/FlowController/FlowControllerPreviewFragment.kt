@@ -151,8 +151,12 @@ class FlowControllerPreviewFragment : Fragment() {
     }
     //TTS 받아오기 테스트
     fun generateAudio(requireActivity: FragmentActivity) {
-        findNavController().navigate(R.id.loadingFragment)
-        var apiClient = ApiClient(mainActivity)
+        val action = FlowControllerPreviewFragmentDirections.actionFlowControllerPreviewFragmentToLoadingFragment(
+            toolbarTitle = "발표연습",
+            comment = "발표 연습이 만들어지고 있어요"
+        )
+        findNavController().navigate(action)
+        val apiClient = ApiClient(mainActivity)
 
         val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), flowControllerViewModel.getSpeedData().value!!, "1234")
         apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
@@ -160,7 +164,7 @@ class FlowControllerPreviewFragment : Fragment() {
             override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    var result: GenerateAudioResponse? = response.body()
+                    val result: GenerateAudioResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
                     flowControllerViewModel.setAudioUrl(result!!.profileUrl)
                     if(flowControllerViewModel.getIsEditData().value == true){

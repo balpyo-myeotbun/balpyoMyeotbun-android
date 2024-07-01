@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -159,7 +160,11 @@ class TimeCalculatorSpeedFragment : Fragment() {
 
     //TTS 받아오기 테스트
     fun generateAudio(requireActivity: FragmentActivity) {
-        findNavController().navigate(R.id.loadingFragment)
+        val action = TimeCalculatorSpeedFragmentDirections.actionTimeCalculatorSpeedFragmentToLoadingFragment(
+            toolbarTitle = "시간 계산",
+            comment = "발표 시간을 계산하고 있어요"
+        )
+        findNavController().navigate(action)
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 

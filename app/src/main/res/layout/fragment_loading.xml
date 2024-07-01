@@ -7,28 +7,48 @@
     tools:context=".LoadingFragment">
 
 
-    <ImageView
-        android:id="@+id/imageView_loading"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="250dp"
-        android:src="@drawable/background_picker"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView_loading"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="22dp"
+        android:src="@drawable/background_picker"
+        app:layout_constraintBottom_toTopOf="@+id/textView_loading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/textView_loading"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_semi_bold"
         android:text="발표 시간을 계산하고 있어요"
         android:textAlignment="center"
-        android:textColor="@color/primary"
-        android:textSize="16sp"
+        android:textColor="@color/text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_loading"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/textView_sub_loading"
+        style="@style/Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="화면을 나가면 저장되지 않아요!"
+        android:textColor="@color/text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_loading" />
 </androidx.constraintlayout.widget.ConstraintLayout>

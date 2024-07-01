@@ -88,7 +88,7 @@ class ScriptResultFragment : Fragment() {
                 var navController = navHostFragment.navController
                 navController.navigate(R.id.homeFragment)
                 val navOptions = NavOptions.Builder()
-                    .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
+                    .setPopUpTo(navController.graph.startDestinationRoute, true) // 스택의 처음부터 현재 위치까지 모두 팝
                     .build()
                 navController.navigate(R.id.homeFragment, null, navOptions)
             }
@@ -226,7 +226,7 @@ class ScriptResultFragment : Fragment() {
                     var navController = navHostFragment.navController
                     navController.navigate(R.id.homeFragment)
                     val navOptions = NavOptions.Builder()
-                        .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
+                        .setPopUpTo(navController.graph.startDestinationRoute, true) // 스택의 처음부터 현재 위치까지 모두 팝
                         .build()
 
                     navController.navigate(R.id.homeFragment, null, navOptions)
