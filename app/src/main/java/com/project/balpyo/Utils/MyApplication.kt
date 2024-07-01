@@ -1,6 +1,8 @@
 package com.project.balpyo.Utils
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
+import com.project.balpyo.api.response.SpeechMark
 
 class MyApplication : Application() {
     companion object {
@@ -20,5 +22,6 @@ class MyApplication : Application() {
         var calculatedTimeMinute = 0
         var calculatedTimeSecond = 0
         var calculatedTime = 0L
+        lateinit var speechMarks : List<SpeechMark>
     }
 }
