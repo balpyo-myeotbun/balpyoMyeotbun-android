@@ -40,7 +40,7 @@ class SubTopicCheckAdapter(var result: MutableList<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-   
+
         if(position == result.size) {
             if(result.size < 5) {
                 Log.d("발표몇분", "size : ${result.size}")
@@ -65,9 +65,13 @@ class SubTopicCheckAdapter(var result: MutableList<String>) :
                 }
             })
             holder.subtopic.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                }
 
                 override fun afterTextChanged(s: Editable?) {
                     // 데이터 리스트 업데이트
@@ -106,16 +110,20 @@ class SubTopicCheckAdapter(var result: MutableList<String>) :
 
             binding.imageViewAdd.setOnClickListener {
                 itemClickAddListener?.onItemClick(adapterPosition)
+                result = result.filter { it.isNotBlank() }.toMutableList()
                 result.add("")
                 MyApplication.scriptSubtopic = ""
+
                 for (i in 0 until result.size) {
+                    Log.d("발표몇분", "add click result[i] ${result[i]}")
                     if(MyApplication.scriptSubtopic != "") {
                         MyApplication.scriptSubtopic = "${MyApplication.scriptSubtopic}, ${result[i]}"
                     } else {
                         MyApplication.scriptSubtopic = "${result[i]}"
                     }
-                    Log.d("발표몇분", "${MyApplication.scriptSubtopic}")
                 }
+
+                Log.d("발표몇분", "${MyApplication.scriptSubtopic}")
                 true
             }
 
