@@ -165,9 +165,11 @@ class TimeCalculatorResultFragment : Fragment() {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.VISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = "시간 계산"
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
-                findNavController().popBackStack()
+                findNavController().popBackStack(R.id.timeCalculatorSpeedFragment, false)
             }
             toolbar.buttonClose.setOnClickListener {
                 // 닫기 버튼 클릭시 동작
@@ -177,7 +179,7 @@ class TimeCalculatorResultFragment : Fragment() {
                     .build()
 
                 navController.navigate(R.id.homeFragment, null, navOptions)*/
-                findNavController().navigate(R.id.homeFragment)
+                findNavController().popBackStack(R.id.homeFragment, false)
             }
         }
     }
@@ -203,7 +205,7 @@ class TimeCalculatorResultFragment : Fragment() {
                         .build()
 
                     navController.navigate(R.id.homeFragment, null, navOptions)*/
-                    findNavController().navigate(R.id.homeFragment)
+                    findNavController().popBackStack(R.id.homeFragment, false)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

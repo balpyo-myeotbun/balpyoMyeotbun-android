@@ -386,7 +386,7 @@ class FlowControllerResultFragment : Fragment() {
             toolbar.textViewTitle.text = flowControllerViewModel.getTitleData().value
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonClose.setOnClickListener {
-                findNavController().navigate(R.id.homeFragment)
+                findNavController().popBackStack(R.id.homeFragment, false)
                 flowControllerViewModel.initialize()
             }
         }
