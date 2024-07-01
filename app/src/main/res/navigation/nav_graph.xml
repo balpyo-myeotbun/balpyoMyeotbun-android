@@ -184,7 +184,11 @@
         android:id="@+id/timeCalculatorResultFragment"
         android:name="com.project.balpyo.TimeCalculator.TimeCalculatorResultFragment"
         android:label="fragment_time_calculator_result"
-        tools:layout="@layout/fragment_time_calculator_result" />
+        tools:layout="@layout/fragment_time_calculator_result" >
+        <action
+            android:id="@+id/action_timeCalculatorResultFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/timeCalculatorSpeedFragment"
         android:name="com.project.balpyo.TimeCalculator.TimeCalculatorSpeedFragment"
