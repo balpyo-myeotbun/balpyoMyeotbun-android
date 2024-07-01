@@ -10,58 +10,88 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/textView_information"
+        android:id="@+id/textView_title"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="시간에 딱! 맞는 대본 생성드려요\n보관함에 저장될 제목을 알려주세요"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="66dp"
+        android:text="대본의 제목을 입력해주세요"
+        android:textColor="@color/text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/info"
+        app:layout_constraintStart_toStartOf="@+id/editText_title"
+        app:layout_constraintTop_toBottomOf="@+id/editText_title" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="공백 포함 15자"
+        android:textColor="@color/gray3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
     <EditText
         android:id="@+id/editText_title"
+        style="OneLineEditText"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/background_edittext"
-        android:ems="10"
-        android:fontFamily="@font/pretendard_regular"
-        android:hint="생성하신 컨트롤러의 이름을 입력해주세요"
-        android:inputType="text"
-        android:maxLength="10"
-        android:padding="10dp"
-        android:textColor="@color/text"
-        android:textColorHint="@color/gray3"
-        android:textSize="14sp"
+        android:layout_height="47dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="22dp"
+        android:hint="대본 제목"
+        android:maxLength="15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_information" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_title" />
+
+    <ImageView
+        android:id="@+id/imageView_delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/delete_icon"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_title"
+        app:layout_constraintEnd_toEndOf="@+id/editText_title"
+        app:layout_constraintTop_toTopOf="@+id/editText_title" />
 
     <Button
-        android:id="@+id/button_next"
+        android:id="@+id/btn_bottom_next"
+        style="@style/BottomNextButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:fontFamily="@font/pretendard_medium"
-        android:text="다음"
-        android:textSize="16sp"
-        app:cornerRadius="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="46dp"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_title" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 키보드 위 버튼 -->
+    <Button
+        android:id="@+id/btn_keyboard_next"
+        style="@style/KeyBoardNextButton"
+        android:layout_gravity="bottom"
+        android:enabled="false"
+        android:lineSpacingExtra="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,17 @@
 package com.project.balpyo.TimeCalculator
 
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -34,15 +39,14 @@ class TimeCalculatorSpeedFragment : Fragment() {
     lateinit var binding: FragmentTimeCalculatorSpeedBinding
     lateinit var mainActivity: MainActivity
 
-    lateinit var flowControllerViewModel: FlowControllerViewModel
+    private lateinit var callback: OnBackPressedCallback
 
-    lateinit var mediaPlayerMinusOne: MediaPlayer
-    lateinit var mediaPlayerMinusTwo: MediaPlayer
-    lateinit var mediaPlayerZero: MediaPlayer
-    lateinit var mediaPlayerOne: MediaPlayer
-    lateinit var mediaPlayerTwo: MediaPlayer
+    private val mediaPlayers: Array<MediaPlayer?> = arrayOfNulls(5)
 
-    var selectedSpeed = "0"
+    private val CLs: Array<ConstraintLayout?> = arrayOfNulls(5)
+    private val TVs: Array<TextView?> = arrayOfNulls(5)
+
+    private lateinit var animationDrawable: AnimationDrawable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,92 +56,22 @@ class TimeCalculatorSpeedFragment : Fragment() {
         binding = FragmentTimeCalculatorSpeedBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        flowControllerViewModel = ViewModelProvider(mainActivity)[FlowControllerViewModel::class.java]
-
-        mediaPlayerMinusTwo = MediaPlayer.create(requireContext(), R.raw.minustwo)
-        mediaPlayerMinusOne = MediaPlayer.create(requireContext(), R.raw.minusone)
-        mediaPlayerZero = MediaPlayer.create(requireContext(), R.raw.zero)
-        mediaPlayerOne = MediaPlayer.create(requireContext(), R.raw.one)
-        mediaPlayerTwo = MediaPlayer.create(requireContext(), R.raw.two)
+        animationDrawable = binding.imageViewVolume.drawable as AnimationDrawable
 
         initToolBar()
+        initailizeMediaPlayers()
+        initailizeCLsAndTVs()
+
+        MyApplication.timeCalculatorSpeed = "0"
+        startPlayer(0, R.raw.zero)
+        setSpeedColor(0)
+
+        setSpeedBtnClickListeners()
 
         binding.run {
-            seekbar.setOnSeekChangeListener(object : OnSeekChangeListener {
-                override fun onSeeking(seekParams: SeekParams) {
-                    Log.i(TAG, seekParams.seekBar.toString())
-                    Log.i(TAG, seekParams.progress.toString())
-                    Log.i(TAG, seekParams.progressFloat.toString())
-                    Log.i(TAG, seekParams.fromUser.toString())
-                    //when tick count > 0
-                    Log.i(TAG, seekParams.thumbPosition.toString())
-                    Log.i(TAG, seekParams.tickText)
-
-                    selectedSpeed = seekParams.tickText.toString()
-
-
-                    when(seekParams.tickText.toString()) {
-                        "-2" -> {
-                            MyApplication.timeCalculatorSpeed = "-2"
-                            mediaPlayerMinusTwo = MediaPlayer.create(requireContext(), R.raw.minustwo)
-                            mediaPlayerMinusOne.stop()
-                            mediaPlayerZero.stop()
-                            mediaPlayerOne.stop()
-                            mediaPlayerTwo.stop()
-                            mediaPlayerMinusTwo.start()
-                            Log.d("발표몇분","-2")
-                        }
-                        "-1" -> {
-                            MyApplication.timeCalculatorSpeed = "-1"
-                            mediaPlayerMinusOne = MediaPlayer.create(requireContext(), R.raw.minusone)
-                            mediaPlayerMinusTwo.stop()
-                            mediaPlayerZero.stop()
-                            mediaPlayerOne.stop()
-                            mediaPlayerTwo.stop()
-                            mediaPlayerMinusOne.start()
-                        }
-                        "0" -> {
-                            MyApplication.timeCalculatorSpeed = "0"
-                            mediaPlayerZero = MediaPlayer.create(requireContext(), R.raw.zero)
-                            mediaPlayerMinusTwo.stop()
-                            mediaPlayerMinusOne.stop()
-                            mediaPlayerOne.stop()
-                            mediaPlayerTwo.stop()
-                            mediaPlayerZero.start()
-                        }
-                        "1" -> {
-                            MyApplication.timeCalculatorSpeed = "1"
-                            mediaPlayerOne = MediaPlayer.create(requireContext(), R.raw.one)
-                            mediaPlayerMinusTwo.stop()
-                            mediaPlayerMinusOne.stop()
-                            mediaPlayerZero.stop()
-                            mediaPlayerTwo.stop()
-                            mediaPlayerOne.start()
-                        }
-                        "2" -> {
-                            MyApplication.timeCalculatorSpeed = "2"
-                            mediaPlayerTwo = MediaPlayer.create(requireContext(), R.raw.two)
-                            mediaPlayerMinusTwo.stop()
-                            mediaPlayerMinusOne.stop()
-                            mediaPlayerZero.stop()
-                            mediaPlayerOne.stop()
-                            mediaPlayerTwo.start()
-                        }
-                    }
-                }
-
-                override fun onStartTrackingTouch(seekBar: IndicatorSeekBar) {}
-                override fun onStopTrackingTouch(seekBar: IndicatorSeekBar) {}
-            })
-
             buttonNext.setOnClickListener {
-                mediaPlayerMinusTwo.stop()
-                mediaPlayerMinusOne.stop()
-                mediaPlayerZero.stop()
-                mediaPlayerOne.stop()
-                mediaPlayerTwo.stop()
+                stopMediaPlayers()
                 generateAudio(mainActivity)
-//                findNavController().navigate(R.id.loadingFragment)
             }
         }
         return binding.root
@@ -147,6 +81,8 @@ class TimeCalculatorSpeedFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = "시간 계산"
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
                 text = "4/4"
@@ -176,16 +112,6 @@ class TimeCalculatorSpeedFragment : Fragment() {
                     // 정상적으로 통신이 성공된 경우
                     var result: GenerateAudioResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
-//                    flowControllerViewModel.setAudioUrl(result!!.profileUrl)
-//
-//                    var mPlayer = MediaPlayer()
-                    //val uri: Uri = Uri.parse("android.resource://" + activity!!.packageName + "/" + R.raw.speech)
-                    //mPlayer.setDataSource(activity!!.applicationContext, uri)
-//
-//                    mPlayer.setDataSource(result!!.profileUrl)
-//                    mPlayer.prepare()
-//
-//                    var durationTime = mPlayer.duration
 
                     convertMsToMinutesSeconds((result!!.playTime.toLong())*1000)
                     MyApplication.speechMarks = result.speechMarks
@@ -223,5 +149,94 @@ class TimeCalculatorSpeedFragment : Fragment() {
         MyApplication.calculatedTime = totalSeconds.toLong()
 
         return String.format("%02d:%02d", minutes, seconds)
+    }
+
+    fun initailizeMediaPlayers(){
+        mediaPlayers[0] = MediaPlayer.create(requireContext(), R.raw.minustwo)
+        mediaPlayers[1] = MediaPlayer.create(requireContext(), R.raw.minusone)
+        mediaPlayers[2] = MediaPlayer.create(requireContext(), R.raw.zero)
+        mediaPlayers[3] = MediaPlayer.create(requireContext(), R.raw.one)
+        mediaPlayers[4] = MediaPlayer.create(requireContext(), R.raw.two)
+    }
+
+    fun initailizeCLsAndTVs(){
+        binding.run {
+            CLs[0] = btn03
+            CLs[1] = btn05
+            CLs[2] = btn1
+            CLs[3] = btn15
+            CLs[4] = btn2
+
+            TVs[0] = textView03
+            TVs[1] = textView05
+            TVs[2] = textView1
+            TVs[3] = textView15
+            TVs[4] = textView2
+        }
+    }
+
+    private fun setSpeedBtnClickListeners() {
+        val speeds = listOf(-2, -1, 0, 1, 2)
+        val rawResources = listOf(R.raw.minustwo, R.raw.minusone, R.raw.zero, R.raw.one, R.raw.two)
+        val layouts = CLs
+
+        for (i in speeds.indices) {
+            layouts[i]!!.setOnClickListener {
+                startPlayer(speeds[i], rawResources[i])
+                setSpeedColor(speeds[i])
+                MyApplication.timeCalculatorSpeed = speeds[i].toString()
+            }
+        }
+    }
+
+    fun startPlayer(speed: Int, raw: Int){
+        stopMediaPlayers()
+        mediaPlayers[speed+2] = MediaPlayer.create(requireContext(), raw)
+        mediaPlayers[speed+2]!!.start()
+    }
+    fun setSpeedColor(speed : Int){
+        val selectedBg= R.drawable.selected_speed
+        val unselectedBg = R.drawable.unselected_speed_icon
+        val selectColor = resources.getColor(R.color.primary)
+        val unselectedColor = resources.getColor(R.color.disabled)
+
+        for(i in 0..4){
+            CLs[i]!!.setBackgroundResource(unselectedBg)
+            TVs[i]!!.setTextColor(unselectedColor)
+        }
+        CLs[speed + 2]!!.setBackgroundResource(selectedBg)
+        TVs[speed + 2]!!.setTextColor(selectColor)
+    }
+    private fun stopMediaPlayers() {
+        for (player in mediaPlayers) {
+            player?.stop()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        animationDrawable.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        animationDrawable.stop()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                stopMediaPlayers()
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }

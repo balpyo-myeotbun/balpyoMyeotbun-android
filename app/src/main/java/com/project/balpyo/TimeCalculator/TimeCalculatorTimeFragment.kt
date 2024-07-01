@@ -74,6 +74,8 @@ class TimeCalculatorTimeFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = "시간 계산"
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
                 text = "3/4"

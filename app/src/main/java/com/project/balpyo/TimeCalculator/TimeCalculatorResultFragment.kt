@@ -18,6 +18,7 @@ import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.GenerateAudioRequest
 import com.project.balpyo.api.request.StoreScriptRequest
+import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.api.response.SpeechMark
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.databinding.FragmentTimeCalculatorResultBinding
@@ -94,16 +95,15 @@ class TimeCalculatorResultFragment : Fragment() {
             }
 
             buttonEdit.setOnClickListener {
-                if(editable) {
-                    buttonEdit.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.white)
-                    buttonEdit.text = "대본 수정하기"
-                    buttonEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray3))
-                    editTextScript.isFocusableInTouchMode = false
-                } else {
+                if(buttonEdit.text == "대본 수정하고 다시 계산하기"){
                     buttonEdit.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gray2)
-                    buttonEdit.text = "대본 수정 완료"
+                    buttonEdit.text = "다시 계산하기"
                     buttonEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray4))
                     editTextScript.isFocusableInTouchMode = true
+                }
+                else if(buttonEdit.text == "다시 계산하기"){
+                    MyApplication.timeCalculatorScript = binding.editTextScript.text.toString()
+                    generateAudio(mainActivity)
                 }
                 editable = !editable
             }
@@ -248,19 +248,14 @@ class TimeCalculatorResultFragment : Fragment() {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.VISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = "시간 계산"
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
-                findNavController().popBackStack()
+                findNavController().popBackStack(R.id.timeCalculatorSpeedFragment, false)
             }
             toolbar.buttonClose.setOnClickListener {
-                // 닫기 버튼 클릭시 동작
-                /*val navController = findNavController()
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
-                    .build()
-
-                navController.navigate(R.id.homeFragment, null, navOptions)*/
-                findNavController().navigate(R.id.homeFragment)
+                findNavController().popBackStack(R.id.homeFragment, false)
             }
         }
     }
@@ -280,13 +275,7 @@ class TimeCalculatorResultFragment : Fragment() {
                     var result: StoreScriptResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    /*val navController = findNavController()
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo(navController.graph.startDestination, true) // 스택의 처음부터 현재 위치까지 모두 팝
-                        .build()
-
-                    navController.navigate(R.id.homeFragment, null, navOptions)*/
-                    findNavController().navigate(R.id.homeFragment)
+                    findNavController().popBackStack(R.id.homeFragment, false)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -305,6 +294,58 @@ class TimeCalculatorResultFragment : Fragment() {
             }
         })
     }
+    fun generateAudio(requireActivity: FragmentActivity) {
+        val action = TimeCalculatorResultFragmentDirections.actionTimeCalculatorResultFragmentToLoadingFragment(
+            toolbarTitle = "시간 계산",
+            comment = "발표 시간을 계산하고 있어요"
+        )
+        findNavController().navigate(action)
+        var apiClient = ApiClient(mainActivity)
+        var tokenManager = TokenManager(mainActivity)
 
+        val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt(), "1234")
+        apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
+            Callback<GenerateAudioResponse> {
+            override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: GenerateAudioResponse? = response.body()
+                    Log.d("##", "onResponse 성공: " + result?.toString())
 
+                    convertMsToMinutesSeconds((result!!.playTime.toLong())*1000)
+
+                    Log.d("##", "duration : ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초")
+
+                    findNavController().navigate(R.id.timeCalculatorResultFragment)
+
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: GenerateAudioResponse? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<GenerateAudioResponse>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
+    }
+    //밀리 초를 mm:ss로 변환
+    fun convertMsToMinutesSeconds(milliseconds: Long): String {
+        val totalSeconds = milliseconds / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+
+        MyApplication.calculatedTimeMinute = minutes.toInt()
+        MyApplication.calculatedTimeSecond = seconds.toInt()
+
+        MyApplication.calculatedTime = totalSeconds.toLong()
+
+        return String.format("%02d:%02d", minutes, seconds)
+    }
 }

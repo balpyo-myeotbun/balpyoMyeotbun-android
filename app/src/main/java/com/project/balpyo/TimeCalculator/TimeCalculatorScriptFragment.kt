@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -45,15 +46,25 @@ class TimeCalculatorScriptFragment : Fragment() {
         initToolBar()
 
         binding.run {
-            buttonNext.setOnClickListener {
+            btnBottomNext.setOnClickListener {
 
                 MyApplication.timeCalculatorScript = editTextScript.text.toString()
 
                 findNavController().navigate(R.id.timeCalculatorTimeFragment)
             }
 
-            buttonStorage.setOnClickListener {
+            btnLoadScript.setOnClickListener {
                 viewModel.getStorageListForBottomSheet(this@TimeCalculatorScriptFragment.parentFragmentManager, mainActivity)
+            }
+            editTextScript.addTextChangedListener {
+                if(binding.editTextScript.text.isNotEmpty()){
+                    binding.btnBottomNext.isEnabled = true
+                    binding.btnKeyboardNext.isEnabled = true
+                }
+                else{
+                    binding.btnBottomNext.isEnabled = false
+                    binding.btnKeyboardNext.isEnabled = false
+                }
             }
         }
 
@@ -64,6 +75,8 @@ class TimeCalculatorScriptFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.textViewTitle.visibility = View.VISIBLE
+            toolbar.textViewTitle.text = "시간 계산"
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
                 text = "2/4"

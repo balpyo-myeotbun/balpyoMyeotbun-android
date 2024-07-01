@@ -39,7 +39,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="10dp"
-            android:hint="발표대본을 입력해주세요"
+            android:hint="발표 대본을 입력해주세요"
             app:layout_constraintBottom_toTopOf="@+id/FCEDStoreBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
