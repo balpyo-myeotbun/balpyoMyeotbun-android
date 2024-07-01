@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Script.ScriptCompleteFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="232dp"
+        android:src="@drawable/ic_complete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/textView_info"
+        style="@style/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="발표 대본이 만들어지고 있어요"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="대본이 완성되면 알림을 보내드릴게요"
+        app:layout_constraintEnd_toEndOf="@+id/textView_info"
+        app:layout_constraintStart_toStartOf="@+id/textView_info"
+        app:layout_constraintTop_toBottomOf="@+id/textView_info" />
+
+    <Button
+        android:id="@+id/button_check"
+        style="@style/BottomNextButton"
+        android:layout_width="0dp"
+        android:layout_marginBottom="8dp"
+        android:text="확인"
+        android:backgroundTint="@color/gray2"
+        app:layout_constraintBottom_toTopOf="@id/button_alarm"
+        app:layout_constraintEnd_toEndOf="@id/button_alarm"
+        app:layout_constraintStart_toStartOf="@id/button_alarm" />
+
+    <Button
+        android:id="@+id/button_alarm"
+        style="@style/BottomNextButton"
+        android:layout_width="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="46dp"
+        android:text="알림 받기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

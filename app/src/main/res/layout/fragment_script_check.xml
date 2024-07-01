@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Script.ScriptCheckFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/button_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="22dp">
+
+            <TextView
+                android:id="@+id/textView_information"
+                style="@style/Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="75dp"
+                android:text="이대로 발표 대본을 생성할까요?" />
+
+            <TextView
+                android:id="@+id/textView_title_check"
+                style="@style/Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="제목"
+                android:textColor="@color/disabled" />
+
+            <EditText
+                android:id="@+id/editText_title_check"
+                style="OneLineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_marginTop="6dp"
+                android:hint="대본 제목" />
+
+            <TextView
+                android:id="@+id/textView_topic_check"
+                style="@style/Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="주제"
+                android:textColor="@color/disabled" />
+
+            <EditText
+                android:id="@+id/editText_topic_check"
+                style="OneLineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_marginTop="6dp"
+                android:hint="주제" />
+
+            <TextView
+                android:id="@+id/textView_subtopic_check"
+                style="@style/Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="소주제"
+                android:textColor="@color/disabled" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_subtopic_check"
+                android:layout_marginLeft="-4dp"
+                android:descendantFocusability="afterDescendants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/textView_time_check"
+                style="@style/Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="발표 시간"
+                android:textColor="@color/disabled" />
+
+            <EditText
+                android:id="@+id/editText_time_check"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/input_text" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button_next"
+        style="@style/BottomNextButton"
+        android:layout_width="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="이대로 생성하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

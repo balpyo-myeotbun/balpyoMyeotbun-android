@@ -1,57 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Script.ScriptTimeFragment">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView_information"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="66dp"
-        style="@style/Title"
-        android:text="발표 시간을 알려주세요"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/space"
-        android:layout_width="250dp"
-        android:layout_height="32dp"
-        android:background="@drawable/background_picker"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="60dp"
+    android:paddingVertical="32dp"
+    android:background="@drawable/background_dialog"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:layout_marginTop="60dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_information"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
         <NumberPicker
-            android:id="@+id/spinner_minute"
+            android:id="@+id/spinner_minute_check"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:baselineAligned="false"
@@ -70,7 +38,7 @@
             android:textSize="18sp" />
 
         <NumberPicker
-            android:id="@+id/spinner_second"
+            android:id="@+id/spinner_second_check"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:baselineAligned="false"
@@ -90,7 +58,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_no_specific_time"
+        android:id="@+id/button_no_specific_time_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -118,16 +86,5 @@
             android:text="원하는 발표 시간이 없어요"
             android:textColor="@color/input_text" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/button_next"
-        style="@style/BottomNextButton"
-        android:layout_width="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="46dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

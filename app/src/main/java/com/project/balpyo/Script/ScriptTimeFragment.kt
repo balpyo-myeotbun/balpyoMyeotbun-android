@@ -91,33 +91,39 @@ class ScriptTimeFragment : Fragment() {
             }
             spinnerSecond.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
-            imageViewCheckbox.setOnClickListener {
+            buttonNoSpecificTime.setOnClickListener {
                 if(noSuchTime) {
-                    imageViewCheckbox.setImageResource(R.drawable.ic_checkbox_unselected)
+                    imageViewCheck.setImageResource(R.drawable.ic_check_unselected)
+                    buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_unselected)
                     noSuchTime = false
                 } else {
-                    imageViewCheckbox.setImageResource(R.drawable.ic_checkbox_selected)
+                    imageViewCheck.setImageResource(R.drawable.ic_check_selected)
+                    buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_selected)
                     noSuchTime = true
                 }
             }
 
             buttonNext.setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    /*registerForActivityResult.launch(
+                    /* registerForActivityResult.launch(
                         arrayOf(Manifest.permission.POST_NOTIFICATIONS)
-                    )*/
-                    //대본 생성 요청 후 바로 홈으로 이동
-                    Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!",Toast.LENGTH_LONG).show()
-                    viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                    findNavController().navigate(R.id.homeFragment)
+                    ) */
+
+                    findNavController().navigate(R.id.scriptCheckFragment)
                 }
                 if(noSuchTime) {
-                    MyApplication.scrpitTime = 180
+                    MyApplication.scriptTime = 180
+                    MyApplication.scriptTimeString = "원하는 발표 시간 없음"
                 } else {
                     Log.d("발표몇분", "${spinnerMinute.value}")
                     Log.d("발표몇분", "${spinnerSecond.value}")
                     var selectedTime = spinnerMinute.value*60 + spinnerSecond.value
-                    MyApplication.scrpitTime = selectedTime.toLong()
+                    MyApplication.scriptTime = selectedTime.toLong()
+                    if(spinnerMinute.value != 0) {
+                        MyApplication.scriptTimeString = "${spinnerMinute.value}분 ${spinnerSecond.value}초"
+                    } else {
+                        MyApplication.scriptTimeString = "${spinnerSecond.value}초"
+                    }
                 }
             }
         }
@@ -129,9 +135,10 @@ class ScriptTimeFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.textViewTitle.text = "대본 생성"
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
-                text = "3/3"
+                text = "4/5"
             }
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
@@ -139,6 +146,7 @@ class ScriptTimeFragment : Fragment() {
             }
         }
     }
+
     companion object {
         const val DENIED = "denied"
         const val EXPLAINED = "explained"
