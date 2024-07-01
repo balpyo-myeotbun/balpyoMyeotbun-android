@@ -33,6 +33,7 @@ class TimeCalculatorScriptFragment : Fragment() {
     ): View? {
         binding = FragmentTimeCalculatorScriptBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.run {
@@ -59,11 +60,9 @@ class TimeCalculatorScriptFragment : Fragment() {
             editTextScript.addTextChangedListener {
                 if(binding.editTextScript.text.isNotEmpty()){
                     binding.btnBottomNext.isEnabled = true
-                    binding.btnKeyboardNext.isEnabled = true
                 }
                 else{
                     binding.btnBottomNext.isEnabled = false
-                    binding.btnKeyboardNext.isEnabled = false
                 }
             }
         }

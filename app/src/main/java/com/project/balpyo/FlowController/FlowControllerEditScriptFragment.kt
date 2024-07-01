@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -32,7 +33,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
         binding = FragmentFlowControllerEditScriptBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
-        //requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         initToolBar()
 
@@ -51,13 +52,12 @@ class FlowControllerEditScriptFragment() : Fragment() {
         binding.FCESScript.addTextChangedListener {
             if(binding.FCESScript.text.isNotEmpty()){
                 binding.FCEDNextBtn.isEnabled = true
-                binding.FCEDKeyboardNextBtn.isEnabled = true
             }
             else{
                 binding.FCEDNextBtn.isEnabled = false
-                binding.FCEDKeyboardNextBtn.isEnabled = false
             }
         }
+
         binding.FCEDNextBtn.setOnClickListener {
             flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
 
@@ -67,45 +67,8 @@ class FlowControllerEditScriptFragment() : Fragment() {
             flowControllerViewModel.setSplitScriptToSentences(paragraph)
             findNavController().navigate(R.id.flowControllerAddTimeFragment2)
         }
-        binding.FCEDKeyboardNextBtn.setOnClickListener {
-            flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
-
-            //대본을 문장으로 나눔
-            val splitter = SentenceSplitter()
-            val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
-            flowControllerViewModel.setSplitScriptToSentences(paragraph)
-            findNavController().navigate(R.id.flowControllerAddTimeFragment2)
-        }
-
-        observeKeyboardState()
 
         return binding.root
-    }
-
-    private fun observeKeyboardState() {
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            var originHeight = -1
-            if ( binding.root.height > originHeight) {
-                originHeight =  binding.root.height
-            }
-
-            val visibleFrameSize = Rect()
-            binding.root.getWindowVisibleDisplayFrame(visibleFrameSize)
-
-            val visibleFrameHeight = visibleFrameSize.bottom - visibleFrameSize.top
-            val keyboardHeight = originHeight - visibleFrameHeight
-
-            if (keyboardHeight > visibleFrameHeight * 0.15) {
-                // 키보드가 올라옴
-                binding.FCEDKeyboardNextBtn.visibility = View.VISIBLE
-                binding.FCEDNextBtn.visibility = View.GONE
-                binding.FCEDKeyboardNextBtn.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
-            } else {
-                // 키보드가 내려감
-                binding.FCEDKeyboardNextBtn.visibility = View.GONE
-                binding.FCEDNextBtn.visibility = View.VISIBLE
-            }
-        }
     }
     fun initToolBar() {
         binding.run {
