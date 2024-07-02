@@ -10,43 +10,43 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <View
-        android:id="@+id/bottomsheetHandle"
+        android:id="@+id/view_bs_handle"
         android:layout_width="60dp"
         android:layout_height="3dp"
         android:layout_gravity="center"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/bottomsheet_handle_background"
-        app:layout_constraintBottom_toTopOf="@+id/bottomsheetRV"
+        app:layout_constraintBottom_toTopOf="@+id/rv_bs_script"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bottomsheetRV"
+        android:id="@+id/rv_bs_script"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
         android:overScrollMode="never"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottomsheetLoadBtn"
+        app:layout_constraintBottom_toTopOf="@+id/btn_bs_load"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottomsheetHandle" />
+        app:layout_constraintTop_toBottomOf="@+id/view_bs_handle" />
 
     <Button
-        android:id="@+id/bottomsheetLoadBtn"
+        android:id="@+id/btn_bs_load"
         style="@style/BottomNextButton"
         android:layout_width="0dp"
         android:layout_marginBottom="9dp"
         android:enabled="false"
         android:text="대본 불러오기"
-        app:layout_constraintBottom_toTopOf="@+id/bottomsheetWriteBtn"
+        app:layout_constraintBottom_toTopOf="@+id/btn_bs_write"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/bottomsheetWriteBtn"
+        android:id="@+id/btn_bs_write"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

@@ -51,7 +51,7 @@ class FlowControllerPreviewFragment : Fragment() {
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding = FragmentFlowControllerPreviewBinding.inflate(layoutInflater)
         initToolBar()
-        binding.FCPScript.movementMethod = ScrollingMovementMethod.getInstance()
+        binding.tvScript.movementMethod = ScrollingMovementMethod.getInstance()
         val spannable = SpannableStringBuilder(flowControllerViewModel.getCustomScriptData().value)
         val scriptCharSequence: CharSequence = flowControllerViewModel.getCustomScriptData().value!!
         ///숨 고르기랑 ppt 넘김 회색으로 변경
@@ -70,13 +70,13 @@ class FlowControllerPreviewFragment : Fragment() {
             }
         }
 
-        binding.FCPScript.text = spannable
+        binding.tvScript.text = spannable
         Log.d("script", flowControllerViewModel.getCustomScriptData().value.toString())
 
-        binding.FCPNextBtn.setOnClickListener {
+        binding.btnGenerate.setOnClickListener {
             generateAudio(requireActivity())
         }
-        binding.FCPEditBtn.setOnClickListener {
+        binding.btnEdit.setOnClickListener {
             findNavController().navigate(R.id.flowControllerEditScriptFragment)
         }
         return binding.root

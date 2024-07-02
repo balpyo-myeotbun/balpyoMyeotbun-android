@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <Button
-        android:id="@+id/sButton"
+        android:id="@+id/btn_breath"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/gray1"
