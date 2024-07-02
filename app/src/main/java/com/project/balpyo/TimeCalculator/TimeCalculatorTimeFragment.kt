@@ -44,12 +44,14 @@ class TimeCalculatorTimeFragment : Fragment() {
             }
             spinnerSecond.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
-            imageViewCheckbox.setOnClickListener {
+            buttonNoSpecificTime.setOnClickListener {
                 if(noSuchTime) {
-                    imageViewCheckbox.setImageResource(R.drawable.ic_checkbox_unselected)
+                    imageViewCheck.setImageResource(R.drawable.ic_check_unselected)
+                    buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_unselected)
                     noSuchTime = false
                 } else {
-                    imageViewCheckbox.setImageResource(R.drawable.ic_checkbox_selected)
+                    imageViewCheck.setImageResource(R.drawable.ic_check_selected)
+                    buttonNoSpecificTime.setBackgroundResource(R.drawable.background_box_selected)
                     noSuchTime = true
                 }
             }
