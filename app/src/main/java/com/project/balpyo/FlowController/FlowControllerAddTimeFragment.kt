@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +33,7 @@ class FlowControllerAddTimeFragment : Fragment() {
         binding = FragmentFlowControllerAddTimeBinding.inflate(layoutInflater)
         initToolBar()
 
-        val restButton = binding.FCAT2Sec
+        val restButton = binding.btnFlowControllerBreath
         restButton.setOnLongClickListener { view ->
             // 드래그 데이터 준비
             val item = ClipData.Item(view.tag as? CharSequence)
@@ -46,7 +45,7 @@ class FlowControllerAddTimeFragment : Fragment() {
             val shadowBuilder = View.DragShadowBuilder(view)
 
             // 드래그 시작
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 view.startDragAndDrop(dragData, shadowBuilder, view, 0);
             } else {
                 view.startDrag(dragData, shadowBuilder, view, 0);
@@ -56,7 +55,7 @@ class FlowControllerAddTimeFragment : Fragment() {
         }
 
         // 외부 버튼에 대한 참조를 얻은 후 리스너 설정
-        val pptButton = binding.FCAT3Sec
+        val pptButton = binding.btnFlowControllerPpt
         pptButton.setOnLongClickListener { view ->
             // 드래그 데이터 준비
             val item = ClipData.Item(view.tag as? CharSequence)
@@ -85,7 +84,7 @@ class FlowControllerAddTimeFragment : Fragment() {
         }
         print(items)
 
-        val recyclerView = binding.FCATRV
+        val recyclerView = binding.rvScript
         val adapter = MultiTypeAdapter(items)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
         recyclerView.adapter = adapter
@@ -134,7 +133,7 @@ class FlowControllerAddTimeFragment : Fragment() {
             }
         }
 
-        binding.FCATNextBtn.setOnClickListener {
+        binding.btnFlowControllerNext.setOnClickListener {
             flowControllerViewModel.setCustomScript(concatenateTexts(items))
             findNavController().navigate(R.id.flowControllerSpeedFragment)
         }
@@ -204,16 +203,13 @@ class FlowControllerAddTimeFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.INVISIBLE
-            toolbar.buttonClose.visibility = View.VISIBLE
+            toolbar.buttonBack.visibility = View.VISIBLE
+            toolbar.buttonClose.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.textViewTitle.text = "발표 연습"
-            toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewPage.visibility = View.VISIBLE
             toolbar.textViewPage.text = "3/5"
             toolbar.buttonBack.setOnClickListener {
-                // 뒤로가기 버튼 클릭시 동작
-            }
-            toolbar.buttonClose.setOnClickListener {
                 findNavController().popBackStack()
             }
         }

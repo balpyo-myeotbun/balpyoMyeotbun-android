@@ -3,7 +3,6 @@ package com.project.balpyo.BottomSheetAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -76,8 +75,8 @@ class BottomSheetAdapter(
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val background: ConstraintLayout = itemView.findViewById(R.id.BottomSheetCL)
-        val title: TextView = itemView.findViewById(R.id.bs_title_tv)
-        val content: TextView = itemView.findViewById(R.id.bs_content_tv)
-        val timeStamp: TextView = itemView.findViewById(R.id.bs_time_tv)
+        val title: TextView = itemView.findViewById(R.id.tv_bs_title)
+        val content: TextView = itemView.findViewById(R.id.tv_bs_content)
+        val timeStamp: TextView = itemView.findViewById(R.id.tv_bs_time)
     }
 }

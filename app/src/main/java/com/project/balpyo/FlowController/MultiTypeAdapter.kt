@@ -1,7 +1,5 @@
 package com.project.balpyo.FlowController
 
-import android.util.Log
-import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,14 +78,14 @@ class MultiTypeAdapter(val items: MutableList<EditScriptItem>) : RecyclerView.Ad
 
     class TextViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(text: String) {
-            itemView.findViewById<TextView>(R.id.sTextView).text = text
+            itemView.findViewById<TextView>(R.id.tv_sentence).text = text
         }
     }
 
     class ButtonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(text: String,  adapter: MultiTypeAdapter, position: Int){
-            itemView.findViewById<Button>(R.id.sButton).text = text
-            itemView.findViewById<Button>(R.id.sButton).setOnClickListener {
+            itemView.findViewById<Button>(R.id.btn_breath).text = text
+            itemView.findViewById<Button>(R.id.btn_breath).setOnClickListener {
                 // 버튼 클릭 시 해당 아이템 제거
                 adapter.removeItemAt(position)
             }

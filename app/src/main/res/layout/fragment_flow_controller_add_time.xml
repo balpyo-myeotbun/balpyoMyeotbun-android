@@ -18,7 +18,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/FCATTitle"
+            android:id="@+id/tv_title"
             style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,10 +39,10 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/FCATTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/FCATRV"
+            android:id="@+id/rv_script"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="20dp"
@@ -64,12 +64,12 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toTopOf="@+id/FCAT2Sec"
+            app:layout_constraintBottom_toTopOf="@+id/btn_flow_controller_breath"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/FCAT2Sec"
+            android:id="@+id/btn_flow_controller_breath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -81,13 +81,13 @@
             android:text="숨 고르기 (1초)"
             android:textColor="@color/input_text"
             app:cornerRadius="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/FCATNextBtn"
+            app:layout_constraintBottom_toTopOf="@+id/btn_flow_controller_next"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/gray2"
             app:strokeWidth="1dp" />
 
         <Button
-            android:id="@+id/FCAT3Sec"
+            android:id="@+id/btn_flow_controller_ppt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -99,13 +99,13 @@
             android:text="PPT 넘김 (2초)"
             android:textColor="@color/input_text"
             app:cornerRadius="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/FCATNextBtn"
-            app:layout_constraintStart_toEndOf="@+id/FCAT2Sec"
+            app:layout_constraintBottom_toTopOf="@+id/btn_flow_controller_next"
+            app:layout_constraintStart_toEndOf="@+id/btn_flow_controller_breath"
             app:strokeColor="@color/gray2"
             app:strokeWidth="1dp" />
 
         <Button
-            android:id="@+id/FCATNextBtn"
+            android:id="@+id/btn_flow_controller_next"
             style="@style/BottomNextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

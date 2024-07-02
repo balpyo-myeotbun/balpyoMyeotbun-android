@@ -41,30 +41,30 @@ class FlowControllerEditScriptFragment() : Fragment() {
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
 
         binding.run{
-            editTextMarginBottom = FCESScript.marginBottom
+            editTextMarginBottom = etScript.marginBottom
 
-            FCESScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
+            etScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
 
-            FCESScript.addTextChangedListener {
-                FCEDNextBtn.isEnabled = FCESScript.text.isNotEmpty()
-                FlowControllerKeyboardNextBtn.isEnabled = FCESScript.text.isNotEmpty()
+            etScript.addTextChangedListener {
+                btnBottomNext.isEnabled = etScript.text.isNotEmpty()
+                btnKeyboardNext.isEnabled = etScript.text.isNotEmpty()
             }
 
-            FCEDNextBtn.setOnClickListener{
+            btnBottomNext.setOnClickListener{
                 setNextButtonOnClickListener()
             }
 
-            FlowControllerKeyboardNextBtn.setOnClickListener {
+            btnKeyboardNext.setOnClickListener {
                 setNextButtonOnClickListener()
             }
-            FCEDStoreBtn.setOnClickListener {
+            btnLoadScript.setOnClickListener {
                 viewModel.getStorageListForBottomSheet(this@FlowControllerEditScriptFragment.parentFragmentManager, mainActivity)
             }
         }
         viewModel.storageDetailForBottomSheet.observe(mainActivity){
             if (it != null) {
                 flowControllerViewModel.setNormalScript(it.script)
-                binding.FCESScript.setText(flowControllerViewModel.getNormalScriptData().value)
+                binding.etScript.setText(flowControllerViewModel.getNormalScriptData().value)
             }
         }
 
@@ -74,7 +74,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
         return binding.root
     }
     private fun setNextButtonOnClickListener() {
-        flowControllerViewModel.setNormalScript(binding.FCESScript.text.toString())
+        flowControllerViewModel.setNormalScript(binding.etScript.text.toString())
 
         //대본을 문장으로 나눔
         val splitter = SentenceSplitter()
@@ -99,19 +99,19 @@ class FlowControllerEditScriptFragment() : Fragment() {
                     if (keyboardHeight > navBarHeight) {
                         //키보드 올라옴
                         //스크립트 마진 : 다음 버튼 크기 + 기본 마진
-                        FCESScript.updateMargins(bottom = editTextMarginBottom + binding.FCEDNextBtn.height)
+                        etScript.updateMargins(bottom = editTextMarginBottom + binding.btnBottomNext.height)
                         // 키보드의
                         root.setPadding(0, 0, 0, keyboardHeight - navBarHeight)
-                        FlowControllerKeyboardNextBtn.visibility = View.VISIBLE
-                        FCEDStoreBtn.visibility = View.GONE
-                        FCEDNextBtn.visibility = View.GONE
+                        btnKeyboardNext.visibility = View.VISIBLE
+                        btnLoadScript.visibility = View.GONE
+                        btnBottomNext.visibility = View.GONE
                     } else {
                         //키보드 내려감
-                        FCESScript.updateMargins(bottom = editTextMarginBottom)
+                        etScript.updateMargins(bottom = editTextMarginBottom)
                         root.setPadding(0, 0, 0, 0)
-                        FlowControllerKeyboardNextBtn.visibility = View.GONE
-                        FCEDStoreBtn.visibility = View.VISIBLE
-                        FCEDNextBtn.visibility = View.VISIBLE
+                        btnKeyboardNext.visibility = View.GONE
+                        btnLoadScript.visibility = View.VISIBLE
+                        btnBottomNext.visibility = View.VISIBLE
                     }
                     windowInsets
                 }

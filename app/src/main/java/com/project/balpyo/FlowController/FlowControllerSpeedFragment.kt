@@ -39,7 +39,7 @@ class FlowControllerSpeedFragment : Fragment() {
         binding = FragmentFlowControllerSpeedBinding.inflate(layoutInflater)
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
 
-        animationDrawable = binding.FCIV.drawable as AnimationDrawable
+        animationDrawable = binding.ivVolume.drawable as AnimationDrawable
 
         initToolBar()
         initailizeMediaPlayers()
@@ -70,17 +70,17 @@ class FlowControllerSpeedFragment : Fragment() {
 
     fun initailizeCLsAndTVs(){
         binding.run {
-            CLs[0] = FCSpeedCL03
-            CLs[1] = FCSpeedCL05
-            CLs[2] = FCSpeedCL1
-            CLs[3] = FCSpeedCL15
-            CLs[4] = FCSpeedCL2
+            CLs[0] = btnSpeed03
+            CLs[1] = btnSpeed05
+            CLs[2] = btnSpeed1
+            CLs[3] = btnSpeed15
+            CLs[4] = btnSpeed2
 
-            TVs[0] = FCSpeed03Tv
-            TVs[1] = FCSpeed05Tv
-            TVs[2] = FCSpeed1Tv
-            TVs[3] = FCSpeed15Tv
-            TVs[4] = FCSpeed2Tv
+            TVs[0] = tvSpeed03
+            TVs[1] = tvSpeed05
+            TVs[2] = tvSpeed1
+            TVs[3] = tvSpeed15
+            TVs[4] = tvSpeed2
         }
     }
 

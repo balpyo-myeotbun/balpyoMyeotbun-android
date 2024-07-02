@@ -35,31 +35,31 @@ class FlowControllerTitleFragment : Fragment() {
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding=FragmentFlowControllerTitleBinding.inflate(layoutInflater)
         initToolBar()
-        binding.FlowControllerNextBtn.setOnClickListener {
-            flowControllerViewModel.setTitle(binding.FlowControllerEditTitle.text.toString())
+        binding.btnBottomNext.setOnClickListener {
+            flowControllerViewModel.setTitle(binding.etTitle.text.toString())
             findNavController().navigate(R.id.flowControllerEditScriptFragment)
         }
-        binding.FlowControllerKeyboardNextBtn.setOnClickListener {
-            flowControllerViewModel.setTitle(binding.FlowControllerEditTitle.text.toString())
+        binding.btnKeyboardNext.setOnClickListener {
+            flowControllerViewModel.setTitle(binding.etTitle.text.toString())
             findNavController().navigate(R.id.flowControllerEditScriptFragment)
         }
 
-        binding.FlowControllerDeleteBtn.setOnClickListener {
-            binding.FlowControllerEditTitle.text.clear()
-            binding.FlowControllerNextBtn.isEnabled = false
-            binding.FlowControllerKeyboardNextBtn.isEnabled = false
+        binding.btnDelete.setOnClickListener {
+            binding.etTitle.text.clear()
+            binding.btnBottomNext.isEnabled = false
+            binding.btnKeyboardNext.isEnabled = false
         }
 
-        binding.FlowControllerEditTitle.addTextChangedListener {
-            if(binding.FlowControllerEditTitle.text.isNotEmpty()){
-                binding.FlowControllerNextBtn.isEnabled = true
-                binding.FlowControllerKeyboardNextBtn.isEnabled = true
-                binding.FlowControllerDeleteBtn.visibility = View.VISIBLE
+        binding.etTitle.addTextChangedListener {
+            if(binding.etTitle.text.isNotEmpty()){
+                binding.btnBottomNext.isEnabled = true
+                binding.btnKeyboardNext.isEnabled = true
+                binding.btnDelete.visibility = View.VISIBLE
             }
             else{
-                binding.FlowControllerNextBtn.isEnabled = false
-                binding.FlowControllerKeyboardNextBtn.isEnabled = false
-                binding.FlowControllerDeleteBtn.visibility = View.GONE
+                binding.btnBottomNext.isEnabled = false
+                binding.btnKeyboardNext.isEnabled = false
+                binding.btnDelete.visibility = View.GONE
             }
         }
 
@@ -81,13 +81,13 @@ class FlowControllerTitleFragment : Fragment() {
 
             if (keyboardHeight > visibleFrameHeight * 0.15) {
                 // 키보드가 올라옴
-                binding.FlowControllerKeyboardNextBtn.visibility = View.VISIBLE
-                binding.FlowControllerNextBtn.visibility = View.GONE
-                binding.FlowControllerKeyboardNextBtn.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
+                binding.btnKeyboardNext.visibility = View.VISIBLE
+                binding.btnBottomNext.visibility = View.GONE
+                binding.btnKeyboardNext.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
             } else {
                 // 키보드가 내려감
-                binding.FlowControllerKeyboardNextBtn.visibility = View.GONE
-                binding.FlowControllerNextBtn.visibility = View.VISIBLE
+                binding.btnKeyboardNext.visibility = View.GONE
+                binding.btnBottomNext.visibility = View.VISIBLE
             }
         }
     }
