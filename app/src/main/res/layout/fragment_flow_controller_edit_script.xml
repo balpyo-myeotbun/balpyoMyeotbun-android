@@ -101,5 +101,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 키보드 위 버튼 -->
 
+    <Button
+        android:id="@+id/FlowControllerKeyboardNextBtn"
+        style="@style/KeyBoardNextButton"
+        android:layout_gravity="bottom"
+        android:enabled="false"
+        android:lineSpacingExtra="4dp"
+        android:visibility="visible" />
 </FrameLayout>
