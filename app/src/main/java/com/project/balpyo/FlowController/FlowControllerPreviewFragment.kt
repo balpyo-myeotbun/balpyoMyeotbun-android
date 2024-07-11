@@ -77,7 +77,7 @@ class FlowControllerPreviewFragment : Fragment() {
             generateAudio(requireActivity())
         }
         binding.btnEdit.setOnClickListener {
-            findNavController().navigate(R.id.flowControllerEditScriptFragment)
+            findNavController().popBackStack(R.id.flowControllerEditScriptFragment, false)
         }
         return binding.root
     }
