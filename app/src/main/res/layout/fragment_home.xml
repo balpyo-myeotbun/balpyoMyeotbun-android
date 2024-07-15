@@ -6,129 +6,214 @@
     android:layout_height="match_parent"
     tools:context=".Home.HomeFragment" >
 
-    <TextView
-        android:id="@+id/textView_welcome"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="대본을 만들고\n연습해보세요."
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView_storage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_storage"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_welcome"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView_welcome"
-        app:layout_constraintTop_toTopOf="@+id/textView_welcome" />
-
-    <LinearLayout
-        android:id="@+id/menu_generate_script"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        android:paddingHorizontal="18dp"
-        android:paddingVertical="25dp"
-        android:background="@drawable/background_home"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_welcome">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView_title1"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="시간 맞춤형 발표대본 생성"
-            android:textColor="@color/text"
-            android:textSize="22sp" />
+            android:clipChildren="false">
 
-        <TextView
-            android:id="@+id/textView_info1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_medium"
-            android:text="내 마음에 꼭 드는 발표대본을 만들어보세요.\n주제, 소주제, 발표시간만 입력하면 완성이에요!"
-            android:textColor="@color/gray3"
-            android:textSize="13sp" />
-    </LinearLayout>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_home"
+                android:layout_width="match_parent"
+                android:layout_height="166dp"
+                android:background="@color/primary_disable"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/menu_time_calculator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        android:paddingHorizontal="18dp"
-        android:paddingVertical="25dp"
-        android:background="@drawable/background_home"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/menu_generate_script">
+            <ImageView
+                android:id="@+id/iv_home_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/background_viewpager2_page_number"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+                app:layout_constraintEnd_toEndOf="@+id/vp_home" />
 
-        <TextView
-            android:id="@+id/textView_title2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="단어당 발표 시간 계산기"
-            android:textColor="@color/text"
-            android:textSize="22sp" />
+            <TextView
+                android:id="@+id/tv_home_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_regular"
+                android:letterSpacing="0.18"
+                android:text="1/3"
+                android:textColor="@color/disabled"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_home_page"
+                app:layout_constraintEnd_toEndOf="@+id/iv_home_page"
+                app:layout_constraintStart_toStartOf="@+id/iv_home_page"
+                app:layout_constraintTop_toTopOf="@+id/iv_home_page" />
 
-        <TextView
-            android:id="@+id/textView_info2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_medium"
-            android:text="지금 바로 대본의 소요시간을 확인하세요.\n목표한 시간을 초과하거나 부족하다면 알려드릴게요!"
-            android:textColor="@color/gray3"
-            android:textSize="13sp" />
-    </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="146dp"
+                android:background="@drawable/background_home"
+                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:id="@+id/menu_flow_controller"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        android:paddingHorizontal="18dp"
-        android:paddingVertical="25dp"
-        android:background="@drawable/background_home"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/menu_time_calculator">
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:text="발표님의 보관함"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_home_script" />
 
-        <TextView
-            android:id="@+id/textView_title3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="발표 훈련 플로우 컨트롤러"
-            android:textColor="@color/text"
-            android:textSize="22sp" />
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:text="무엇을 도와드릴까요?"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView_info3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_medium"
-            android:text="시간 안에 발표를 마칠 수 있도록 도와드릴게요.\n노래방에 온 것처럼 대본 플로우를 따라 읽어보세요!"
-            android:textColor="@color/gray3"
-            android:textSize="13sp" />
-    </LinearLayout>
+                <ImageButton
+                    android:id="@+id/ib_home_storage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                    app:layout_constraintStart_toEndOf="@+id/textView9"
+                    app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <Button
+                    android:id="@+id/btn_home_storage"
+                    style="@style/Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:backgroundTint="@color/white"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:maxWidth="0dp"
+                    android:maxHeight="0dp"
+                    android:paddingVertical="11dp"
+                    android:text="전체 보관함 보기"
+                    android:textColor="@color/text"
+                    app:cornerRadius="6dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_home"
+                    app:strokeColor="@color/gray1"
+                    app:strokeWidth="1dp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_home_script"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/ic_generate_script" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        style="@style/Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="대본 생성"
+                        android:textAlignment="center"
+                        android:textColor="@color/text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_home_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/ll_home_flow"
+                    app:layout_constraintStart_toEndOf="@+id/ll_home_script"
+                    app:layout_constraintTop_toTopOf="@+id/ll_home_script">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/ic_generate_script" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        style="@style/Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="시간 계산"
+                        android:textAlignment="center"
+                        android:textColor="@color/text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_home_flow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ll_home_script">
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/ic_generate_script" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        style="@style/Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="발표 연습"
+                        android:textAlignment="center"
+                        android:textColor="@color/text" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

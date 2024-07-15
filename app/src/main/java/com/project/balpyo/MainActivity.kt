@@ -1,9 +1,11 @@
 package com.project.balpyo
 
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
@@ -11,8 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.findFragment
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.project.balpyo.Home.HomeFragment
+import com.project.balpyo.Home.StorageFragment
 import com.project.balpyo.Script.Data.ScriptResultData
 import com.project.balpyo.Script.ScriptResultFragment
 import com.project.balpyo.databinding.ActivityMainBinding
@@ -20,18 +28,73 @@ import com.project.balpyo.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        bottomNavigationView = binding.bottomNavigation
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            bottomNavigationView.layoutParams.height += systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
+                insets
         }
 
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navController = navHostFragment.navController
+
+        setBottomNavigationView()
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment, R.id.storageFragment -> setBottomNavigationVisibility(View.VISIBLE)
+                else -> setBottomNavigationVisibility(View.GONE)
+            }
+        }
+    }
+
+    private fun setBottomNavigationView() {
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homeFragment -> {
+                    navController.navigate(R.id.homeFragment)
+                    true
+                }
+                R.id.storageFragment -> {
+                    navController.navigate(R.id.storageFragment)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    fun setBottomNavigationVisibility(visibility: Int) {
+        bottomNavigationView.visibility = visibility
+        /*if (visibility == View.VISIBLE) {
+            bottomNavigationView.clearAnimation()
+            bottomNavigationView.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(300)
+                .withEndAction {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+        } else {
+            bottomNavigationView.clearAnimation()
+            bottomNavigationView.animate()
+                .alpha(0f)
+                .translationY(bottomNavigationView.height.toFloat())
+                .setDuration(300)
+                .withEndAction {
+                    bottomNavigationView.visibility = View.GONE
+                }
+        }*/
     }
 
     override fun onResume() {

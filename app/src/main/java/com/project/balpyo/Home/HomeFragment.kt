@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
 
-        binding.run {
+        /*binding.run {
             imageViewStorage.setOnClickListener {
                 viewModel.getStorageList(this@HomeFragment, mainActivity)
 //                findNavController().navigate(R.id.storageFragment)
@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
                     .commit()*/
             }
         }
-
+*/
         return binding.root
     }
 }
