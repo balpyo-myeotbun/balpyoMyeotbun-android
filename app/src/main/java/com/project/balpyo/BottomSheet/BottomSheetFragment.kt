@@ -15,21 +15,21 @@ import com.project.balpyo.BottomSheetAdapter.BottomSheetAdapter
 import com.project.balpyo.BottomSheetData.BottomSheetItem
 import com.project.balpyo.Home.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
-import com.project.balpyo.databinding.BottomsheetBinding
+import com.project.balpyo.databinding.FragmentBottomsheetBinding
 
 interface BottomSheetListener {
     fun onItemClicked(position: Int)
 }
 
 class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
-    lateinit var binding: BottomsheetBinding
+    lateinit var binding: FragmentBottomsheetBinding
     lateinit var mainActivity: MainActivity
     var scriptId = mutableListOf<Long>()
     var position: Int? = null
     lateinit var viewModel: StorageViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = BottomsheetBinding.inflate(inflater, container, false)
+        binding = FragmentBottomsheetBinding.inflate(inflater, container, false)
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
 

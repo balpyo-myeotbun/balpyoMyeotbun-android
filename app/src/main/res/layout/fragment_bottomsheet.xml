@@ -5,7 +5,7 @@
     android:id="@+id/bottomsheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/botttomsheet_bg"
+    android:background="@drawable/background_bottomsheet"
     android:padding="16dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/bottomsheet_handle_background"
+        android:background="@drawable/background_bottomsheet_handle"
         app:layout_constraintBottom_toTopOf="@+id/rv_bs_script"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

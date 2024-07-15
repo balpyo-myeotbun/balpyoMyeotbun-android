@@ -3,6 +3,7 @@ package com.project.balpyo.BottomSheetAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -29,10 +30,10 @@ class BottomSheetAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_item_header, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_bottomsheet_header, parent, false)
             HeaderViewHolder(view)
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_item, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_storage, parent, false)
             ItemViewHolder(view)
         }
     }
@@ -45,6 +46,7 @@ class BottomSheetAdapter(
             holder.title.text = item.title
             holder.content.text = item.content
             holder.timeStamp.text = item.timeStamp
+            holder.tagNote.visibility = View.VISIBLE
 
             if (selectedPosition == position) {
                 holder.background.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.selectted_title)
@@ -74,9 +76,10 @@ class BottomSheetAdapter(
     }
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val background: ConstraintLayout = itemView.findViewById(R.id.BottomSheetCL)
-        val title: TextView = itemView.findViewById(R.id.tv_bs_title)
-        val content: TextView = itemView.findViewById(R.id.tv_bs_content)
-        val timeStamp: TextView = itemView.findViewById(R.id.tv_bs_time)
+        val background: ConstraintLayout = itemView.findViewById(R.id.cl_item_storage)
+        val title: TextView = itemView.findViewById(R.id.tv_item_storage_title)
+        val content: TextView = itemView.findViewById(R.id.tv_item_storage_content)
+        val timeStamp: TextView = itemView.findViewById(R.id.tv_item_storage_time)
+        val tagNote : FrameLayout = itemView.findViewById(R.id.fl_item_storage_tag_note)
     }
 }
