@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:text="발표몇분의 Notion\nor 사용방법을 소개합니다!"
         android:textColor="@color/text"
         app:layout_constraintStart_toStartOf="parent"

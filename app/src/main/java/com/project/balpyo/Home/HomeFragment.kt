@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -116,6 +119,8 @@ class HomeFragment : Fragment() {
                 SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
             )
             tvHomeStorageTitle.text = spannableTitle
+
+            mainActivity.setTransparentStatusBar()
         }
         return binding.root
     }
@@ -159,6 +164,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         handler.removeCallbacks(autoScrollRunnable)
+        mainActivity.resetStatusBar()
     }
 
 }
