@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
-            bottomNavigationView.layoutParams.height += systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
+            bottomNavigationView.layoutParams.height = 162 + systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
                 insets
         }
 
@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         setBottomNavigationView()
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.homeFragment, R.id.storageFragment -> setBottomNavigationVisibility(View.VISIBLE)
@@ -76,25 +77,6 @@ class MainActivity : AppCompatActivity() {
 
     fun setBottomNavigationVisibility(visibility: Int) {
         bottomNavigationView.visibility = visibility
-        /*if (visibility == View.VISIBLE) {
-            bottomNavigationView.clearAnimation()
-            bottomNavigationView.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setDuration(300)
-                .withEndAction {
-                    bottomNavigationView.visibility = View.VISIBLE
-                }
-        } else {
-            bottomNavigationView.clearAnimation()
-            bottomNavigationView.animate()
-                .alpha(0f)
-                .translationY(bottomNavigationView.height.toFloat())
-                .setDuration(300)
-                .withEndAction {
-                    bottomNavigationView.visibility = View.GONE
-                }
-        }*/
     }
 
     override fun onResume() {

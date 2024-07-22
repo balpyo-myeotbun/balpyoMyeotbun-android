@@ -65,7 +65,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/tv_home_storage_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
@@ -79,7 +79,6 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:fontFamily="@font/pretendard_semi_bold"
                     android:text="무엇을 도와드릴까요?"
                     android:textSize="20sp"
@@ -94,9 +93,9 @@
                     android:minWidth="0dp"
                     android:minHeight="0dp"
                     android:src="@drawable/ic_right_arrow"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView9"
-                    app:layout_constraintStart_toEndOf="@+id/textView9"
-                    app:layout_constraintTop_toTopOf="@+id/textView9" />
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_home_storage_title"
+                    app:layout_constraintStart_toEndOf="@+id/tv_home_storage_title"
+                    app:layout_constraintTop_toTopOf="@+id/tv_home_storage_title" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_home"
@@ -105,7 +104,7 @@
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_home_storage_title" />
 
                 <Button
                     android:id="@+id/btn_home_storage"
@@ -198,7 +197,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:src="@drawable/ic_generate_script" />
+                        android:src="@drawable/ic_flow_controller" />
 
                     <TextView
                         android:id="@+id/textView4"
