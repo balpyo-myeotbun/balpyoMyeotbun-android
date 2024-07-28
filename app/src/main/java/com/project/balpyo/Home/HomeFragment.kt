@@ -29,8 +29,18 @@ import com.project.balpyo.Script.ScriptTimeFragment
 import com.project.balpyo.Script.ScriptTitleFragment
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment
+import com.project.balpyo.api.ApiClient
+import com.project.balpyo.api.TokenManager
+import com.project.balpyo.api.request.SignInRequest
+import com.project.balpyo.api.request.SignUpRequest
+import com.project.balpyo.api.response.BaseResponse
+import com.project.balpyo.api.response.GenerateUidResponse
+import com.project.balpyo.api.response.SignInResponse
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentHomeBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
@@ -58,9 +68,10 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
+        viewModel.getStorageList(this@HomeFragment, mainActivity)
+
         viewModel.run {
             storageList.observe(mainActivity) {
                 binding.run {
@@ -94,10 +105,10 @@ class HomeFragment : Fragment() {
 
         binding.run {
             ibHomeStorage.setOnClickListener {
-                viewModel.getStorageList(this@HomeFragment, mainActivity)
+                mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
             }
             btnHomeStorage.setOnClickListener {
-                viewModel.getStorageList(this@HomeFragment, mainActivity)
+                mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
             }
             llHomeScript.setOnClickListener {
                 findNavController().navigate(R.id.scriptTitleFragment)
@@ -122,15 +133,79 @@ class HomeFragment : Fragment() {
 
             mainActivity.setTransparentStatusBar()
         }
+
+        //signUp()
+        //signIn()
+
         return binding.root
+    }
+
+    fun signUp() {
+        var apiClient = ApiClient(mainActivity)
+
+        apiClient.apiService.signUp(SignUpRequest("test", "test@naver.com", "1234"))?.enqueue(object :
+            Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: BaseResponse? = response.body()
+                    Log.d("##", "onResponse 성공: " + result?.toString())
+
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: BaseResponse? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
+    }
+
+    fun signIn() {
+        var apiClient = ApiClient(mainActivity)
+        var tokenManager = TokenManager(mainActivity)
+
+        apiClient.apiService.signIn(SignInRequest("test","1234"))?.enqueue(object :
+            Callback<SignInResponse> {
+            override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: SignInResponse? = response.body()
+                    tokenManager.saveUid("${result?.token}")
+                    Log.d("##", "onResponse 성공: " + result?.toString())
+
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: SignInResponse? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
     }
 
     private fun setupBannerViewPager() {
         val bannerAdapter = BannerVPAdapter(this)
 
-        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_flow_bg), "https://goormthonuniv.notion.site/42ff2572e7c24e6880262c374d70d64b"))
-        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_time_bg), "https://goormthonuniv.notion.site/42ff2572e7c24e6880262c374d70d64b"))
-        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_script_bg), "https://goormthonuniv.notion.site/42ff2572e7c24e6880262c374d70d64b"))
+        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_flow_bg), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
+        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_time_bg), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
+        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_script_bg), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
         binding.vpHome.adapter = bannerAdapter
         binding.vpHome.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.vpHome.setCurrentItem(0, false) // 초기 페이지 설정

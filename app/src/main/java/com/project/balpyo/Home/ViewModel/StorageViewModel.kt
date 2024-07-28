@@ -70,7 +70,7 @@ class StorageViewModel: ViewModel() {
 
                     storageList.value = tempList
 
-                    NavHostFragment.findNavController(fragment).navigate(R.id.storageFragment)
+                    //NavHostFragment.findNavController(fragment).navigate(R.id.storageFragment)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
