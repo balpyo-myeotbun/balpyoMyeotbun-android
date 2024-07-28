@@ -7,10 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentMyPageBinding
-import com.project.balpyo.databinding.FragmentSignUpCompleteBinding
 
 class MyPageFragment : Fragment() {
     lateinit var binding: FragmentMyPageBinding
@@ -24,7 +24,9 @@ class MyPageFragment : Fragment() {
         mainActivity.setTransparentStatusBar()
 
         binding.run {
-            llMypagePersonal.setOnClickListener { }
+            llMypagePersonal.setOnClickListener {
+                findNavController().navigate(R.id.myPageProfileFragment)
+            }
             llMypageNotice.setOnClickListener {
                 openUrl("https://balpyo.notion.site/3e95ef296572437cbcb081bd4ae4e111")
             }

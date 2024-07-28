@@ -289,5 +289,14 @@
         android:id="@+id/myPageFragment"
         android:name="com.project.balpyo.MyPage.MyPageFragment"
         android:label="fragment_my_page"
-        tools:layout="@layout/fragment_my_page" />
+        tools:layout="@layout/fragment_my_page" >
+        <action
+            android:id="@+id/action_myPageFragment_to_myPageProfileFragment"
+            app:destination="@id/myPageProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageProfileFragment"
+        android:name="com.project.balpyo.MyPage.MyPageProfileFragment"
+        android:label="fragment_my_page_profile"
+        tools:layout="@layout/fragment_my_page_profile" />
 </navigation>
