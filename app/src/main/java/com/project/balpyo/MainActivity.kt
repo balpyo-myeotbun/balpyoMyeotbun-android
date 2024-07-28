@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment, R.id.storageFragment -> setBottomNavigationVisibility(View.VISIBLE)
+                R.id.homeFragment, R.id.storageFragment, R.id.myPageFragment -> setBottomNavigationVisibility(View.VISIBLE)
                 else -> setBottomNavigationVisibility(View.GONE)
             }
         }
@@ -68,6 +68,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.storageFragment -> {
                     navController.navigate(R.id.storageFragment)
+                    true
+                }
+                R.id.myPageFragment -> {
+                    navController.navigate(R.id.myPageFragment)
                     true
                 }
                 else -> false
