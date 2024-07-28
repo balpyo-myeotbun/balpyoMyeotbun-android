@@ -77,7 +77,7 @@ class StorageFragment : Fragment() {
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
-                findNavController().popBackStack()
+                mainActivity.binding.bottomNavigation.selectedItemId = R.id.homeFragment
             }
         }
     }

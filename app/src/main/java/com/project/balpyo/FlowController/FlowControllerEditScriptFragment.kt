@@ -101,7 +101,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
                         //스크립트 마진 : 다음 버튼 크기 + 기본 마진
                         etScript.updateMargins(bottom = editTextMarginBottom + binding.btnBottomNext.height)
                         // 키보드의
-                        root.setPadding(0, 0, 0, keyboardHeight - navBarHeight)
+                        root.setPadding(0, 0, 0, keyboardHeight)
                         btnKeyboardNext.visibility = View.VISIBLE
                         btnLoadScript.visibility = View.GONE
                         btnBottomNext.visibility = View.GONE

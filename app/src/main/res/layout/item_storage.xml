@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/BottomSheetCL"
+    android:id="@+id/cl_item_storage"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
@@ -12,7 +12,7 @@
     android:padding="20dp">
 
     <TextView
-        android:id="@+id/tv_bs_title"
+        android:id="@+id/tv_item_storage_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_semi_bold"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_bs_content"
+        android:id="@+id/tv_item_storage_content"
         style="@style/XSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,10 +31,10 @@
         android:text="대본을 미리 볼 수 있습니다. 최대 20자까지 보여주면 좋겠 ••"
         android:textColor="@color/gray4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_bs_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_storage_title" />
 
     <TextView
-        android:id="@+id/tv_bs_time"
+        android:id="@+id/tv_item_storage_time"
         style="@style/XSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,13 +42,45 @@
         android:text="05.24 수 오전 11:40"
         android:textColor="@color/gray4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_bs_content" />
+        app:layout_constraintTop_toBottomOf="@id/tv_item_storage_content" />
 
-    <include
-        layout="@layout/tag_note"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/fl_item_storage_tag_flow"
+            layout="@layout/layout_tag_flow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/fl_item_storage_tag_time"
+            layout="@layout/layout_tag_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/fl_item_storage_tag_script"
+            layout="@layout/layout_tag_script"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/fl_item_storage_tag_note"
+            layout="@layout/layout_tag_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

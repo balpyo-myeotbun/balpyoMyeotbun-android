@@ -80,7 +80,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //문당 분리기
+    //문장 분리기
     implementation ("kr.bydelta:koalanlp-okt:2.1.4")
 
     // ViewModel
@@ -93,4 +93,7 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.3")
     //바텀네비게이션
     implementation ("com.google.android.material:material:1.4.0")
+
+    //뷰페이저
+    implementation ("androidx.viewpager2:viewpager2:1.1.0")
 }

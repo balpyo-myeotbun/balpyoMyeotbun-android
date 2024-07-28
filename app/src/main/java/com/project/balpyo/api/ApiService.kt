@@ -4,11 +4,15 @@ import com.project.balpyo.api.request.EditScriptRequest
 import com.project.balpyo.api.request.GenerateAudioRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
+import com.project.balpyo.api.request.SignInRequest
+import com.project.balpyo.api.request.SignUpRequest
 import com.project.balpyo.api.request.StoreScriptRequest
+import com.project.balpyo.api.response.BaseResponse
 import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.api.response.EditScriptResponse
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
+import com.project.balpyo.api.response.SignInResponse
 import com.project.balpyo.api.response.StorageDetailResponse
 import com.project.balpyo.api.response.StorageListResponse
 import com.project.balpyo.api.response.StoreScriptResponse
@@ -79,4 +83,10 @@ interface ApiService {
     // 스크립트 삭제
     @DELETE("every/manage/script/detail/{scriptId}")
     fun deleteScript(@Header("UID") uid: String, @Path("scriptId") scriptId: Int): Call<Void>
+
+    @POST("api/auth/signup")
+    fun signUp(@Body parameters: SignUpRequest): Call<BaseResponse>
+
+    @POST("api/auth/signin")
+    fun signIn(@Body parameters: SignInRequest): Call<SignInResponse>
 }
