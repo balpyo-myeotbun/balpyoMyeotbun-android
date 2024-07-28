@@ -122,6 +122,9 @@
         <action
             android:id="@+id/action_homeFragment_to_scriptResultFragment"
             app:destination="@id/scriptResultFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/scriptTitleFragment"
@@ -281,5 +284,36 @@
         <action
             android:id="@+id/action_signUpTermsFragment_to_signUpCompleteFragment"
             app:destination="@id/signUpCompleteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.project.balpyo.MyPage.MyPageFragment"
+        android:label="fragment_my_page"
+        tools:layout="@layout/fragment_my_page" >
+        <action
+            android:id="@+id/action_myPageFragment_to_myPageProfileFragment"
+            app:destination="@id/myPageProfileFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_myPageAccountFragment"
+            app:destination="@id/myPageAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageProfileFragment"
+        android:name="com.project.balpyo.MyPage.MyPageProfileFragment"
+        android:label="fragment_my_page_profile"
+        tools:layout="@layout/fragment_my_page_profile" />
+    <fragment
+        android:id="@+id/myPageCancelAccountFragment"
+        android:name="com.project.balpyo.MyPage.MyPageCancelAccountFragment"
+        android:label="fragment_my_page_cancle_account"
+        tools:layout="@layout/fragment_my_page_cancle_account" />
+    <fragment
+        android:id="@+id/myPageAccountFragment"
+        android:name="com.project.balpyo.MyPage.MyPageAccountFragment"
+        android:label="fragment_my_page_account"
+        tools:layout="@layout/fragment_my_page_account" >
+        <action
+            android:id="@+id/action_myPageAccountFragment_to_myPageCancelAccountFragment"
+            app:destination="@id/myPageCancelAccountFragment" />
     </fragment>
 </navigation>
