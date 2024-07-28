@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyPage.MyPageCancelAccountFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_mypage_cancel_account_content"
+        style="@style/Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="71dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edittext_script_rounded_corner_rectangle"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp"
+        android:text="탈퇴 시 발표몇분 계정이 삭제되며 연동된 계정으로 n일간  재가입할 수 없습니다. \n발표몇분에 저장된 대본 등 계정의 모든 데이터는 즉시 파기되며 이는 복구할 수 없습니다.\n단, 정보 수집 이용에 동의를 하신 경우에 한해 학습에 이용되는 데이터(대본 생성, 편집 데이터 등)는 비식별 처리되어 동의받은 기간 동안 보관됩니다."
+        android:textColor="@color/text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/ll_mypage_cancle_account"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/tv_mypage_cancel_account_content"
+        app:layout_constraintStart_toStartOf="@+id/tv_mypage_cancel_account_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mypage_cancel_account_content">
+
+        <ImageView
+            android:id="@+id/iv_mypage_cancel_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_uncheck" />
+
+        <TextView
+            android:id="@+id/tv_mypage_cancel_account"
+            style="@style/Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="발표몇분 탈퇴 정책에 동의합니다"
+            android:textColor="@color/disabled" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_mypage_cancel_account"
+        style="@style/CancelAccountButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="46dp"
+        android:enabled="false"
+        android:text="탈퇴하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

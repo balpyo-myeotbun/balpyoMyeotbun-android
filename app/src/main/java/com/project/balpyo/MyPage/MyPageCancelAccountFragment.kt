@@ -7,23 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
-import com.project.balpyo.R
-import com.project.balpyo.databinding.FragmentMyPageAccountBinding
+import com.project.balpyo.databinding.FragmentMyPageCancleAccountBinding
 
-class MyPageAccountFragment : Fragment() {
-    lateinit var binding: FragmentMyPageAccountBinding
+class MyPageCancelAccountFragment : Fragment() {
+    lateinit var binding: FragmentMyPageCancleAccountBinding
     lateinit var mainActivity: MainActivity
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMyPageAccountBinding.inflate(layoutInflater)
+        binding = FragmentMyPageCancleAccountBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
         binding.run {
-            tvMypageAccountCancel.setOnClickListener {
 
-            }
         }
         return binding.root
     }
