@@ -24,4 +24,21 @@ class TokenManager(val context: Context) {
         editor.remove("uid")
         editor.apply()
     }
+
+    fun saveToken(token: String){
+        val editor = sharedPreferences.edit()
+        editor.putString("token", token)
+        editor.apply()
+    }
+    fun getToken(): String? {
+        return sharedPreferences.getString("token", null)
+    }
+
+    fun deleteToken() {
+        val sharedPreferences = context.getSharedPreferences("TokenPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("token")
+        editor.apply()
+    }
+
 }

@@ -134,70 +134,7 @@ class HomeFragment : Fragment() {
             mainActivity.setTransparentStatusBar()
         }
 
-        //signUp()
-        //signIn()
-
         return binding.root
-    }
-
-    fun signUp() {
-        var apiClient = ApiClient(mainActivity)
-
-        apiClient.apiService.signUp(SignUpRequest("test", "test@naver.com", "1234"))?.enqueue(object :
-            Callback<BaseResponse> {
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: BaseResponse? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: BaseResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                }
-            }
-
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
-    }
-
-    fun signIn() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
-
-        apiClient.apiService.signIn(SignInRequest("test","1234"))?.enqueue(object :
-            Callback<SignInResponse> {
-            override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: SignInResponse? = response.body()
-                    tokenManager.saveUid("${result?.token}")
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: SignInResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                }
-            }
-
-            override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
     }
 
     private fun setupBannerViewPager() {
