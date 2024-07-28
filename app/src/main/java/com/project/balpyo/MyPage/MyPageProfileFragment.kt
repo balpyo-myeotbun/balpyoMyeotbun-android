@@ -20,6 +20,7 @@ class MyPageProfileFragment : Fragment() {
         binding = FragmentMyPageProfileBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        initToolBar()
         return binding.root
     }
 

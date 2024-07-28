@@ -24,6 +24,9 @@ class MyPageFragment : Fragment() {
         mainActivity.setTransparentStatusBar()
 
         binding.run {
+            tvMypageMainEmail.setOnClickListener {
+                findNavController().navigate(R.id.myPageAccountFragment)
+            }
             llMypagePersonal.setOnClickListener {
                 findNavController().navigate(R.id.myPageProfileFragment)
             }

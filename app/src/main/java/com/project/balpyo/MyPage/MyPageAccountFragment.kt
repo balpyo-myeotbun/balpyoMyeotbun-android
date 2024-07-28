@@ -20,9 +20,10 @@ class MyPageAccountFragment : Fragment() {
         binding = FragmentMyPageAccountBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        initToolBar()
         binding.run {
             tvMypageAccountCancel.setOnClickListener {
-
+                findNavController().navigate(R.id.myPageCancelAccountFragment)
             }
         }
         return binding.root
