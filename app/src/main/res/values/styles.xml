@@ -151,4 +151,15 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- Spinner -->
+    <style name="Spinner.Email" parent="Widget.AppCompat.Spinner">
+        <item name="android:overlapAnchor">false</item>
+        <item name="overlapAnchor"> false</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:dropDownWidth">match_parent</item>
+        <item name="android:dropDownVerticalOffset">8dp</item>
+        <item name="android:dropDownHeight">311dp</item>
+    </style>
+
+
 </resources>

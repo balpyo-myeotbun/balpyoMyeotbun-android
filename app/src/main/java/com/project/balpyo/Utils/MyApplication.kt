@@ -24,5 +24,9 @@ class MyApplication : Application() {
         var calculatedTimeSecond = 0
         var calculatedTime = 0L
         lateinit var speechMarks : List<SpeechMark>
+
+        //이메일 회원가입
+        var email = ""
+        var password = ""
     }
 }

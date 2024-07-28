@@ -8,17 +8,11 @@
     tools:context=".SplashFragment" >
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="-60dp"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="71dp"
-        android:layout_marginBottom="28dp"
-        android:src="@drawable/img_splash"
+        android:id="@+id/imageView_splash"
+        android:layout_width="210dp"
+        android:layout_height="176dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
