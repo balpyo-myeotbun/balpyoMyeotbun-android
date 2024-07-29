@@ -17,8 +17,8 @@ class MyPageFragment : Fragment() {
     lateinit var binding: FragmentMyPageBinding
     lateinit var mainActivity: MainActivity
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mainActivity = activity as MainActivity
         mainActivity.setTransparentStatusBar()
     }
@@ -28,6 +28,7 @@ class MyPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
 
         binding.run {
             tvMypageMainEmail.setOnClickListener {
@@ -57,8 +58,8 @@ class MyPageFragment : Fragment() {
         )
         startActivity(intent)
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onStop() {
+        super.onStop()
         mainActivity.resetStatusBar()
     }
 }

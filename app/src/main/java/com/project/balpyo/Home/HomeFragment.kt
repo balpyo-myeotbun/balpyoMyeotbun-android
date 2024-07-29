@@ -61,8 +61,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mainActivity = activity as MainActivity
         mainActivity.setTransparentStatusBar()
     }
@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        mainActivity = activity as MainActivity
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
@@ -176,10 +176,14 @@ class HomeFragment : Fragment() {
         handler.post(autoScrollRunnable)
     }
 
+    override fun onStop() {
+        super.onStop()
+        mainActivity.resetStatusBar()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         handler.removeCallbacks(autoScrollRunnable)
-        mainActivity.resetStatusBar()
     }
 
 }

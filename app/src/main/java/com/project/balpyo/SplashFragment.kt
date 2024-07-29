@@ -15,7 +15,13 @@ import com.project.balpyo.databinding.FragmentSplashBinding
 class SplashFragment : Fragment() {
 
     lateinit var binding: FragmentSplashBinding
+    lateinit var mainActivity: MainActivity
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainActivity = activity as MainActivity
+        mainActivity.setTransparentStatusBar()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,5 +37,10 @@ class SplashFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActivity.resetStatusBar()
     }
 }
