@@ -39,7 +39,7 @@ class StorageAdapter (var result: List<StorageListResult>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.title.text = result?.get(position)!!.title
+        holder.title.text = result[position].title
     }
 
     override fun getItemCount() = result.size
