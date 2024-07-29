@@ -41,6 +41,7 @@ class SignUpEmailFragment : Fragment() {
                         position: Int,
                         id: Long
                     ) {
+                        adapter.setSelection(position)
                         if (position == 0) {
                             domain = ""  // 직접 입력시 domain 초기화
                             isRegularEmail()

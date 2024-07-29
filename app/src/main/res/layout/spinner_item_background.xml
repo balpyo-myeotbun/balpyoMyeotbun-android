@@ -12,5 +12,4 @@
     android:text="text"
     android:textColor="@color/black"
     android:textColorHint="@color/disabled"
-    android:textSize="12sp"
     app:backgroundTint="@null" />
