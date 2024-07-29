@@ -80,7 +80,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
         val splitter = SentenceSplitter()
         val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
         flowControllerViewModel.setSplitScriptToSentences(paragraph)
-        findNavController().navigate(R.id.flowControllerAddTimeFragment2)
+        findNavController().navigate(R.id.flowControllerAddTimeFragment)
     }
     private fun setInsetsListener(){
         //adjustResize 버전 별 대응

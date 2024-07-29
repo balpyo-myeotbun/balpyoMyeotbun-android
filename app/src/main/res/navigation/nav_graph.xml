@@ -35,8 +35,8 @@
             app:destination="@id/flowControllerEditScriptFragment" />
     </fragment>
     <fragment
-        android:id="@+id/flowControllerAddTimeFragment2"
-        android:name="com.project.balpyo.FlowController.FlowControllerAddTimeFragment"
+        android:id="@+id/flowControllerAddTimeFragment"
+        android:name="com.project.balpyo.FlowController.AddTime.FlowControllerAddTimeFragment"
         android:label="fragment_flow_controller_add_time"
         tools:layout="@layout/fragment_flow_controller_add_time" >
         <action
@@ -50,7 +50,7 @@
         tools:layout="@layout/fragment_flow_controller_edit_script" >
         <action
             android:id="@+id/action_flowControllerEditScriptFragment_to_flowControllerAddTimeFragment2"
-            app:destination="@id/flowControllerAddTimeFragment2" />
+            app:destination="@id/flowControllerAddTimeFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerPreviewFragment"
