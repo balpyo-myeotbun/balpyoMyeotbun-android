@@ -1,5 +1,6 @@
 package com.project.balpyo.Home
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -60,13 +61,17 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = activity as MainActivity
+        mainActivity.setTransparentStatusBar()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        mainActivity = activity as MainActivity
 
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
@@ -130,8 +135,6 @@ class HomeFragment : Fragment() {
                 SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
             )
             tvHomeStorageTitle.text = spannableTitle
-
-            mainActivity.setTransparentStatusBar()
         }
 
         return binding.root
