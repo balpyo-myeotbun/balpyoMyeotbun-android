@@ -1,4 +1,4 @@
-package com.project.balpyo.Home
+package com.project.balpyo.Storage
 
 import android.content.Context
 import android.os.Bundle
@@ -17,8 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.Home.Adapter.StorageAdapter
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.Adapter.StorageAdapter
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.api.TokenManager
@@ -182,6 +182,28 @@ class StorageFragment : Fragment() {
                         } else {
                             updateLayoutMode(LayoutMode.RESULT)
                             storageAdapter.setItems(searchList)
+                        }
+                    }
+                }
+
+                ivStorageMainFilter.setOnClickListener {
+
+                    val filterText: String = etStorageSearch.text.toString()
+                    filterList.clear()
+                    if (filterText.isEmpty()) {
+                        storageAdapter.setItems(list)
+                    } else {
+                        for (item in list){
+                            if (item.tag!!.contains(filterText)){
+                                filterList.add(item)
+                            }
+                        }
+                        filterList = filterList.toMutableList()
+                        if (filterList.isEmpty()) {
+                            updateLayoutMode(LayoutMode.MAIN_EMPTY)
+                        } else {
+                            updateLayoutMode(LayoutMode.MAIN)
+                            storageAdapter.setItems(filterList)
                         }
                     }
                 }

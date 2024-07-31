@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.BottomSheet.BottomSheetListener
 import com.project.balpyo.BottomSheetData.BottomSheetItem
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 class BottomSheetAdapter(

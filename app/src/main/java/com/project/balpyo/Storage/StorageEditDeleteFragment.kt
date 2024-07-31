@@ -1,4 +1,4 @@
-package com.project.balpyo.Home
+package com.project.balpyo.Storage
 
 import android.os.Bundle
 import android.util.Log
@@ -11,14 +11,13 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.EditScriptRequest
 import com.project.balpyo.api.response.EditScriptResponse
-import com.project.balpyo.api.response.VerifyUidResponse
 import com.project.balpyo.databinding.FragmentStorageEditDeleteBinding
 import retrofit2.Call
 import retrofit2.Callback

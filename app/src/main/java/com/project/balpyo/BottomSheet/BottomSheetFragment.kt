@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project.balpyo.BottomSheetAdapter.BottomSheetAdapter
 import com.project.balpyo.BottomSheetData.BottomSheetItem
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.databinding.FragmentBottomsheetBinding
 

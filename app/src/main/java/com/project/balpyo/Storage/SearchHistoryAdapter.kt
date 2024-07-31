@@ -1,4 +1,4 @@
-package com.project.balpyo.Home
+package com.project.balpyo.Storage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,9 +1,7 @@
 package com.project.balpyo
 
 import android.content.Context
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -14,15 +12,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.findFragment
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.project.balpyo.Home.HomeFragment
-import com.project.balpyo.Home.StorageFragment
 import com.project.balpyo.Script.Data.ScriptResultData
-import com.project.balpyo.Script.ScriptResultFragment
 import com.project.balpyo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBFBFB"
-    tools:context=".Home.StorageFragment">
+    tools:context=".Storage.StorageFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_storage_search_toolbar"

@@ -1,47 +1,24 @@
 package com.project.balpyo.Home
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
-import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.project.balpyo.FlowController.FlowControllerTitleFragment
-import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Home.Adapter.BannerVPAdapter
-import com.project.balpyo.Home.Adapter.StorageAdapter
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.Adapter.StorageAdapter
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-import com.project.balpyo.Script.ScriptTimeFragment
-import com.project.balpyo.Script.ScriptTitleFragment
-import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
-import com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment
-import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.SignInRequest
-import com.project.balpyo.api.request.SignUpRequest
-import com.project.balpyo.api.response.BaseResponse
-import com.project.balpyo.api.response.GenerateUidResponse
-import com.project.balpyo.api.response.SignInResponse
-import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentHomeBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeFragment : Fragment() {
 

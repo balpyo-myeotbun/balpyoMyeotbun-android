@@ -191,7 +191,7 @@
     </fragment>
     <fragment
         android:id="@+id/storageFragment"
-        android:name="com.project.balpyo.Home.StorageFragment"
+        android:name="com.project.balpyo.Storage.StorageFragment"
         android:label="fragment_storage"
         tools:layout="@layout/fragment_storage" >
         <action
@@ -209,7 +209,7 @@
     </fragment>
     <fragment
         android:id="@+id/storageEditDeleteFragment"
-        android:name="com.project.balpyo.Home.StorageEditDeleteFragment"
+        android:name="com.project.balpyo.Storage.StorageEditDeleteFragment"
         android:label="fragment_storage_edit_delete"
         tools:layout="@layout/fragment_storage_edit_delete" />
     <fragment
