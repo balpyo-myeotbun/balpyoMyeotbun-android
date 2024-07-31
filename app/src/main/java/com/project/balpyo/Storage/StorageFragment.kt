@@ -21,6 +21,7 @@ import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Storage.Adapter.SearchHistoryAdapter
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentStorageBinding

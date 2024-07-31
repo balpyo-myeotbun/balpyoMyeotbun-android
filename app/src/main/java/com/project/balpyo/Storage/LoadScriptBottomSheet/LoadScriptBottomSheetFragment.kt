@@ -1,4 +1,4 @@
-package com.project.balpyo.BottomSheet
+package com.project.balpyo.Storage.LoadScriptBottomSheet
 
 import android.os.Bundle
 import android.util.TypedValue
@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.project.balpyo.BottomSheetAdapter.BottomSheetAdapter
-import com.project.balpyo.BottomSheetData.BottomSheetItem
+import com.project.balpyo.Storage.LoadScriptBottomSheet.Adapter.LoadScriptBottomSheetAdapter
+import com.project.balpyo.Storage.LoadScriptBottomSheet.Data.BottomSheetData
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.databinding.FragmentBottomsheetBinding
@@ -21,7 +21,7 @@ interface BottomSheetListener {
     fun onItemClicked(position: Int)
 }
 
-class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
+class LoadScriptBottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
     lateinit var binding: FragmentBottomsheetBinding
     lateinit var mainActivity: MainActivity
     var scriptId = mutableListOf<Long>()
@@ -36,14 +36,14 @@ class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
         // 데이터 관찰 및 설정
         viewModel.run {
             storageListForBottomSheet.observe(mainActivity) {
-                val items = mutableListOf<BottomSheetItem>()
+                val items = mutableListOf<BottomSheetData>()
 
                 for (i in it.indices) {
-                    items.add(BottomSheetItem(it[i].title))
+                    items.add(BottomSheetData(it[i].title))
                     scriptId.add(it[i].scriptId)
                 }
 
-                val adapter = BottomSheetAdapter(items, scriptId, viewModel, mainActivity, this@BottomSheetFragment)
+                val adapter = LoadScriptBottomSheetAdapter(items, scriptId, viewModel, mainActivity, this@LoadScriptBottomSheetFragment)
                 binding.rvBsScript.adapter = adapter
                 binding.rvBsScript.layoutManager = LinearLayoutManager(mainActivity)
 
