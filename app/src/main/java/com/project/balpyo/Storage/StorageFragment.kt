@@ -22,6 +22,8 @@ import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Storage.Adapter.SearchHistoryAdapter
+import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetFragment
+import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetListener
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentStorageBinding
@@ -38,9 +40,10 @@ enum class LayoutMode {
 class StorageUIViewModel : ViewModel() {
     val toolbarMode = MutableLiveData(ToolbarMode.MAIN)
     val layoutMode = MutableLiveData(LayoutMode.MAIN)
+    val selectedFilter = MutableLiveData(-1)
 }
 
-class StorageFragment : Fragment() {
+class StorageFragment : Fragment(), FilterBottomSheetListener {
 
     lateinit var binding: FragmentStorageBinding
     lateinit var mainActivity: MainActivity
@@ -52,8 +55,15 @@ class StorageFragment : Fragment() {
     lateinit var searchHistoryManager: SearchHistoryManager
     lateinit var searchHistoryAdapter: SearchHistoryAdapter
 
+    // 테스트 데이터 추가
+    var list : MutableList<StorageListResult> = mutableListOf()
     var searchList: MutableList<StorageListResult> = mutableListOf()
     var filterList: MutableList<StorageListResult> = mutableListOf()
+
+    var filterPosition = -1
+    var isSearchFilter = false
+
+    val filterBottomSheet = FilterBottomSheetFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,8 +81,7 @@ class StorageFragment : Fragment() {
         setupObservers()
 
         // 테스트 데이터 추가
-        //val list = createTestData()
-        val list : MutableList<StorageListResult> = mutableListOf()
+        list = createTestData()
 
         viewModel.storageList.observe(mainActivity) {
             binding.run {
@@ -188,25 +197,12 @@ class StorageFragment : Fragment() {
                 }
 
                 ivStorageMainFilter.setOnClickListener {
-
-                    val filterText: String = etStorageSearch.text.toString()
-                    filterList.clear()
-                    if (filterText.isEmpty()) {
-                        storageAdapter.setItems(list)
-                    } else {
-                        for (item in list){
-                            if (item.tag!!.contains(filterText)){
-                                filterList.add(item)
-                            }
-                        }
-                        filterList = filterList.toMutableList()
-                        if (filterList.isEmpty()) {
-                            updateLayoutMode(LayoutMode.MAIN_EMPTY)
-                        } else {
-                            updateLayoutMode(LayoutMode.MAIN)
-                            storageAdapter.setItems(filterList)
-                        }
-                    }
+                    isSearchFilter = false
+                    filterBottomSheet.show(childFragmentManager,filterBottomSheet.tag)
+                }
+                ivStorageSearchFilter.setOnClickListener {
+                    isSearchFilter = true
+                    filterBottomSheet.show(childFragmentManager,filterBottomSheet.tag)
                 }
 
                 tvStorageRecentDelete.setOnClickListener {
@@ -241,6 +237,46 @@ class StorageFragment : Fragment() {
         uiViewModel.layoutMode.observe(mainActivity) { updateLayoutUI(it) }
     }
 
+    override fun onFilterSelected(position: Int) {
+        if (filterPosition == position) {
+            filterPosition = -1 // 이미 선택된 필터를 다시 클릭하면 선택 해제
+            uiViewModel.selectedFilter.value = -1
+        } else {
+            filterPosition = position
+            uiViewModel.selectedFilter.value = position
+        }
+        applyFilter(filterPosition, isSearchFilter)
+    }
+
+    private fun applyFilter(position: Int, isSearchFilter: Boolean) {
+        val sourceList = if (isSearchFilter) searchList else list
+
+        val filterTag = when (position) {
+            0 -> "script"
+            1 -> "time"
+            2 -> "flow"
+            3 -> "note"
+            else -> ""
+        }
+
+        filterList = if (filterTag.isNotEmpty()) {
+            sourceList.filter { it.tag?.contains(filterTag) == true }.toMutableList()
+        } else {
+            sourceList.toMutableList()
+        }
+
+        storageAdapter.setItems(filterList)
+
+        if (filterList.isEmpty()) {
+            if (isSearchFilter) updateLayoutMode(LayoutMode.EMPTY_RESULT)
+            else updateLayoutMode(LayoutMode.MAIN_EMPTY)
+        } else {
+            if (isSearchFilter) updateLayoutMode(LayoutMode.RESULT)
+            else updateLayoutMode(LayoutMode.MAIN)
+        }
+    }
+
+
     private fun updateToolbarUI(mode: ToolbarMode) {
         binding.run {
             when (mode) {
@@ -256,11 +292,13 @@ class StorageFragment : Fragment() {
                     clStorageSearchToolbar.visibility = View.VISIBLE
                     tvStorageSearch.visibility = View.INVISIBLE
                     ivStorageSearchFilter.visibility = View.VISIBLE
+                    uiViewModel.selectedFilter.value = -1 // 선택 상태 초기화
                     etStorageSearch.background = requireContext().getDrawable(R.drawable.background_search)
                 }
                 ToolbarMode.MAIN -> {
                     clStorageMainToolbar.visibility = View.VISIBLE
                     clStorageSearchToolbar.visibility = View.INVISIBLE
+                    uiViewModel.selectedFilter.value = -1 // 선택 상태 초기화
                 }
             }
         }
