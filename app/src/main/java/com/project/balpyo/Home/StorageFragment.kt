@@ -31,7 +31,7 @@ enum class ToolbarMode {
 }
 
 enum class LayoutMode {
-    MAIN, RECENT, EMPTY_RECENT, RESULT, EMPTY_RESULT
+    MAIN, MAIN_EMPTY, RECENT, EMPTY_RECENT, RESULT, EMPTY_RESULT
 }
 
 class StorageUIViewModel : ViewModel() {
@@ -70,12 +70,18 @@ class StorageFragment : Fragment() {
         setupObservers()
 
         // 테스트 데이터 추가
-        val list = createTestData()
+        //val list = createTestData()
+        val list : MutableList<StorageListResult> = mutableListOf()
 
         viewModel.storageList.observe(mainActivity) {
             binding.run {
                 rvStorageMain.run {
                     storageAdapter = StorageAdapter(list)
+                    if(list.isEmpty())
+                        updateLayoutMode(LayoutMode.MAIN_EMPTY)
+                    else
+                        updateLayoutMode(LayoutMode.MAIN)
+
                     adapter = storageAdapter
                     layoutManager = LinearLayoutManager(mainActivity)
                     storageAdapter.itemClickListener =
@@ -192,8 +198,11 @@ class StorageFragment : Fragment() {
                 // 검색 모드 뒤로가기 버튼 클릭 이벤트 처리
                 ivStorageSearchBack.setOnClickListener {
                     storageAdapter.setItems(list)
+                    if(list.isEmpty())
+                        updateLayoutMode(LayoutMode.MAIN_EMPTY)
+                    else
+                        updateLayoutMode(LayoutMode.MAIN)
                     updateToolbarMode(ToolbarMode.MAIN)
-                    updateLayoutMode(LayoutMode.MAIN)
                 }
 
                 // 닉네임 하이라이팅 처리
@@ -243,6 +252,15 @@ class StorageFragment : Fragment() {
                     clStorageEmptyRecent.visibility = View.INVISIBLE
                     clStorageSearchResult.visibility = View.INVISIBLE
                     clStorageEmptySearch.visibility = View.INVISIBLE
+                    tvStorageMainEmpty.visibility= View.INVISIBLE
+                }
+                LayoutMode.MAIN_EMPTY -> {
+                    clStorageMainRv.visibility = View.VISIBLE
+                    clStorageRecent.visibility = View.INVISIBLE
+                    clStorageEmptyRecent.visibility = View.INVISIBLE
+                    clStorageSearchResult.visibility = View.INVISIBLE
+                    clStorageEmptySearch.visibility = View.INVISIBLE
+                    tvStorageMainEmpty.visibility= View.VISIBLE
                 }
                 LayoutMode.RECENT -> {
                     clStorageMainRv.visibility = View.INVISIBLE
