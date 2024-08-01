@@ -42,6 +42,8 @@ class ScriptSubtopicFragment : Fragment() {
             buttonRegister.visibility = View.INVISIBLE
             editTextChangeListener()
 
+            buttonNextKeyboard.bringToFront()
+
             buttonRegister.setOnClickListener {
                 if(subtopicList.size < 5) {
                     subtopicList.add(editTextSubtopic.text.toString())
@@ -174,6 +176,7 @@ class ScriptSubtopicFragment : Fragment() {
             if (keyboardHeight > visibleFrameHeight * 0.15) {
                 // 키보드가 올라옴
                 binding.buttonNextKeyboard.visibility = View.VISIBLE
+                binding.buttonNextKeyboard.bringToFront()
                 binding.buttonNext.visibility = View.GONE
                 binding.buttonNextKeyboard.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
             } else {

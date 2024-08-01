@@ -1,6 +1,8 @@
 package com.project.balpyo
 
 import android.content.Context
+import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -15,7 +17,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.balpyo.Script.Data.ScriptResultData
+import com.project.balpyo.Script.ScriptResultFragment
+import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceUtil
 import com.project.balpyo.databinding.ActivityMainBinding
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,16 +29,28 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
 
+    lateinit var notificationActivity: NotificationActivity
+
+    lateinit var sharedPreferenceManager: PreferenceUtil
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        notificationActivity = NotificationActivity()
+
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        MyApplication.preferences = PreferenceUtil(applicationContext)
+
+        setFCMToken()
+
         bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.itemIconTintList = null
         bottomNavigationView.setOnApplyWindowInsetsListener(null)
@@ -100,7 +118,11 @@ class MainActivity : AppCompatActivity() {
 
             if (fragment != null) {
                 when (fragmentToLoad) {
-                    "DetailFragment" -> navController.navigate(R.id.scriptResultFragment)
+                    "DetailFragment" -> {
+                        // 대본 생성 결과 화면으로 이동
+                        val notificationIntent = Intent(notificationActivity, NotificationActivity::class.java)
+                        startActivity(notificationIntent)
+                    }
                     else -> navController.navigate(R.id.homeFragment)
                 }
             }
@@ -133,5 +155,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.dispatchTouchEvent(ev)
+    }
+
+
+    fun setFCMToken(){
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d("FCM Token", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("FCM Token", "$token")
+            MyApplication.preferences.setFCMToken(token)
+            Log.d("FCM Token", "FCM 토큰 : ${MyApplication.preferences.getFCMToken()}")
+
+            if (this::sharedPreferenceManager.isInitialized) {
+                Log.d("FCM Token", "this::sharedPreferenceManager.isInitialized")
+                sharedPreferenceManager.setFCMToken(token)
+            }
+        }
     }
 }

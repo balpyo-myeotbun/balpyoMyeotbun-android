@@ -1,5 +1,6 @@
 package com.project.balpyo.Home
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,6 +19,19 @@ import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Script.ScriptTimeFragment
+import com.project.balpyo.Script.ScriptTitleFragment
+import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
+import com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment
+import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.api.ApiClient
+import com.project.balpyo.api.TokenManager
+import com.project.balpyo.api.request.SignInRequest
+import com.project.balpyo.api.request.SignUpRequest
+import com.project.balpyo.api.response.BaseResponse
+import com.project.balpyo.api.response.GenerateUidResponse
+import com.project.balpyo.api.response.SignInResponse
+import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -27,6 +41,9 @@ class HomeFragment : Fragment() {
 
     lateinit var viewModel: StorageViewModel
     private val handler = Handler(Looper.getMainLooper())
+
+    private lateinit var animationDrawable: AnimationDrawable
+
     //배너 자동 스크롤
     private val autoScrollRunnable = object : Runnable {
         override fun run() {
@@ -48,8 +65,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
+
+        animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
+
         binding = FragmentHomeBinding.inflate(layoutInflater)
         mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
+
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.getStorageList(this@HomeFragment, mainActivity)
@@ -86,6 +107,7 @@ class HomeFragment : Fragment() {
         setupBannerViewPager()
 
         binding.run {
+
             ibHomeStorage.setOnClickListener {
                 mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
             }
@@ -151,6 +173,22 @@ class HomeFragment : Fragment() {
         })
 
         handler.post(autoScrollRunnable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 대본 생성 로딩 이미지
+        binding.run {
+            if (MyApplication.scriptGenerating) {
+                animationDrawable.start()
+                imageViewLoading.visibility = View.VISIBLE
+                imageViewBackgroundLoading.visibility = View.VISIBLE
+            } else {
+                imageViewLoading.visibility = View.INVISIBLE
+                imageViewBackgroundLoading.visibility = View.INVISIBLE
+            }
+        }
     }
 
     override fun onStop() {

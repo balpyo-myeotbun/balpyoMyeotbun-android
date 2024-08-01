@@ -129,6 +129,30 @@
                     app:strokeColor="@color/gray1"
                     app:strokeWidth="1dp" />
 
+                <ImageView
+                    android:id="@+id/imageView_loading"
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:layout_marginTop="14dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/animation_loading_script_generating"
+                    android:translationZ="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_home_script"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_home_script"
+                    app:layout_constraintStart_toStartOf="@+id/ll_home_script"
+                    app:layout_constraintTop_toTopOf="@+id/ll_home_script"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <ImageView
+                    android:id="@+id/imageView_background_loading"
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:src="@drawable/background_loading"
+                    android:translationZ="1dp"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_home_script"
+                    app:layout_constraintStart_toStartOf="@+id/ll_home_script"
+                    app:layout_constraintTop_toTopOf="@+id/ll_home_script" />
+
                 <LinearLayout
                     android:id="@+id/ll_home_script"
                     android:layout_width="wrap_content"
