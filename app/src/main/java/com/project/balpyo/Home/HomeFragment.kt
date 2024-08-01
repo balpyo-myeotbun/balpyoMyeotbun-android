@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
+        mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.getStorageList(this@HomeFragment, mainActivity)
