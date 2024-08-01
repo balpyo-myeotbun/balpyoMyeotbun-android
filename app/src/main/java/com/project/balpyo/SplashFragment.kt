@@ -30,7 +30,6 @@ class SplashFragment : Fragment() {
         binding = FragmentSplashBinding.inflate(layoutInflater)
 
         binding.run {
-            Glide.with(requireContext()).load(R.raw.splash).into(imageViewSplash)
             Handler().postDelayed({
                 findNavController().navigate(R.id.loginFragment)
             }, 3000)
