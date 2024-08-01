@@ -1,4 +1,4 @@
-package com.project.balpyo.Home.ViewModel
+package com.project.balpyo.Storage.ViewModel
 
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -6,9 +6,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.NavHostFragment
-import com.project.balpyo.BottomSheet.BottomSheetFragment
+import com.project.balpyo.Storage.LoadScriptBottomSheet.LoadScriptBottomSheetFragment
 import com.project.balpyo.MainActivity
-import com.project.balpyo.R
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.response.StorageDetailResponse
@@ -175,7 +174,7 @@ class StorageViewModel: ViewModel() {
 
                     storageListForBottomSheet.value = tempList
 
-                    val bottomSheetFragment = BottomSheetFragment()
+                    val bottomSheetFragment = LoadScriptBottomSheetFragment()
                     bottomSheetFragment.show(fragmentManager, bottomSheetFragment.tag)
 
                 } else {

@@ -1,4 +1,4 @@
-package com.project.balpyo.BottomSheetAdapter
+package com.project.balpyo.Storage.LoadScriptBottomSheet.Adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.project.balpyo.BottomSheet.BottomSheetListener
-import com.project.balpyo.BottomSheetData.BottomSheetItem
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.LoadScriptBottomSheet.BottomSheetListener
+import com.project.balpyo.Storage.LoadScriptBottomSheet.Data.BottomSheetData
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-class BottomSheetAdapter(
-    private val items: MutableList<BottomSheetItem>,
+class LoadScriptBottomSheetAdapter(
+    private val items: MutableList<BottomSheetData>,
     var scriptId: MutableList<Long>,
     var viewModel: StorageViewModel,
     var mainActivity: MainActivity,

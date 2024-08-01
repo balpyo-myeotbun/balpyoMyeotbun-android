@@ -15,7 +15,7 @@ import androidx.core.view.marginTop
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Utils.MyApplication

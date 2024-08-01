@@ -27,6 +27,11 @@ class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainActivity = activity as MainActivity
+        mainActivity.setTransparentStatusBar()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -120,5 +125,10 @@ class LoginFragment : Fragment() {
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActivity.resetStatusBar()
     }
 }

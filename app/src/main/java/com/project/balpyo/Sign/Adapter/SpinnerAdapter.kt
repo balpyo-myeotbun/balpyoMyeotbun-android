@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import com.project.balpyo.R
 import com.project.balpyo.Sign.SignUpEmailFragment
 import com.project.balpyo.databinding.SpinnerItemBackgroundBinding
@@ -16,9 +17,24 @@ class SpinnerAdapter<T>(context: Context, val fragment: SignUpEmailFragment) :
     ArrayAdapter<String>(context, R.layout.spinner_default_background, listOf("직접 입력", "gmail.com", "naver.com", "hanmail.com", "kakao.com", "nate.com", "outlook.com", "icloud.com")) {
 
     lateinit var editbinding: SpinnerItemBackgroundEditBinding
+    private var mSelectedIndex = -1
+
+    fun setSelection(position: Int) {
+        mSelectedIndex = position
+        notifyDataSetChanged()
+    }
+
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = SpinnerItemBackgroundBinding.inflate(LayoutInflater.from(context), parent, false)
         binding.tvSpinnerItemBackground.text = this.getItem(position)
+
+        // 선택된 아이템의 글자 색상 변경
+        if (position == mSelectedIndex) {
+            binding.tvSpinnerItemBackground.setTextColor(context.getColor(R.color.primary))
+        } else {
+            binding.tvSpinnerItemBackground.setTextColor(context.getColor(R.color.black))
+        }
+
         return binding.root
     }
 
@@ -37,7 +53,7 @@ class SpinnerAdapter<T>(context: Context, val fragment: SignUpEmailFragment) :
                     if (!s.isNullOrEmpty()) {
                         fragment.domain = s.toString()
                         fragment.isRegularEmail()
-                    }else{
+                    } else {
                         fragment.isRegularEmail()
                     }
                 }

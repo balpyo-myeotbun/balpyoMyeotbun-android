@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerEditScriptBinding
@@ -80,7 +80,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
         val splitter = SentenceSplitter()
         val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
         flowControllerViewModel.setSplitScriptToSentences(paragraph)
-        findNavController().navigate(R.id.flowControllerAddTimeFragment2)
+        findNavController().navigate(R.id.flowControllerAddTimeFragment)
     }
     private fun setInsetsListener(){
         //adjustResize 버전 별 대응
