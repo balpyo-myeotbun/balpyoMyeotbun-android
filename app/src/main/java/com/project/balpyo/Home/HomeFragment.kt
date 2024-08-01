@@ -1,5 +1,6 @@
 package com.project.balpyo.Home
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -29,6 +30,7 @@ import com.project.balpyo.Script.ScriptTimeFragment
 import com.project.balpyo.Script.ScriptTitleFragment
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment
+import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.SignInRequest
@@ -49,6 +51,9 @@ class HomeFragment : Fragment() {
 
     lateinit var viewModel: StorageViewModel
     private val handler = Handler(Looper.getMainLooper())
+
+    private lateinit var animationDrawable: AnimationDrawable
+
     //배너 자동 스크롤
     private val autoScrollRunnable = object : Runnable {
         override fun run() {
@@ -67,6 +72,8 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
 
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
@@ -104,6 +111,7 @@ class HomeFragment : Fragment() {
         setupBannerViewPager()
 
         binding.run {
+
             ibHomeStorage.setOnClickListener {
                 mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
             }
@@ -171,6 +179,22 @@ class HomeFragment : Fragment() {
         })
 
         handler.post(autoScrollRunnable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 대본 생성 로딩 이미지
+        binding.run {
+            if (MyApplication.scriptGenerating) {
+                animationDrawable.start()
+                imageViewLoading.visibility = View.VISIBLE
+                imageViewBackgroundLoading.visibility = View.VISIBLE
+            } else {
+                imageViewLoading.visibility = View.INVISIBLE
+                imageViewBackgroundLoading.visibility = View.INVISIBLE
+            }
+        }
     }
 
     override fun onDestroyView() {
