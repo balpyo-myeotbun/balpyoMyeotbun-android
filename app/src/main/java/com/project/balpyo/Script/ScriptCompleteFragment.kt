@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentScriptCompleteBinding
@@ -52,6 +53,9 @@ class ScriptCompleteFragment : Fragment() {
         initToolBar()
 
         binding.run {
+
+            Glide.with(mainActivity).load(R.raw.script_check).override(560, 560).into(binding.imageViewCheck)
+
             buttonAlarm.setOnClickListener {
                 requestPermission()
             }
