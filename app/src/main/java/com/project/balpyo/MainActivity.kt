@@ -23,13 +23,19 @@ import com.project.balpyo.Home.HomeFragment
 import com.project.balpyo.Home.StorageFragment
 import com.project.balpyo.Script.Data.ScriptResultData
 import com.project.balpyo.Script.ScriptResultFragment
+import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceUtil
 import com.project.balpyo.databinding.ActivityMainBinding
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
+
+    lateinit var sharedPreferenceManager: PreferenceUtil
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +50,9 @@ class MainActivity : AppCompatActivity() {
                 insets
         }
 
+        MyApplication.preferences = PreferenceUtil(applicationContext)
+
+        setFCMToken()
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -142,5 +151,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.dispatchTouchEvent(ev)
+    }
+
+
+    fun setFCMToken(){
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d("FCM Token", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("FCM Token", "$token")
+            MyApplication.preferences.setFCMToken(token)
+            Log.d("FCM Token", "FCM 토큰 : ${MyApplication.preferences.getFCMToken()}")
+
+            if (this::sharedPreferenceManager.isInitialized) {
+                Log.d("FCM Token", "this::sharedPreferenceManager.isInitialized")
+                sharedPreferenceManager.setFCMToken(token)
+            }
+        }
     }
 }

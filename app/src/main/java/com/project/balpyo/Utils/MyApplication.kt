@@ -7,6 +7,7 @@ import com.project.balpyo.api.response.SpeechMark
 class MyApplication : Application() {
     companion object {
 
+        lateinit var preferences: PreferenceUtil
 
         // 1. 발표 시간 맞춤형 스크립트 생성
         var scriptTitle = ""
