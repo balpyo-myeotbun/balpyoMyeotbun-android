@@ -252,7 +252,11 @@
         android:id="@+id/scriptCompleteFragment"
         android:name="com.project.balpyo.Script.ScriptCompleteFragment"
         android:label="fragment_script_complete"
-        tools:layout="@layout/fragment_script_complete" />
+        tools:layout="@layout/fragment_script_complete" >
+        <action
+            android:id="@+id/action_scriptCompleteFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpEmailFragment"
         android:name="com.project.balpyo.Sign.SignUpEmailFragment"
