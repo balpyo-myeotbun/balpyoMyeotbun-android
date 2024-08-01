@@ -66,43 +66,10 @@ class ScriptCheckFragment : Fragment() {
         observeKeyboardState()
         checkEnabled()
 
-        /*
-
-        //알림 권한을 요청하기 위함
-        //현재 이 코드 수행하지 않음
-        val registerForActivityResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val deniedPermissionList = permissions.filter { !it.value }.map { it.key }
-            when {
-                deniedPermissionList.isNotEmpty() -> {
-                    val map = deniedPermissionList.groupBy { permission ->
-                        if (shouldShowRequestPermissionRationale(permission)) ScriptTimeFragment.DENIED else ScriptTimeFragment.EXPLAINED
-                    }
-                    //권한이 없으면 기존처럼 로딩 프래그먼트
-                    map[ScriptTimeFragment.DENIED]?.let {
-                        Toast.makeText(requireContext(), "앱을 종료하지 마세요", Toast.LENGTH_LONG).show()
-                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                        findNavController().navigate(R.id.loadingFragment)
-                    }
-                    map[ScriptTimeFragment.EXPLAINED]?.let {
-                        Toast.makeText(requireContext(), "앱을 종료하지 마세요", Toast.LENGTH_LONG).show()
-                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                        findNavController().navigate(R.id.loadingFragment)
-                    }
-                }
-                else -> {
-                    // 모든 권한이 허가 되었을 때
-                    // 홈으로 이동
-                    Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!", Toast.LENGTH_LONG).show()
-                    viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                    findNavController().navigate(R.id.homeFragment)
-                }
-            }
-        }
-        */
-
         binding.run {
-            buttonNext.setOnClickListener {
+            buttonComplete.setOnClickListener {
                 viewModel.generateScript(this@ScriptCheckFragment, mainActivity)
+                Log.d("발표몇분", "대본 생성 요청")
                 findNavController().navigate(R.id.scriptCompleteFragment)
             }
 
@@ -334,10 +301,10 @@ class ScriptCheckFragment : Fragment() {
             Log.d("발표몇분", "소주제 : ${subtopicList.size}")
 
             if(isTitleFilled && isTopicFilled && (subtopicList.size > 0)) {
-                buttonNext.isEnabled = true
+                buttonComplete.isEnabled = true
                 buttonNextKeyboard.isEnabled = true
             } else {
-                buttonNext.isEnabled = false
+                buttonComplete.isEnabled = false
                 buttonNextKeyboard.isEnabled = false
             }
         }
@@ -359,12 +326,12 @@ class ScriptCheckFragment : Fragment() {
             if (keyboardHeight > visibleFrameHeight * 0.15) {
                 // 키보드가 올라옴
                 binding.buttonNextKeyboard.visibility = View.VISIBLE
-                binding.buttonNext.visibility = View.GONE
+                binding.buttonComplete.visibility = View.GONE
                 binding.buttonNextKeyboard.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
             } else {
                 // 키보드가 내려감
                 binding.buttonNextKeyboard.visibility = View.GONE
-                binding.buttonNext.visibility = View.VISIBLE
+                binding.buttonComplete.visibility = View.VISIBLE
             }
         }
     }
