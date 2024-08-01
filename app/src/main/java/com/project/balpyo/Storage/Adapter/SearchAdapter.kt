@@ -11,10 +11,14 @@ import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.ItemStorageBinding
 
 
-class StorageAdapter (var result: List<StorageListResult>) :
-    RecyclerView.Adapter<StorageAdapter.ViewHolder>() {
+class SearchAdapter (var result: List<StorageListResult>) :
+    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+    private var onItemClickListener: ((Int) -> Unit)? = null
     private var context: Context? = null
 
+    fun setOnItemClickListener(listener: (Int) -> Unit) {
+        onItemClickListener = listener
+    }
 
     fun setItems(list: List<StorageListResult>) {
         result = list
@@ -39,7 +43,8 @@ class StorageAdapter (var result: List<StorageListResult>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.run {
             title.text = result[position].title
-            content.text = result[position].script?.let { getFirst20CharsIgnoringSpaces(it) }
+            content.maxLines = 3
+            content.text = result[position].script
 
             // 태그 초기화
             tagNote.visibility = View.GONE
@@ -56,22 +61,6 @@ class StorageAdapter (var result: List<StorageListResult>) :
                 }
             }
         }
-    }
-
-    //공백을 세지 않고 20자로 제한하는 함수
-    fun getFirst20CharsIgnoringSpaces(input: String): String {
-        val result = StringBuilder()
-        var count = 0
-
-        for (char in input) {
-            if (!char.isWhitespace()) {
-                count++
-            }
-            result.append(char)
-            if (count == 20) break
-        }
-
-        return result.toString()
     }
 
     override fun getItemCount() = result.size

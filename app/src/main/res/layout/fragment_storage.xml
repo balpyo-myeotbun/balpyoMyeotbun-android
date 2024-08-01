@@ -176,10 +176,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_storage_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="22dp"
             android:layout_marginEnd="16dp"
+            android:paddingBottom="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/cl_storage_main_rv"
             app:layout_constraintStart_toStartOf="@id/cl_storage_main_rv"
             app:layout_constraintTop_toBottomOf="@+id/tv_storage_main_nickname">
@@ -276,7 +278,7 @@
         android:id="@+id/cl_storage_search_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -296,11 +298,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_storage_search_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
+            android:paddingBottom="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_storage_search_result_title" />

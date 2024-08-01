@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Storage.Adapter.SearchAdapter
 import com.project.balpyo.Storage.Adapter.SearchHistoryAdapter
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetFragment
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetListener
@@ -51,6 +53,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
     lateinit var uiViewModel: StorageUIViewModel
     private lateinit var flowControllerViewModel: FlowControllerViewModel
     lateinit var storageAdapter: StorageAdapter
+    lateinit var searchAdapter: SearchAdapter
 
     lateinit var searchHistoryManager: SearchHistoryManager
     lateinit var searchHistoryAdapter: SearchHistoryAdapter
@@ -87,6 +90,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
             binding.run {
                 rvStorageMain.run {
                     storageAdapter = StorageAdapter(list)
+                    searchAdapter = SearchAdapter(list)
                     if(list.isEmpty())
                         updateLayoutMode(LayoutMode.MAIN_EMPTY)
                     else
@@ -110,7 +114,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                         }
                 }
                 rvStorageSearchResult.run{
-                    adapter = storageAdapter
+                    adapter = searchAdapter
                     layoutManager = LinearLayoutManager(mainActivity)
                     storageAdapter.itemClickListener =
                         object : StorageAdapter.OnItemClickListener {
@@ -181,7 +185,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                     searchList.clear()
                     if (searchText.isEmpty()) {
                         updateLayoutMode(LayoutMode.EMPTY_RESULT)
-                        storageAdapter.setItems(mutableListOf())
+                        searchAdapter.setItems(mutableListOf())
                     } else {
                         searchList = list.filter {
                             it.script?.lowercase(Locale.getDefault())?.contains(searchText.lowercase(Locale.getDefault()))
@@ -191,7 +195,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                             updateLayoutMode(LayoutMode.EMPTY_RESULT)
                         } else {
                             updateLayoutMode(LayoutMode.RESULT)
-                            storageAdapter.setItems(searchList)
+                            searchAdapter.setItems(searchList)
                         }
                     }
                 }
@@ -250,6 +254,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
 
     private fun applyFilter(position: Int, isSearchFilter: Boolean) {
         val sourceList = if (isSearchFilter) searchList else list
+        Log.d("", searchList.toString())
 
         val filterTag = when (position) {
             0 -> "script"
@@ -266,10 +271,15 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
         }
 
         storageAdapter.setItems(filterList)
+        searchAdapter.setItems(filterList)
 
         if (filterList.isEmpty()) {
-            if (isSearchFilter) updateLayoutMode(LayoutMode.EMPTY_RESULT)
-            else updateLayoutMode(LayoutMode.MAIN_EMPTY)
+            if (isSearchFilter) {
+                updateLayoutMode(LayoutMode.EMPTY_RESULT)
+            }
+            else {
+                updateLayoutMode(LayoutMode.MAIN_EMPTY)
+            }
         } else {
             if (isSearchFilter) updateLayoutMode(LayoutMode.RESULT)
             else updateLayoutMode(LayoutMode.MAIN)
