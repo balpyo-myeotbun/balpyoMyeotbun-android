@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_filter_bottomsheet"
+    android:padding="22dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_filter_bs_script"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_filter_bs_script"
+            style="@style/Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="대본 생성"
+            android:textColor="@color/disabled" />
+
+        <ImageView
+            android:id="@+id/iv_filter_bs_script"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_check_selected"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_filter_bs_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_filter_bs_time"
+            style="@style/Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="시간 계산"
+            android:textColor="@color/disabled"/>
+
+        <ImageView
+            android:id="@+id/iv_filter_bs_time"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_check_selected"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_filter_bs_flow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_filter_bs_flow"
+            style="@style/Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="발표 연습"
+            android:textColor="@color/disabled"/>
+
+        <ImageView
+            android:id="@+id/iv_filter_bs_flow"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_check_selected"
+            android:visibility="invisible" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_filter_bs_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_filter_bs_note"
+            style="@style/Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Note"
+            android:textColor="@color/disabled"/>
+
+        <ImageView
+            android:id="@+id/iv_filter_bs_note"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_check_selected"
+            android:visibility="invisible" />
+    </LinearLayout>
+</LinearLayout>

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -25,13 +26,15 @@ class LoadingFragment : Fragment() {
     ): View? {
 
         binding = FragmentLoadingBinding.inflate(layoutInflater)
-        val toolbarTitle = args.toolbarTitle
-        val comment = args.comment
+        //val toolbarTitle = args.toolbarTitle
+        //val comment = args.comment
 
         binding.run {
-            Glide.with(requireContext()).load(R.raw.loading).into(imageViewLoading)
-            toolbar.textViewTitle.text = toolbarTitle
-            textViewSubLoading.setText(comment)
+            // 애니메이션 로드 및 시작
+            val rotateAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate)
+            imageViewLoading.startAnimation(rotateAnimation)
+            toolbar.textViewTitle.text = args.toolbarTitle
+            textViewSubLoading.text = args.comment
         }
 
         initToolBar()

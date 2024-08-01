@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,13 +14,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.findFragment
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.project.balpyo.Home.HomeFragment
-import com.project.balpyo.Home.StorageFragment
 import com.project.balpyo.Script.Data.ScriptResultData
 import com.project.balpyo.Script.ScriptResultFragment
 import com.project.balpyo.Utils.MyApplication
@@ -47,17 +41,20 @@ class MainActivity : AppCompatActivity() {
         notificationActivity = NotificationActivity()
 
         setContentView(binding.root)
-        bottomNavigationView = binding.bottomNavigation
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
-            bottomNavigationView.layoutParams.height = 162 + systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
-                insets
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
 
         MyApplication.preferences = PreferenceUtil(applicationContext)
 
         setFCMToken()
+
+        bottomNavigationView = binding.bottomNavigation
+        bottomNavigationView.itemIconTintList = null
+        bottomNavigationView.setOnApplyWindowInsetsListener(null)
+        bottomNavigationView.setPadding(0,0,0,0)
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -135,8 +132,7 @@ class MainActivity : AppCompatActivity() {
     fun setTransparentStatusBar() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, 0)
-            bottomNavigationView.layoutParams.height = 162 + systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
     }
@@ -144,8 +140,7 @@ class MainActivity : AppCompatActivity() {
     fun resetStatusBar() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
-            bottomNavigationView.layoutParams.height = 162 + systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
     }

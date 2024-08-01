@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpEmailFragment"
             app:destination="@id/signUpEmailFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpTermsFragment"
+            app:destination="@id/signUpTermsFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerTitleFragment"
@@ -35,8 +38,8 @@
             app:destination="@id/flowControllerEditScriptFragment" />
     </fragment>
     <fragment
-        android:id="@+id/flowControllerAddTimeFragment2"
-        android:name="com.project.balpyo.FlowController.FlowControllerAddTimeFragment"
+        android:id="@+id/flowControllerAddTimeFragment"
+        android:name="com.project.balpyo.FlowController.AddTime.FlowControllerAddTimeFragment"
         android:label="fragment_flow_controller_add_time"
         tools:layout="@layout/fragment_flow_controller_add_time" >
         <action
@@ -50,7 +53,7 @@
         tools:layout="@layout/fragment_flow_controller_edit_script" >
         <action
             android:id="@+id/action_flowControllerEditScriptFragment_to_flowControllerAddTimeFragment2"
-            app:destination="@id/flowControllerAddTimeFragment2" />
+            app:destination="@id/flowControllerAddTimeFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerPreviewFragment"
@@ -191,7 +194,7 @@
     </fragment>
     <fragment
         android:id="@+id/storageFragment"
-        android:name="com.project.balpyo.Home.StorageFragment"
+        android:name="com.project.balpyo.Storage.StorageFragment"
         android:label="fragment_storage"
         tools:layout="@layout/fragment_storage" >
         <action
@@ -209,7 +212,7 @@
     </fragment>
     <fragment
         android:id="@+id/storageEditDeleteFragment"
-        android:name="com.project.balpyo.Home.StorageEditDeleteFragment"
+        android:name="com.project.balpyo.Storage.StorageEditDeleteFragment"
         android:label="fragment_storage_edit_delete"
         tools:layout="@layout/fragment_storage_edit_delete" />
     <fragment
@@ -297,6 +300,9 @@
         <action
             android:id="@+id/action_signUpTermsFragment_to_signUpCompleteFragment"
             app:destination="@id/signUpCompleteFragment" />
+        <argument
+            android:name="isKaKao"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/myPageFragment"

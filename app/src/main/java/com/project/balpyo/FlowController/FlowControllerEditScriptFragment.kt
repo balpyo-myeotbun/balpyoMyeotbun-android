@@ -1,5 +1,6 @@
 package com.project.balpyo.FlowController
 
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -17,7 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerEditScriptBinding
@@ -67,8 +68,8 @@ class FlowControllerEditScriptFragment() : Fragment() {
                 binding.etScript.setText(flowControllerViewModel.getNormalScriptData().value)
             }
         }
-
-        setInsetsListener()
+        observeKeyboardState()
+        //setInsetsListener()
         initToolBar()
 
         return binding.root
@@ -80,46 +81,33 @@ class FlowControllerEditScriptFragment() : Fragment() {
         val splitter = SentenceSplitter()
         val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
         flowControllerViewModel.setSplitScriptToSentences(paragraph)
-        findNavController().navigate(R.id.flowControllerAddTimeFragment2)
+        findNavController().navigate(R.id.flowControllerAddTimeFragment)
     }
-    private fun setInsetsListener(){
-        //adjustResize 버전 별 대응
-        //키보드 올라옴에 따라 인셋 변경 (안하면 시스템 UI에 의해 키보드 위 다음 버튼에 여백 생김)
-        binding.run {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                root.setOnApplyWindowInsetsListener { _, windowInsets ->
-                    //키보드
-                    val imeInsets = windowInsets.getInsets(WindowInsets.Type.ime())
-                    //네비게이션 바
-                    val navBarInsets = windowInsets.getInsets(WindowInsets.Type.navigationBars())
+    private fun observeKeyboardState() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            var originHeight = -1
+            if ( binding.root.height > originHeight) {
+                originHeight =  binding.root.height
+            }
 
-                    val keyboardHeight = imeInsets.bottom
-                    val navBarHeight = navBarInsets.bottom
+            val visibleFrameSize = Rect()
+            binding.root.getWindowVisibleDisplayFrame(visibleFrameSize)
 
-                    if (keyboardHeight > navBarHeight) {
-                        //키보드 올라옴
-                        //스크립트 마진 : 다음 버튼 크기 + 기본 마진
-                        etScript.updateMargins(bottom = editTextMarginBottom + binding.btnBottomNext.height)
-                        // 키보드의
-                        root.setPadding(0, 0, 0, keyboardHeight)
-                        btnKeyboardNext.visibility = View.VISIBLE
-                        btnLoadScript.visibility = View.GONE
-                        btnBottomNext.visibility = View.GONE
-                    } else {
-                        //키보드 내려감
-                        etScript.updateMargins(bottom = editTextMarginBottom)
-                        root.setPadding(0, 0, 0, 0)
-                        btnKeyboardNext.visibility = View.GONE
-                        btnLoadScript.visibility = View.VISIBLE
-                        btnBottomNext.visibility = View.VISIBLE
-                    }
-                    windowInsets
-                }
+            val visibleFrameHeight = visibleFrameSize.bottom - visibleFrameSize.top
+            val keyboardHeight = originHeight - visibleFrameHeight
+
+            if (keyboardHeight > visibleFrameHeight * 0.15) {
+                // 키보드가 올라옴
+                //스크립트 마진 : 다음 버튼 크기 + 기본 마진
+                binding.etScript.updateMargins(bottom = editTextMarginBottom + binding.btnBottomNext.height)
+                binding.btnKeyboardNext.visibility = View.VISIBLE
+                binding.btnBottomNext.visibility = View.GONE
+                binding.btnKeyboardNext.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
             } else {
-                requireActivity().window.setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN or
-                            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-                )
+                // 키보드가 내려감
+                binding.etScript.updateMargins(bottom = editTextMarginBottom)
+                binding.btnKeyboardNext.visibility = View.GONE
+                binding.btnBottomNext.visibility = View.VISIBLE
             }
         }
     }

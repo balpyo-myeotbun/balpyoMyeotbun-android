@@ -32,4 +32,8 @@
     <color name="tag_time_text">#57008C</color>
     <color name="tag_script_bg">#DEEEFF</color>
     <color name="tag_script_text">#0F2B4B</color>
+
+    <!-- highlight text -->
+    <color name="search_color">#FFF500</color>
+
 </resources>

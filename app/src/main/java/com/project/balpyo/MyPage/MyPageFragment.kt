@@ -1,5 +1,6 @@
 package com.project.balpyo.MyPage
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,13 +16,19 @@ import com.project.balpyo.databinding.FragmentMyPageBinding
 class MyPageFragment : Fragment() {
     lateinit var binding: FragmentMyPageBinding
     lateinit var mainActivity: MainActivity
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainActivity = activity as MainActivity
+        mainActivity.setTransparentStatusBar()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        mainActivity.setTransparentStatusBar()
 
         binding.run {
             tvMypageMainEmail.setOnClickListener {
@@ -51,8 +58,8 @@ class MyPageFragment : Fragment() {
         )
         startActivity(intent)
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onStop() {
+        super.onStop()
         mainActivity.resetStatusBar()
     }
 }

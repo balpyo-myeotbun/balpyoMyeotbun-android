@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
+import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
 import com.project.balpyo.Script.ScriptTitleFragment
 import com.project.balpyo.TimeCalculator.TimeCalculatorScriptFragment
 import com.project.balpyo.Utils.MyApplication
@@ -27,6 +28,11 @@ class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainActivity = activity as MainActivity
+        mainActivity.setTransparentStatusBar()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,11 +42,17 @@ class LoginFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         binding.run {
-            buttonLogin.setOnClickListener {
+            btnLoginUid.setOnClickListener {
                 verifyUid()
             }
-            btnSignupToEmail.setOnClickListener {
+            btnLoginEmail.setOnClickListener {
                 findNavController().navigate(R.id.signUpEmailFragment)
+            }
+            btnLoginKakao.setOnClickListener{
+                val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
+                    isKaKao = true
+                )
+                findNavController().navigate(action)
             }
         }
 
@@ -120,5 +132,10 @@ class LoginFragment : Fragment() {
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActivity.resetStatusBar()
     }
 }

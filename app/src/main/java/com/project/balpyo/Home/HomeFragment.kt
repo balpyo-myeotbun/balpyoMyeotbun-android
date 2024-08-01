@@ -5,25 +5,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
-import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.project.balpyo.FlowController.FlowControllerTitleFragment
-import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Home.Adapter.BannerVPAdapter
-import com.project.balpyo.Home.Adapter.StorageAdapter
-import com.project.balpyo.Home.ViewModel.StorageViewModel
+import com.project.balpyo.Storage.Adapter.StorageAdapter
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Script.ScriptTimeFragment
@@ -40,9 +33,6 @@ import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.SignInResponse
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentHomeBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
@@ -65,15 +55,21 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainActivity = activity as MainActivity
+        mainActivity.setTransparentStatusBar()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding = FragmentHomeBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
         animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
+
+        binding = FragmentHomeBinding.inflate(layoutInflater)
+        mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
 
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
@@ -138,8 +134,6 @@ class HomeFragment : Fragment() {
                 SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
             )
             tvHomeStorageTitle.text = spannableTitle
-
-            mainActivity.setTransparentStatusBar()
         }
 
         return binding.root
@@ -197,10 +191,14 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        mainActivity.resetStatusBar()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         handler.removeCallbacks(autoScrollRunnable)
-        mainActivity.resetStatusBar()
     }
 
 }
