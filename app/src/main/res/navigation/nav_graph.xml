@@ -10,8 +10,8 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_splashFragment_to_onboarding1Fragment"
+            app:destination="@id/onboarding1Fragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -334,5 +334,50 @@
         <action
             android:id="@+id/action_myPageAccountFragment_to_myPageCancelAccountFragment"
             app:destination="@id/myPageCancelAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding1Fragment"
+        android:name="com.project.balpyo.Onboarding.Onboarding1Fragment"
+        android:label="fragment_onboarding1"
+        tools:layout="@layout/fragment_onboarding1" >
+        <action
+            android:id="@+id/action_onboarding1Fragment_to_onboarding2Fragment"
+            app:destination="@id/onboarding2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding2Fragment"
+        android:name="com.project.balpyo.Onboarding.Onboarding2Fragment"
+        android:label="fragment_onboarding2"
+        tools:layout="@layout/fragment_onboarding2" >
+        <action
+            android:id="@+id/action_onboarding2Fragment_to_onboarding3Fragment"
+            app:destination="@id/onboarding3Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding3Fragment"
+        android:name="com.project.balpyo.Onboarding.Onboarding3Fragment"
+        android:label="fragment_onboarding3"
+        tools:layout="@layout/fragment_onboarding3" >
+        <action
+            android:id="@+id/action_onboarding3Fragment_to_onboarding4Fragment"
+            app:destination="@id/onboarding4Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding4Fragment"
+        android:name="com.project.balpyo.Onboarding.Onboarding4Fragment"
+        android:label="fragment_onboarding4"
+        tools:layout="@layout/fragment_onboarding4" >
+        <action
+            android:id="@+id/action_onboarding4Fragment_to_onboarding5Fragment"
+            app:destination="@id/onboarding5Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding5Fragment"
+        android:name="com.project.balpyo.Onboarding.Onboarding5Fragment"
+        android:label="fragment_onboarding5"
+        tools:layout="@layout/fragment_onboarding5" >
+        <action
+            android:id="@+id/action_onboarding5Fragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

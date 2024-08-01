@@ -102,4 +102,7 @@ dependencies {
 
     //뷰페이저
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
+
+    // gif
+    implementation("com.airbnb.android:lottie:5.0.2")
 }
