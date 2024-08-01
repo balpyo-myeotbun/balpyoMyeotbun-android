@@ -5,4 +5,9 @@
     <string name="bottomsheet_write_text"><u>대본 직접 작성하기</u></string>
     <string name="breathButton">숨 고르기 (1초)</string>
     <string name="pptButton">PPT 넘김 (2초)</string>
+
+    <!-- 온보딩 -->
+    <string name="onboarding2">발표 시간과 주제만 입력하면\n적절한 분량의 대본을 만들 수 있어요</string>
+    <string name="onboarding3">이제 소리내어 읽지 않아도 돼요.\n대본만으로 예상 발표시간을 알 수 있어요</string>
+    <string name="onboarding4">화면에 표시된 글자를 따라 읽으며\n발표 연습을 할 수 있어요</string>
 </resources>
