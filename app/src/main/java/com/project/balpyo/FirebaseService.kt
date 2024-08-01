@@ -31,12 +31,15 @@ class FirebaseService : FirebaseMessagingService() {
         createNotificationChannel(notificationManager)
         val intent = Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            putExtra("fragment", "DetailFragment")
+            setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
+
         val pendingIntent = PendingIntent.getActivity(
             this,
             notificationID,
             intent,
-            PendingIntent.FLAG_MUTABLE
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         notificationManager.notify(
             notificationID,

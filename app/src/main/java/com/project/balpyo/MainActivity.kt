@@ -1,6 +1,7 @@
 package com.project.balpyo
 
 import android.content.Context
+import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
@@ -34,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
 
+    lateinit var notificationActivity: NotificationActivity
+
     lateinit var sharedPreferenceManager: PreferenceUtil
 
 
@@ -41,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        notificationActivity = NotificationActivity()
+
         setContentView(binding.root)
         bottomNavigationView = binding.bottomNavigation
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -116,7 +121,11 @@ class MainActivity : AppCompatActivity() {
 
             if (fragment != null) {
                 when (fragmentToLoad) {
-                    "DetailFragment" -> navController.navigate(R.id.scriptResultFragment)
+                    "DetailFragment" -> {
+                        // 대본 생성 결과 화면으로 이동
+                        val notificationIntent = Intent(notificationActivity, NotificationActivity::class.java)
+                        startActivity(notificationIntent)
+                    }
                     else -> navController.navigate(R.id.homeFragment)
                 }
             }
