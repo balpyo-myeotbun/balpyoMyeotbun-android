@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.project.balpyo.LoadingFragmentArgs
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Sign.ViewModel.SignViewModel
@@ -25,6 +27,8 @@ class SignUpTermsFragment : Fragment() {
     var checkAge = false
     var checkMarketing = false
     var checkAll = false
+
+    private val args: SignUpTermsFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,7 +63,8 @@ class SignUpTermsFragment : Fragment() {
                 toggleAllChecks(checkAll, checkImage, uncheckImage, black, disable, primary)
             }
             btnSignupTerms.setOnClickListener{
-                viewModel.signUp(this@SignUpTermsFragment, mainActivity)
+                if(args.isKaKao) {}
+                else viewModel.signUp(this@SignUpTermsFragment, mainActivity)
             }
         }
         return binding.root

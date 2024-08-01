@@ -1,5 +1,6 @@
 package com.project.balpyo.Sign
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Sign.ViewModel.SignViewModel
@@ -29,7 +32,15 @@ class SignUpCompleteFragment : Fragment() {
         viewModel = ViewModelProvider(mainActivity)[SignViewModel::class.java]
         initToolBar()
         binding.run {
-            Glide.with(requireContext()).load(R.raw.account_complete).into(ivSignupComplete)
+            val imageViewTarget = object : DrawableImageViewTarget(ivSignupComplete) {
+                override fun onResourceReady(resource: Drawable, transition: com.bumptech.glide.request.transition.Transition<in Drawable>?) {
+                    super.onResourceReady(resource, transition)
+                    if (resource is GifDrawable) {
+                        resource.setLoopCount(1)
+                    }
+                }
+            }
+            Glide.with(requireContext()).load(R.raw.account_complete).into(imageViewTarget)
             btnSignupEmail.setOnClickListener {
                 viewModel.signIn(this@SignUpCompleteFragment, mainActivity)
             }
