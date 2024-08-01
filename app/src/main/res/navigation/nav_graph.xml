@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpEmailFragment"
             app:destination="@id/signUpEmailFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpTermsFragment"
+            app:destination="@id/signUpTermsFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerTitleFragment"
@@ -293,6 +296,9 @@
         <action
             android:id="@+id/action_signUpTermsFragment_to_signUpCompleteFragment"
             app:destination="@id/signUpCompleteFragment" />
+        <argument
+            android:name="isKaKao"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/myPageFragment"

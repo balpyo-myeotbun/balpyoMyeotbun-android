@@ -15,6 +15,9 @@ import android.widget.Button
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.project.balpyo.LoadingFragmentArgs
+import com.project.balpyo.LoginFragmentDirections
 import com.project.balpyo.R
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentSignUpPasswordBinding
@@ -108,7 +111,10 @@ class SignUpPasswordFragment : Fragment() {
             btnSignupPwNext.setOnClickListener{
                 if(isPasswordLengthValid(pw) && isPasswordComplex(pw) && pw == checkPw){
                     MyApplication.password = pw
-                    findNavController().navigate(R.id.signUpTermsFragment)
+                    val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
+                        isKaKao = false
+                    )
+                    findNavController().navigate(action)
                 }
                 else{
                     llSignupCheckPw.visibility = View.VISIBLE
