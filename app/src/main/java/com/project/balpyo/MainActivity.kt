@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView = binding.bottomNavigation
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
-            bottomNavigationView.layoutParams.height = 162 + systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
                 insets
         }
 
@@ -109,8 +108,7 @@ class MainActivity : AppCompatActivity() {
     fun setTransparentStatusBar() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, 0)
-            bottomNavigationView.layoutParams.height = 162 + systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
     }
@@ -118,8 +116,7 @@ class MainActivity : AppCompatActivity() {
     fun resetStatusBar() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
-            bottomNavigationView.layoutParams.height = 162 + systemBars.bottom //bottomNavigation과 하단 탐색바 색상 일치를 위함
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
     }
