@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.googleGmsGoogleServices)
 }
 
 android {
@@ -20,6 +21,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String","server_url",getApiKey("server_url"))
+        buildConfigField("String","develop_url",getApiKey("develop_url"))
     }
 
     buildTypes {
@@ -93,6 +95,10 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.3")
     //바텀네비게이션
     implementation ("com.google.android.material:material:1.4.0")
+
+    //FCM
+    implementation("com.google.firebase:firebase-messaging:24.0.0")
+    implementation("com.google.firebase:firebase-auth:22.3.0")
 
     //뷰페이저
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
