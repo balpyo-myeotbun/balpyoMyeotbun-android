@@ -54,8 +54,8 @@ class FlowControllerResultFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         binding = FragmentFlowControllerResultBinding.inflate(inflater, container, false)
-        scriptTextView = binding.FCRScript
-        playButton = binding.PCPlayBtn
+        scriptTextView = binding.tvScript
+        playButton = binding.btnPlay
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewDataBinding = DataBindingUtil.inflate(
             LayoutInflater.from(context),
@@ -67,20 +67,20 @@ class FlowControllerResultFragment : Fragment() {
 
         val speed = flowControllerViewModel.getSpeedData().value
         when(speed) {
-            -2 -> {binding.FCSpeedCL03.setBackgroundResource(R.drawable.selected_speed)
-                binding.FCSpeed03Tv.setTextColor(this.resources.getColor(R.color.primary))
+            -2 -> {binding.btnSpeed03.setBackgroundResource(R.drawable.selected_speed)
+                binding.tvSpeed03.setTextColor(this.resources.getColor(R.color.primary))
             }
-            -1 -> {binding.FCSpeedCL05.setBackgroundResource(R.drawable.selected_speed)
-                binding.FCSpeed05Tv.setTextColor(this.resources.getColor(R.color.primary))
+            -1 -> {binding.btnSpeed05.setBackgroundResource(R.drawable.selected_speed)
+                binding.tvSpeed05.setTextColor(this.resources.getColor(R.color.primary))
             }
-            0 -> {binding.FCSpeedCL1.setBackgroundResource(R.drawable.selected_speed)
-                binding.FCSpeed1Tv.setTextColor(this.resources.getColor(R.color.primary))
+            0 -> {binding.btnSpeed1.setBackgroundResource(R.drawable.selected_speed)
+                binding.tvSpeed1.setTextColor(this.resources.getColor(R.color.primary))
             }
-            1 -> {binding.FCSpeedCL15.setBackgroundResource(R.drawable.selected_speed)
-                binding.FCSpeed15Tv.setTextColor(this.resources.getColor(R.color.primary))
+            1 -> {binding.btnSpeed15.setBackgroundResource(R.drawable.selected_speed)
+                binding.tvSpeed15.setTextColor(this.resources.getColor(R.color.primary))
             }
-            2 -> {binding.FCSpeedCL2.setBackgroundResource(R.drawable.selected_speed)
-                binding.FCSpeed2Tv.setTextColor(this.resources.getColor(R.color.primary))
+            2 -> {binding.btnSpeed2.setBackgroundResource(R.drawable.selected_speed)
+                binding.tvSpeed2.setTextColor(this.resources.getColor(R.color.primary))
             }
             else -> println("none")
         }
@@ -106,31 +106,31 @@ class FlowControllerResultFragment : Fragment() {
                 startPlayback()
             }
         }
-        binding.FCSpeedCL03.setOnClickListener {
+        binding.btnSpeed03.setOnClickListener {
             flowControllerViewModel.setSpeed(-2)
             generateAudio()
         }
-        binding.FCSpeedCL05.setOnClickListener {
+        binding.btnSpeed05.setOnClickListener {
             flowControllerViewModel.setSpeed(-1)
             generateAudio()
         }
-        binding.FCSpeedCL1.setOnClickListener {
+        binding.btnSpeed1.setOnClickListener {
             flowControllerViewModel.setSpeed(0)
             generateAudio()
         }
-        binding.FCSpeedCL15.setOnClickListener {
+        binding.btnSpeed15.setOnClickListener {
             flowControllerViewModel.setSpeed(1)
             generateAudio()
         }
-        binding.FCSpeedCL2.setOnClickListener {
+        binding.btnSpeed2.setOnClickListener {
             flowControllerViewModel.setSpeed(2)
             generateAudio()
         }
 
-        binding.PCEditBtn.setOnClickListener {
+        binding.btnEdit.setOnClickListener {
             findNavController().popBackStack(R.id.flowControllerTitleFragment, false)
         }
-        binding.PCStoreBtn.setOnClickListener {
+        binding.btnStorage.setOnClickListener {
             findNavController().navigate(R.id.storageFragment)
         }
 
@@ -160,11 +160,11 @@ class FlowControllerResultFragment : Fragment() {
 
         val startTime = convertMsToMinutesSeconds(currentPosition.toLong())
         val endTime = convertMsToMinutesSeconds(remainingTime.toLong())
-        binding.PCStartTimeTextView.text = startTime
+        binding.tvStartTime.text = startTime
         if(endTime == "00:00" || remainingTime == totalTime)
-            binding.PCEndTimeTextView.text = endTime
+            binding.tvEndTime.text = endTime
         else
-            binding.PCEndTimeTextView.text = "-" + endTime
+            binding.tvEndTime.text = "-" + endTime
     }
 
     // 재생 시간을 mm:ss 형식으로 변환
@@ -178,10 +178,10 @@ class FlowControllerResultFragment : Fragment() {
 
     //seekbar 초기화
     private fun initializeSeekBar() {
-        binding.PCTimeBar.max = mediaPlayer.duration
+        binding.sbTime.max = mediaPlayer.duration
         updatePlaybackTime()
         //seekbar 리스너
-        binding.PCTimeBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.sbTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             //seekbar가 변화될때
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -215,7 +215,7 @@ class FlowControllerResultFragment : Fragment() {
         override fun run() {
             if (mediaPlayer.isPlaying) {
                 val currentPosition = mediaPlayer.currentPosition
-                binding.PCTimeBar.progress = currentPosition
+                binding.sbTime.progress = currentPosition
                 updatePlaybackTime()
                 highlightText(currentPosition) // 현재 재생 위치에 따라 텍스트 하이라이팅
                 handler.postDelayed(this, 10) //1ms마다 업데이트

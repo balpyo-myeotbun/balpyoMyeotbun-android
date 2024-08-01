@@ -15,21 +15,21 @@ import com.project.balpyo.BottomSheetAdapter.BottomSheetAdapter
 import com.project.balpyo.BottomSheetData.BottomSheetItem
 import com.project.balpyo.Home.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
-import com.project.balpyo.databinding.BottomsheetBinding
+import com.project.balpyo.databinding.FragmentBottomsheetBinding
 
 interface BottomSheetListener {
     fun onItemClicked(position: Int)
 }
 
 class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
-    lateinit var binding: BottomsheetBinding
+    lateinit var binding: FragmentBottomsheetBinding
     lateinit var mainActivity: MainActivity
     var scriptId = mutableListOf<Long>()
     var position: Int? = null
     lateinit var viewModel: StorageViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = BottomsheetBinding.inflate(inflater, container, false)
+        binding = FragmentBottomsheetBinding.inflate(inflater, container, false)
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
 
@@ -44,13 +44,13 @@ class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
                 }
 
                 val adapter = BottomSheetAdapter(items, scriptId, viewModel, mainActivity, this@BottomSheetFragment)
-                binding.bottomsheetRV.adapter = adapter
-                binding.bottomsheetRV.layoutManager = LinearLayoutManager(mainActivity)
+                binding.rvBsScript.adapter = adapter
+                binding.rvBsScript.layoutManager = LinearLayoutManager(mainActivity)
 
-                binding.bottomsheetWriteBtn.setOnClickListener {
+                binding.btnBsWrite.setOnClickListener {
                     dismiss()
                 }
-                binding.bottomsheetLoadBtn.setOnClickListener {
+                binding.btnBsLoad.setOnClickListener {
                     viewModel.getStorageDetailForBottomSheet(mainActivity, scriptId[position!!].toInt())
                     dismiss()
                 }
@@ -67,7 +67,7 @@ class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
 
     override fun onItemClicked(position: Int) {
         if (position != -1) {
-            binding.bottomsheetLoadBtn.isEnabled = true
+            binding.btnBsLoad.isEnabled = true
             this.position = position
         }
     }
@@ -94,9 +94,9 @@ class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
                 bottomSheet.layoutParams = layoutParams
 
                 // 리사이클러뷰 높이 조정 (조정 안하면 리사이클러 뷰에 의해 하단 버튼이 잘림) (핸들, 하단 버튼을 제외하고 남는 공간 만큼)
-                val recyclerViewParams = binding.bottomsheetRV.layoutParams
+                val recyclerViewParams = binding.rvBsScript.layoutParams
                 recyclerViewParams.height = newHeight - calculateRemainingSpace()
-                binding.bottomsheetRV.layoutParams = recyclerViewParams
+                binding.rvBsScript.layoutParams = recyclerViewParams
             }
         })
 
@@ -106,9 +106,9 @@ class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
         behavior.skipCollapsed = true // 축소 상태 x
 
         // 초기 리사이클러뷰 높이 설정 (화면 절반 크기에서 핸들, 하단 버튼을 제외하고 남는 공간 만큼 차지)
-        val recyclerViewParams = binding.bottomsheetRV.layoutParams
+        val recyclerViewParams = binding.rvBsScript.layoutParams
         recyclerViewParams.height = halfScreenHeight - calculateRemainingSpace()
-        binding.bottomsheetRV.layoutParams = recyclerViewParams
+        binding.rvBsScript.layoutParams = recyclerViewParams
     }
 
     // dp를 px로 변환
@@ -122,14 +122,14 @@ class BottomSheetFragment : BottomSheetDialogFragment(), BottomSheetListener {
 
     //핸들, 하단 버튼 제외 남은 공간 계산
     private fun calculateRemainingSpace(): Int {
-        binding.bottomsheetLoadBtn.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        binding.bottomsheetWriteBtn.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        binding.bottomsheetHandle.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        binding.btnBsLoad.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        binding.btnBsWrite.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        binding.viewBsHandle.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
-        val buttonHeight = binding.bottomsheetLoadBtn.measuredHeight + binding.bottomsheetLoadBtn.marginBottom
-        val writeButtonHeight = binding.bottomsheetWriteBtn.measuredHeight + binding.bottomsheetWriteBtn.marginBottom
-        val handleHeight = binding.bottomsheetHandle.measuredHeight + binding.bottomsheetHandle.marginTop + binding.bottomsheetHandle.marginBottom
+        val buttonHeight = binding.btnBsLoad.measuredHeight + binding.btnBsLoad.marginBottom
+        val writeButtonHeight = binding.btnBsWrite.measuredHeight + binding.btnBsWrite.marginBottom
+        val handleHeight = binding.viewBsHandle.measuredHeight + binding.viewBsHandle.marginTop + binding.viewBsHandle.marginBottom
 
-        return buttonHeight + writeButtonHeight + handleHeight + binding.bottomsheetRV.marginBottom + binding.bottomsheet.paddingTop + binding.bottomsheet.paddingBottom
+        return buttonHeight + writeButtonHeight + handleHeight + binding.rvBsScript.marginBottom + binding.bottomsheet.paddingTop + binding.bottomsheet.paddingBottom
     }
 }

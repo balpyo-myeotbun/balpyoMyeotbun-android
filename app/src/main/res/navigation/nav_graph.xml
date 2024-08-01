@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpEmailFragment"
+            app:destination="@id/signUpEmailFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerTitleFragment"
@@ -119,6 +122,9 @@
         <action
             android:id="@+id/action_homeFragment_to_scriptResultFragment"
             app:destination="@id/scriptResultFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/scriptTitleFragment"
@@ -247,4 +253,76 @@
         android:name="com.project.balpyo.Script.ScriptCompleteFragment"
         android:label="fragment_script_complete"
         tools:layout="@layout/fragment_script_complete" />
+    <fragment
+        android:id="@+id/signUpEmailFragment"
+        android:name="com.project.balpyo.Sign.SignUpEmailFragment"
+        android:label="fragment_sign_up_email"
+        tools:layout="@layout/fragment_sign_up_email" >
+        <action
+            android:id="@+id/action_signUpEmailFragment_to_signUpCertificationFragment"
+            app:destination="@id/signUpCertificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpCertificationFragment"
+        android:name="com.project.balpyo.Sign.SignUpCertificationFragment"
+        android:label="fragment_sign_up_certification"
+        tools:layout="@layout/fragment_sign_up_certification" >
+        <action
+            android:id="@+id/action_signUpCertificationFragment_to_signUpPasswordFragment"
+            app:destination="@id/signUpPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpCompleteFragment"
+        android:name="com.project.balpyo.Sign.SignUpCompleteFragment"
+        android:label="fragment_sign_up_complete"
+        tools:layout="@layout/fragment_sign_up_complete" />
+    <fragment
+        android:id="@+id/signUpPasswordFragment"
+        android:name="com.project.balpyo.Sign.SignUpPasswordFragment"
+        android:label="fragment_sign_up_password"
+        tools:layout="@layout/fragment_sign_up_password" >
+        <action
+            android:id="@+id/action_signUpPasswordFragment_to_signUpTermsFragment"
+            app:destination="@id/signUpTermsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpTermsFragment"
+        android:name="com.project.balpyo.Sign.SignUpTermsFragment"
+        android:label="fragment_sign_up_terms"
+        tools:layout="@layout/fragment_sign_up_terms" >
+        <action
+            android:id="@+id/action_signUpTermsFragment_to_signUpCompleteFragment"
+            app:destination="@id/signUpCompleteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.project.balpyo.MyPage.MyPageFragment"
+        android:label="fragment_my_page"
+        tools:layout="@layout/fragment_my_page" >
+        <action
+            android:id="@+id/action_myPageFragment_to_myPageProfileFragment"
+            app:destination="@id/myPageProfileFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_myPageAccountFragment"
+            app:destination="@id/myPageAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageProfileFragment"
+        android:name="com.project.balpyo.MyPage.MyPageProfileFragment"
+        android:label="fragment_my_page_profile"
+        tools:layout="@layout/fragment_my_page_profile" />
+    <fragment
+        android:id="@+id/myPageCancelAccountFragment"
+        android:name="com.project.balpyo.MyPage.MyPageCancelAccountFragment"
+        android:label="fragment_my_page_cancle_account"
+        tools:layout="@layout/fragment_my_page_cancle_account" />
+    <fragment
+        android:id="@+id/myPageAccountFragment"
+        android:name="com.project.balpyo.MyPage.MyPageAccountFragment"
+        android:label="fragment_my_page_account"
+        tools:layout="@layout/fragment_my_page_account" >
+        <action
+            android:id="@+id/action_myPageAccountFragment_to_myPageCancelAccountFragment"
+            app:destination="@id/myPageCancelAccountFragment" />
+    </fragment>
 </navigation>

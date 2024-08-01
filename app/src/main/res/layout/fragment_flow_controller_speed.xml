@@ -12,21 +12,21 @@
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FCIV">
+        app:layout_constraintTop_toBottomOf="@+id/iv_volume">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/FCSpeedCL0_3"
+            android:id="@+id/btn_speed_03"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:background="@drawable/unselected_speed_icon"
-            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL0_5"
+            app:layout_constraintEnd_toStartOf="@+id/btn_speed_05"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/FCSpeed0_3Tv"
+                android:id="@+id/tv_speed_03"
                 android:layout_width="60dp"
                 android:layout_height="32dp"
                 android:fontFamily="@font/pretendard_medium"
@@ -42,18 +42,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/FCSpeedCL0_5"
+            android:id="@+id/btn_speed_05"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:background="@drawable/unselected_speed_icon"
-            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_speed_1"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL0_3"
+            app:layout_constraintStart_toEndOf="@+id/btn_speed_03"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/FCSpeed0_5Tv"
+                android:id="@+id/tv_speed_05"
                 android:layout_width="60dp"
                 android:layout_height="32dp"
                 android:fontFamily="@font/pretendard_medium"
@@ -69,18 +69,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/FCSpeedCL1"
+            android:id="@+id/btn_speed_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:background="@drawable/unselected_speed_icon"
-            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL1_5"
+            app:layout_constraintEnd_toStartOf="@+id/btn_speed_15"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL0_5"
+            app:layout_constraintStart_toEndOf="@+id/btn_speed_05"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/FCSpeed1Tv"
+                android:id="@+id/tv_speed_1"
                 android:layout_width="60dp"
                 android:layout_height="32dp"
                 android:fontFamily="@font/pretendard_medium"
@@ -96,18 +96,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/FCSpeedCL1_5"
+            android:id="@+id/btn_speed_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:background="@drawable/unselected_speed_icon"
-            app:layout_constraintEnd_toStartOf="@+id/FCSpeedCL2"
+            app:layout_constraintEnd_toStartOf="@+id/btn_speed_2"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL1"
+            app:layout_constraintStart_toEndOf="@+id/btn_speed_1"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/FCSpeed1_5Tv"
+                android:id="@+id/tv_speed_15"
                 android:layout_width="60dp"
                 android:layout_height="32dp"
                 android:fontFamily="@font/pretendard_medium"
@@ -123,17 +123,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/FCSpeedCL2"
+            android:id="@+id/btn_speed_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/unselected_speed_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/FCSpeedCL1_5"
+            app:layout_constraintStart_toEndOf="@+id/btn_speed_15"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/FCSpeed2Tv"
+                android:id="@+id/tv_speed_2"
                 android:layout_width="60dp"
                 android:layout_height="32dp"
                 android:fontFamily="@font/pretendard_medium"
@@ -182,7 +182,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
-        android:id="@+id/FCIV"
+        android:id="@+id/iv_volume"
         android:layout_width="102dp"
         android:layout_height="80dp"
         android:layout_marginTop="125dp"

@@ -39,6 +39,9 @@ class LoginFragment : Fragment() {
             buttonLogin.setOnClickListener {
                 verifyUid()
             }
+            btnSignupToEmail.setOnClickListener {
+                findNavController().navigate(R.id.signUpEmailFragment)
+            }
         }
 
         return binding.root
