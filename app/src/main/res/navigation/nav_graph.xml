@@ -234,7 +234,11 @@
         android:id="@+id/scriptCheckFragment"
         android:name="com.project.balpyo.Script.ScriptCheckFragment"
         android:label="fragment_script_check"
-        tools:layout="@layout/fragment_script_check" />
+        tools:layout="@layout/fragment_script_check" >
+        <action
+            android:id="@+id/action_scriptCheckFragment_to_scriptCompleteFragment"
+            app:destination="@id/scriptCompleteFragment" />
+    </fragment>
     <fragment
         android:id="@+id/scriptResultFragment"
         android:name="com.project.balpyo.Script.ScriptResultFragment"
@@ -244,6 +248,11 @@
             android:id="@+id/action_scriptResultFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/scriptCompleteFragment"
+        android:name="com.project.balpyo.Script.ScriptCompleteFragment"
+        android:label="fragment_script_complete"
+        tools:layout="@layout/fragment_script_complete" />
     <fragment
         android:id="@+id/signUpEmailFragment"
         android:name="com.project.balpyo.Sign.SignUpEmailFragment"

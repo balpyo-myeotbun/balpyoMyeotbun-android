@@ -64,16 +64,16 @@ class TimeCalculatorResultFragment : Fragment() {
 
             if(MyApplication.calculatedTime == MyApplication.timeCalculatorTime) {
                 // 목표 발표 시간을 맞춘 경우
-                textViewGoalTime.text = "목표 발표 시간을 맞췄어요!"
-                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary))
+//                textViewGoalTime.text = "목표 발표 시간을 맞췄어요!"
+//                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary))
                 layoutTimeNotMatch.visibility = View.GONE
             }
             else if(MyApplication.calculatedTime < MyApplication.timeCalculatorTime) {
                 // 목표 발표 시간보다 부족한 경우
                 var totalRemainTime = MyApplication.timeCalculatorTime - MyApplication.calculatedTime
                 layoutTimeNotMatch.visibility = View.VISIBLE
-                textViewGoalTime.text = "목표 발표 시간보다"
-                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.text))
+//                textViewGoalTime.text = "목표 발표 시간보다"
+//                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.text))
                 textViewTimeNotMatch.text = "${totalRemainTime/60}분 ${totalRemainTime%60}초 부족"
             }
             else {
@@ -86,8 +86,8 @@ class TimeCalculatorResultFragment : Fragment() {
                 binding.editTextScript.setText(highlightScript)
 
                 layoutTimeNotMatch.visibility = View.VISIBLE
-                textViewGoalTime.text = "목표 발표 시간보다"
-                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.text))
+//                textViewGoalTime.text = "목표 발표 시간보다"
+//                textViewGoalTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.text))
                 textViewTimeNotMatch.text = "${totalRemainTime/60}분 ${totalRemainTime%60}초 초과"
             }
 

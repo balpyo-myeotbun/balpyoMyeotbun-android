@@ -1,5 +1,6 @@
 package com.project.balpyo.Script
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -34,6 +35,7 @@ class ScriptSubtopicFragment : Fragment() {
         binding = FragmentScriptSubtopicBinding.inflate(layoutInflater)
 
         initToolBar()
+        observeKeyboardState()
 
         binding.run {
 
@@ -73,23 +75,35 @@ class ScriptSubtopicFragment : Fragment() {
                             override fun onItemClick(position: Int) {
                                 subtopicList.removeAt(position)
                                 recyclerViewSubtopic.adapter?.notifyDataSetChanged()
+
+                                if(subtopicList.size == 0) {
+                                    buttonNext.isEnabled = false
+                                    buttonNextKeyboard.isEnabled = false
+                                } else {
+                                    buttonNext.isEnabled = true
+                                    buttonNextKeyboard.isEnabled = true
+                                }
                             }
                         }
                 } else {
                     Toast.makeText(requireContext(), "소주제는 5개까지 등록할 수 있어요", Toast.LENGTH_LONG).show()
                 }
-            }
-            buttonNext.setOnClickListener {
-                for (i in 0 until subtopicList.size) {
-                    if(MyApplication.scriptSubtopic != "") {
-                        MyApplication.scriptSubtopic = "${MyApplication.scriptSubtopic}, ${subtopicList[i]}"
-                    } else {
-                        MyApplication.scriptSubtopic = "${subtopicList[i]}"
-                    }
-                    Log.d("발표몇분", "${MyApplication.scriptSubtopic}")
-                }
 
-                findNavController().navigate(R.id.scriptTimeFragment)
+                if(subtopicList.size == 0) {
+                    buttonNext.isEnabled = false
+                    buttonNextKeyboard.isEnabled = false
+                } else {
+                    buttonNext.isEnabled = true
+                    buttonNextKeyboard.isEnabled = true
+                }
+            }
+
+            buttonNext.setOnClickListener {
+                moveFragment()
+            }
+
+            buttonNextKeyboard.setOnClickListener {
+                moveFragment()
             }
         }
 
@@ -125,6 +139,47 @@ class ScriptSubtopicFragment : Fragment() {
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
                 findNavController().popBackStack()
+            }
+        }
+    }
+
+    fun moveFragment() {
+        for (i in 0 until subtopicList.size) {
+            if(MyApplication.scriptSubtopic != "") {
+                MyApplication.scriptSubtopic = "${MyApplication.scriptSubtopic}, ${subtopicList[i]}"
+            } else {
+                MyApplication.scriptSubtopic = "${subtopicList[i]}"
+            }
+            Log.d("발표몇분", "${MyApplication.scriptSubtopic}")
+        }
+
+        if(subtopicList.size >= 1) {
+            findNavController().navigate(R.id.scriptTimeFragment)
+        }
+    }
+
+    private fun observeKeyboardState() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            var originHeight = -1
+            if ( binding.root.height > originHeight) {
+                originHeight =  binding.root.height
+            }
+
+            val visibleFrameSize = Rect()
+            binding.root.getWindowVisibleDisplayFrame(visibleFrameSize)
+
+            val visibleFrameHeight = visibleFrameSize.bottom - visibleFrameSize.top
+            val keyboardHeight = originHeight - visibleFrameHeight
+
+            if (keyboardHeight > visibleFrameHeight * 0.15) {
+                // 키보드가 올라옴
+                binding.buttonNextKeyboard.visibility = View.VISIBLE
+                binding.buttonNext.visibility = View.GONE
+                binding.buttonNextKeyboard.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
+            } else {
+                // 키보드가 내려감
+                binding.buttonNextKeyboard.visibility = View.GONE
+                binding.buttonNext.visibility = View.VISIBLE
             }
         }
     }

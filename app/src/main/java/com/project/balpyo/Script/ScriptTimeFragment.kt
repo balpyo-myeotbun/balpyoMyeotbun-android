@@ -27,8 +27,6 @@ class ScriptTimeFragment : Fragment() {
     lateinit var binding: FragmentScriptTimeBinding
     lateinit var mainActivity: MainActivity
 
-    lateinit var viewModel: GenerateScriptViewModel
-
     var noSuchTime = false
 
     override fun onCreateView(
@@ -39,40 +37,7 @@ class ScriptTimeFragment : Fragment() {
         binding = FragmentScriptTimeBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
-
         initToolBar()
-
-        //알림 권한을 요청하기 위함
-        //현재 이 코드 수행하지 않음
-        val registerForActivityResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val deniedPermissionList = permissions.filter { !it.value }.map { it.key }
-            when {
-                deniedPermissionList.isNotEmpty() -> {
-                    val map = deniedPermissionList.groupBy { permission ->
-                        if (shouldShowRequestPermissionRationale(permission)) DENIED else EXPLAINED
-                    }
-                    //권한이 없으면 기존처럼 로딩 프래그먼트
-                    map[DENIED]?.let {
-                        Toast.makeText(requireContext(), "앱을 종료하지 마세요",Toast.LENGTH_LONG).show()
-                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                        findNavController().navigate(R.id.loadingFragment)
-                    }
-                    map[EXPLAINED]?.let {
-                        Toast.makeText(requireContext(), "앱을 종료하지 마세요", Toast.LENGTH_LONG).show()
-                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                        findNavController().navigate(R.id.loadingFragment)
-                    }
-                }
-                else -> {
-                    // 모든 권한이 허가 되었을 때
-                    // 홈으로 이동
-                    Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!",Toast.LENGTH_LONG).show()
-                    viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                    findNavController().navigate(R.id.homeFragment)
-                }
-            }
-        }
 
         binding.run {
             spinnerMinute.run {
@@ -104,27 +69,7 @@ class ScriptTimeFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    /* registerForActivityResult.launch(
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS)
-                    ) */
-
-                    findNavController().navigate(R.id.scriptCheckFragment)
-                }
-                if(noSuchTime) {
-                    MyApplication.scriptTime = 180
-                    MyApplication.scriptTimeString = "원하는 발표 시간 없음"
-                } else {
-                    Log.d("발표몇분", "${spinnerMinute.value}")
-                    Log.d("발표몇분", "${spinnerSecond.value}")
-                    var selectedTime = spinnerMinute.value*60 + spinnerSecond.value
-                    MyApplication.scriptTime = selectedTime.toLong()
-                    if(spinnerMinute.value != 0) {
-                        MyApplication.scriptTimeString = "${spinnerMinute.value}분 ${spinnerSecond.value}초"
-                    } else {
-                        MyApplication.scriptTimeString = "${spinnerSecond.value}초"
-                    }
-                }
+                moveFragment()
             }
         }
 
@@ -145,6 +90,28 @@ class ScriptTimeFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    fun moveFragment() {
+
+        binding.run {
+            if(noSuchTime) {
+                MyApplication.scriptTime = 180
+                MyApplication.scriptTimeString = "원하는 발표 시간 없음"
+            } else {
+                Log.d("발표몇분", "${spinnerMinute.value}")
+                Log.d("발표몇분", "${spinnerSecond.value}")
+                var selectedTime = spinnerMinute.value*60 + spinnerSecond.value
+                MyApplication.scriptTime = selectedTime.toLong()
+                if(spinnerMinute.value != 0) {
+                    MyApplication.scriptTimeString = "${spinnerMinute.value}분 ${spinnerSecond.value}초"
+                } else {
+                    MyApplication.scriptTimeString = "${spinnerSecond.value}초"
+                }
+            }
+        }
+
+        findNavController().navigate(R.id.scriptCheckFragment)
     }
 
     companion object {

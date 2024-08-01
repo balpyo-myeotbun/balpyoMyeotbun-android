@@ -3,6 +3,7 @@ package com.project.balpyo.Script
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -20,7 +21,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.Spinner
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -33,6 +36,7 @@ import com.project.balpyo.Script.Adapter.SubTopicCheckAdapter
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentScriptCheckBinding
+import okhttp3.internal.notifyAll
 
 class ScriptCheckFragment : Fragment() {
 
@@ -43,6 +47,9 @@ class ScriptCheckFragment : Fragment() {
     var isDialogShowing = false
     var noSuchTime = false
 
+    var isTitleFilled = true
+    var isTopicFilled = true
+
     var subtopicList = mutableListOf<String>()
 
     override fun onCreateView(
@@ -52,46 +59,50 @@ class ScriptCheckFragment : Fragment() {
 
         binding = FragmentScriptCheckBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
 
         initToolBar()
         initView()
-
-        /*
-        viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
-
-        //알림 권한을 요청하기 위함
-        //현재 이 코드 수행하지 않음
-        val registerForActivityResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val deniedPermissionList = permissions.filter { !it.value }.map { it.key }
-            when {
-                deniedPermissionList.isNotEmpty() -> {
-                    val map = deniedPermissionList.groupBy { permission ->
-                        if (shouldShowRequestPermissionRationale(permission)) ScriptTimeFragment.DENIED else ScriptTimeFragment.EXPLAINED
-                    }
-                    //권한이 없으면 기존처럼 로딩 프래그먼트
-                    map[ScriptTimeFragment.DENIED]?.let {
-                        Toast.makeText(requireContext(), "앱을 종료하지 마세요", Toast.LENGTH_LONG).show()
-                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                        findNavController().navigate(R.id.loadingFragment)
-                    }
-                    map[ScriptTimeFragment.EXPLAINED]?.let {
-                        Toast.makeText(requireContext(), "앱을 종료하지 마세요", Toast.LENGTH_LONG).show()
-                        viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                        findNavController().navigate(R.id.loadingFragment)
-                    }
-                }
-                else -> {
-                    // 모든 권한이 허가 되었을 때
-                    // 홈으로 이동
-                    Toast.makeText(requireContext(), "완성이 되면 알려드릴게요!", Toast.LENGTH_LONG).show()
-                    viewModel.generateScript(this@ScriptTimeFragment, mainActivity)
-                    findNavController().navigate(R.id.homeFragment)
-                }
-            }
-        }
-        */
+        observeKeyboardState()
+        checkEnabled()
 
         binding.run {
+            buttonComplete.setOnClickListener {
+                viewModel.generateScript(this@ScriptCheckFragment, mainActivity)
+                Log.d("발표몇분", "대본 생성 요청")
+                findNavController().navigate(R.id.scriptCompleteFragment)
+            }
+
+            editTextTitleCheck.addTextChangedListener {
+                buttonNextKeyboard.text = "저장"
+                if(editTextTitleCheck.text.isNotEmpty()){
+                    isTitleFilled = true
+                }
+                else{
+                    isTitleFilled = false
+                    checkEnabled()
+                }
+            }
+
+            editTextTopicCheck.addTextChangedListener {
+                buttonNextKeyboard.text = "저장"
+                if(editTextTopicCheck.text.isNotEmpty()){
+                    isTopicFilled = true
+                }
+                else{
+                    isTopicFilled = false
+                    checkEnabled()
+                }
+            }
+
+            editTextTimeCheck.setOnTouchListener { view, motionEvent ->
+                // 클릭 시 실행할 동작
+                if (motionEvent.action == MotionEvent.ACTION_UP && !isDialogShowing) {
+                    isDialogShowing = true
+                    showDialog()
+                }
+                true
+            }
 
             subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
 
@@ -100,18 +111,6 @@ class ScriptCheckFragment : Fragment() {
             var spannedGridLayoutManager = SpannedGridLayoutManager(
                 orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
                 spans = 4)
-
-            editTextTimeCheck.setOnTouchListener { view, motionEvent ->
-                // 클릭 시 실행할 동작
-                Log.d("발표몇분", "시간 변경")
-
-                if (motionEvent.action == MotionEvent.ACTION_UP && !isDialogShowing) {
-                    isDialogShowing = true
-                    showDialog()
-                }
-
-                true
-            }
 
             recyclerViewSubtopicCheck.run {
 
@@ -124,6 +123,10 @@ class ScriptCheckFragment : Fragment() {
 //                    layoutManager = LinearLayoutManager(context)
                 layoutManager = StaggeredGridLayoutManager(2, RecyclerView.HORIZONTAL)
                 setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS)
+
+                setOnClickListener {
+                    buttonNextKeyboard.text = "등록"
+                }
 
 //                    layoutManager = spannedGridLayoutManager
 //                    layoutManager.itemOrderIsStable = true
@@ -142,6 +145,10 @@ class ScriptCheckFragment : Fragment() {
                 object : SubTopicCheckAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
                         subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
+                        subtopicList = subtopicList.filter { it.isNotBlank() }.toMutableList()
+                        Log.d("발표몇분", "subtopicList filter $subtopicList")
+//                        subtopicList.add("")
+                        Log.d("발표몇분", "subtopicList add $subtopicList")
                         recyclerViewSubtopicCheck.adapter?.notifyDataSetChanged()
                     }
                 }
@@ -153,7 +160,6 @@ class ScriptCheckFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initView()
-        subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
     }
 
     fun initToolBar() {
@@ -283,6 +289,50 @@ class ScriptCheckFragment : Fragment() {
             val y = (rect.height() * height).toInt()
 
             window?.setLayout(x, y)
+        }
+    }
+
+    fun checkEnabled() {
+        binding.run {
+            subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
+
+            Log.d("발표몇분", "제목 : ${isTitleFilled}")
+            Log.d("발표몇분", "주제 : ${isTopicFilled}")
+            Log.d("발표몇분", "소주제 : ${subtopicList.size}")
+
+            if(isTitleFilled && isTopicFilled && (subtopicList.size > 0)) {
+                buttonComplete.isEnabled = true
+                buttonNextKeyboard.isEnabled = true
+            } else {
+                buttonComplete.isEnabled = false
+                buttonNextKeyboard.isEnabled = false
+            }
+        }
+    }
+
+    private fun observeKeyboardState() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            var originHeight = -1
+            if ( binding.root.height > originHeight) {
+                originHeight =  binding.root.height
+            }
+
+            val visibleFrameSize = Rect()
+            binding.root.getWindowVisibleDisplayFrame(visibleFrameSize)
+
+            val visibleFrameHeight = visibleFrameSize.bottom - visibleFrameSize.top
+            val keyboardHeight = originHeight - visibleFrameHeight
+
+            if (keyboardHeight > visibleFrameHeight * 0.15) {
+                // 키보드가 올라옴
+                binding.buttonNextKeyboard.visibility = View.VISIBLE
+                binding.buttonComplete.visibility = View.GONE
+                binding.buttonNextKeyboard.translationY = - keyboardHeight.toFloat() // 버튼을 키보드 위로 이동
+            } else {
+                // 키보드가 내려감
+                binding.buttonNextKeyboard.visibility = View.GONE
+                binding.buttonComplete.visibility = View.VISIBLE
+            }
         }
     }
 }

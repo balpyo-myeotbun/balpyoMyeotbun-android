@@ -60,13 +60,12 @@ class ScriptResultFragment : Fragment() {
             binding.editTextScript.setText(data.script)
             scriptGptId = data.gptId
             initToolBar()
-            binding.textViewEdit.visibility = View.INVISIBLE
             binding.editTextScript.isFocusableInTouchMode = false
             var minute = (data.secTime.toInt()) / 60
             var second = (data.secTime.toInt()) % 60
 
             binding.textViewGoalTime.text = "${minute}분 ${second}초에 맞는"
-            binding.textViewSuccess.text = "${data.title} 대본이\n완성되었어요!"
+            binding.textViewScriptTitle.text = "${data.title}"
 
             var fullText = binding.textViewSuccess.text
 
@@ -106,7 +105,6 @@ class ScriptResultFragment : Fragment() {
                 }
             }
             initToolBar()
-            binding.textViewEdit.visibility = View.INVISIBLE
             binding.editTextScript.isFocusableInTouchMode = false
 
             binding.run {
@@ -114,7 +112,7 @@ class ScriptResultFragment : Fragment() {
                 var second = (MyApplication.scriptTime.toInt()) % 60
 
                 textViewGoalTime.text = "${minute}분 ${second}초에 맞는"
-                textViewSuccess.text = "${MyApplication.scriptTitle} 대본이\n완성되었어요!"
+                textViewScriptTitle.text = "${MyApplication.scriptTitle}"
 
                 var fullText = textViewSuccess.text
 
@@ -143,14 +141,12 @@ class ScriptResultFragment : Fragment() {
                         ContextCompat.getColorStateList(requireContext(), R.color.white)
                     buttonEdit.text = "대본 수정하기"
                     buttonEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray3))
-                    textViewEdit.visibility = View.INVISIBLE
                     editTextScript.isFocusableInTouchMode = false
                 } else {
                     buttonEdit.backgroundTintList =
                         ContextCompat.getColorStateList(requireContext(), R.color.gray2)
                     buttonEdit.text = "대본 수정 완료"
                     buttonEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray4))
-                    textViewEdit.visibility = View.VISIBLE
                     editTextScript.isFocusableInTouchMode = true
                 }
                 editable = !editable
@@ -180,6 +176,10 @@ class ScriptResultFragment : Fragment() {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.VISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewTitle.run {
+                visibility = View.VISIBLE
+                text = "대본 생성"
+            }
             toolbar.buttonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
                 /*val transaction: FragmentTransaction =
@@ -248,6 +248,7 @@ class ScriptResultFragment : Fragment() {
             }
         })
     }
+
     fun storeScript(data : ScriptResultData) {
         var apiClient = ApiClient(mainActivity)
 

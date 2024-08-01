@@ -20,13 +20,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_bold"
-        android:text="대본이\n완성되었어요!"
+        android:text="대본이 완성되었어요!"
         android:textColor="@color/text"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView_goal_time"
+        app:layout_constraintEnd_toEndOf="@+id/textView_script_title"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView_goal_time"
-        app:layout_constraintTop_toBottomOf="@+id/textView_goal_time" />
+        app:layout_constraintStart_toStartOf="@+id/textView_script_title"
+        app:layout_constraintTop_toBottomOf="@+id/textView_script_title" />
 
     <TextView
         android:id="@+id/textView_goal_time"
@@ -44,26 +44,25 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
-        android:id="@+id/textView_edit"
+        android:id="@+id/textView_script_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-        android:fontFamily="@font/pretendard_regular"
-        android:text="대본 수정 완료 버튼을 눌러주세요"
-        android:textColor="@color/gray3"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="대본 제목"
+        android:textColor="@color/text"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="@id/textView_goal_time"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_success" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_goal_time" />
 
     <EditText
         android:id="@+id/editText_script"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
         android:enabled="true"
@@ -80,14 +79,16 @@
         app:layout_constraintBottom_toTopOf="@+id/button_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_success" />
 
     <Button
         android:id="@+id/button_edit"
+        style="@style/BottomNextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/pretendard_regular"
         android:text="대본 수정하기"
@@ -97,20 +98,17 @@
         app:layout_constraintBottom_toTopOf="@+id/button_store"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/gray2"
+        app:strokeColor="@color/gray3"
         app:strokeWidth="1dp" />
 
     <Button
         android:id="@+id/button_store"
+        style="@style/BottomNextButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/pretendard_medium"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="46dp"
         android:text="보관함에 저장하기"
-        android:textSize="16sp"
-        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
