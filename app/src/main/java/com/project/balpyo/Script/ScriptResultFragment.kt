@@ -106,6 +106,7 @@ class ScriptResultFragment : Fragment() {
             }
             initToolBar()
             binding.editTextScript.isFocusableInTouchMode = false
+            MyApplication.scriptGenerating = false
 
             binding.run {
                 var minute = (MyApplication.scriptTime.toInt()) / 60

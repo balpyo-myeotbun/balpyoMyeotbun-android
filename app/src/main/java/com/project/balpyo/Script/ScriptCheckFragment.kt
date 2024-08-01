@@ -34,9 +34,19 @@ import com.project.balpyo.R
 import com.project.balpyo.Script.Adapter.SubTopicAdapter
 import com.project.balpyo.Script.Adapter.SubTopicCheckAdapter
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
+import com.project.balpyo.Sign.SignUpTermsFragment
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.api.ApiClient
+import com.project.balpyo.api.TokenManager
+import com.project.balpyo.api.request.ManageScriptRequest
+import com.project.balpyo.api.request.SignUpRequest
+import com.project.balpyo.api.response.BaseResponse
+import com.project.balpyo.api.response.ManageScriptResponse
 import com.project.balpyo.databinding.FragmentScriptCheckBinding
 import okhttp3.internal.notifyAll
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ScriptCheckFragment : Fragment() {
 
@@ -68,9 +78,7 @@ class ScriptCheckFragment : Fragment() {
 
         binding.run {
             buttonComplete.setOnClickListener {
-                viewModel.generateScript(this@ScriptCheckFragment, mainActivity)
-                Log.d("발표몇분", "대본 생성 요청")
-                findNavController().navigate(R.id.scriptCompleteFragment)
+                manageScript()
             }
 
             editTextTitleCheck.addTextChangedListener {
@@ -334,5 +342,44 @@ class ScriptCheckFragment : Fragment() {
                 binding.buttonComplete.visibility = View.VISIBLE
             }
         }
+    }
+
+    // 빈 스크립트 생성
+    fun manageScript() {
+        var apiClient = ApiClient(mainActivity)
+        var tokenManager = TokenManager(mainActivity)
+
+        var manageScript = ManageScriptRequest("스크립트 생성", "빈 스크립트 생성", MyApplication.scriptTime, true)
+
+        apiClient.apiService.manageScript("${tokenManager.getUid()}",manageScript)?.enqueue(object :
+            Callback<ManageScriptResponse> {
+            override fun onResponse(call: Call<ManageScriptResponse>, response: Response<ManageScriptResponse>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: ManageScriptResponse? = response.body()
+                    Log.d("##", "onResponse 성공: " + result?.toString())
+                    MyApplication.scriptId = result?.result!!.scriptId.toLong()
+
+                    viewModel.generateScript(this@ScriptCheckFragment, mainActivity)
+
+                    MyApplication.scriptGenerating = true
+
+                    findNavController().navigate(R.id.scriptCompleteFragment)
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: ManageScriptResponse? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<ManageScriptResponse>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
     }
 }

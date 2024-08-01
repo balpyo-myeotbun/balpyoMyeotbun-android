@@ -1,17 +1,21 @@
 package com.project.balpyo.api
 
 import com.project.balpyo.api.request.EditScriptRequest
+import com.project.balpyo.api.request.FcmRequest
 import com.project.balpyo.api.request.GenerateAudioRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
+import com.project.balpyo.api.request.ManageScriptRequest
 import com.project.balpyo.api.request.SignInRequest
 import com.project.balpyo.api.request.SignUpRequest
 import com.project.balpyo.api.request.StoreScriptRequest
 import com.project.balpyo.api.response.BaseResponse
 import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.api.response.EditScriptResponse
+import com.project.balpyo.api.response.FcmResponse
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
+import com.project.balpyo.api.response.ManageScriptResponse
 import com.project.balpyo.api.response.SignInResponse
 import com.project.balpyo.api.response.StorageDetailResponse
 import com.project.balpyo.api.response.StorageListResponse
@@ -89,4 +93,7 @@ interface ApiService {
 
     @POST("api/auth/signin")
     fun signIn(@Body parameters: SignInRequest): Call<SignInResponse>
+
+    @POST("every/manage/script")
+    fun manageScript(@Header("UID") uid: String, @Body parameters: ManageScriptRequest): Call<ManageScriptResponse>
 }

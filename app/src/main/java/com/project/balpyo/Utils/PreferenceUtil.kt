@@ -13,4 +13,11 @@ class PreferenceUtil(context: Context) {
 
     fun getFCMToken(): String? =
         preferences.getString("FCM_TOKEN", null)
+
+    fun setScriptResult(script: String){
+        preferences.edit().putString("SCRIPT", script).apply()
+    }
+
+    fun getScriptResult(): String? =
+        preferences.getString("SCRIPT", null)
 }

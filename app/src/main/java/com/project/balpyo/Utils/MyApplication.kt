@@ -10,6 +10,8 @@ class MyApplication : Application() {
         lateinit var preferences: PreferenceUtil
 
         // 1. 발표 시간 맞춤형 스크립트 생성
+        var scriptGenerating = false
+        var scriptId = 0L
         var scriptTitle = ""
         var scriptTopic = ""
         var scriptSubtopic = ""
