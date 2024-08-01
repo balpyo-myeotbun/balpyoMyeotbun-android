@@ -1,10 +1,14 @@
 package com.project.balpyo.Storage.Adapter
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.text.SpannableString
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.R
 import com.project.balpyo.api.response.StorageListResult
@@ -13,12 +17,8 @@ import com.project.balpyo.databinding.ItemStorageBinding
 
 class SearchAdapter (var result: List<StorageListResult>) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
-    private var onItemClickListener: ((Int) -> Unit)? = null
     private var context: Context? = null
-
-    fun setOnItemClickListener(listener: (Int) -> Unit) {
-        onItemClickListener = listener
-    }
+    var searchQuery : String = ""
 
     fun setItems(list: List<StorageListResult>) {
         result = list
@@ -44,7 +44,7 @@ class SearchAdapter (var result: List<StorageListResult>) :
         holder.run {
             title.text = result[position].title
             content.maxLines = 3
-            content.text = result[position].script
+            content.text = result[position].script?.let { highlightText(it) }
 
             // 태그 초기화
             tagNote.visibility = View.GONE
@@ -61,6 +61,27 @@ class SearchAdapter (var result: List<StorageListResult>) :
                 }
             }
         }
+    }
+    private fun highlightText(originalText: String): SpannableString {
+        if(searchQuery.isNotEmpty()) {
+            var highlightText = SpannableString(originalText)
+            var startIndex = originalText.indexOf(searchQuery)
+            highlightText = SpannableString(highlightText.substring(startIndex))
+            startIndex = 0
+
+            while (startIndex != -1) {
+                highlightText.setSpan(
+                    context?.let { BackgroundColorSpan(it.getColor(R.color.search_color)) },
+                    startIndex,
+                    startIndex + searchQuery.length,
+                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                startIndex = highlightText.indexOf(searchQuery, startIndex + 1)
+            }
+            return highlightText
+        }
+        else
+            return SpannableString(originalText)
     }
 
     override fun getItemCount() = result.size

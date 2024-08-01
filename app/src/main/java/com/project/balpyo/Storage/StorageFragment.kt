@@ -182,6 +182,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                     updateToolbarMode(ToolbarMode.RESULT)
                     val searchText: String = etStorageSearch.text.toString()
                     searchHistoryManager.saveSearchQuery(searchText)
+                    searchAdapter.searchQuery = searchText
                     searchList.clear()
                     if (searchText.isEmpty()) {
                         updateLayoutMode(LayoutMode.EMPTY_RESULT)
