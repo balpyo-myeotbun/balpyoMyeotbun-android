@@ -113,9 +113,4 @@ class ScriptTimeFragment : Fragment() {
 
         findNavController().navigate(R.id.scriptCheckFragment)
     }
-
-    companion object {
-        const val DENIED = "denied"
-        const val EXPLAINED = "explained"
-    }
 }
