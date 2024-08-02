@@ -48,9 +48,6 @@ class LoginFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         binding.run {
-            btnLoginUid.setOnClickListener {
-                verifyUid()
-            }
             btnLoginEmail.setOnClickListener {
                 findNavController().navigate(R.id.emailLoginFragment)
             }

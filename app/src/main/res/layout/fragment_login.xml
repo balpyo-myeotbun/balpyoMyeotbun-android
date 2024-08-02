@@ -95,31 +95,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btn_login_uid"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="13dp"
-        app:layout_constraintEnd_toEndOf="@+id/btn_login_email"
-        app:layout_constraintStart_toStartOf="@+id/btn_login_email"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login_email">
-
-        <TextView
-            android:id="@+id/tv_login_uid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/apple_sd_gothic_neo_sb"
-            android:text="로그인 없이 시작하기"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btn_login_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
