@@ -200,6 +200,9 @@
         <action
             android:id="@+id/action_storageFragment_to_storageEditDeleteFragment"
             app:destination="@id/storageEditDeleteFragment" />
+        <action
+            android:id="@+id/action_storageFragment_to_noteFragment"
+            app:destination="@id/noteFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeCalculatorTitleFragment"
@@ -391,6 +394,11 @@
             android:id="@+id/action_onboarding5Fragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/noteFragment"
+        android:name="com.project.balpyo.Storage.NoteFragment"
+        android:label="fragment_note"
+        tools:layout="@layout/fragment_note" />
     <fragment
         android:id="@+id/emailLoginFragment"
         android:name="com.project.balpyo.Sign.EmailLoginFragment"
