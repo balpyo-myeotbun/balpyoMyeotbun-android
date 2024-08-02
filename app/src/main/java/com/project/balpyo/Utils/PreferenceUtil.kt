@@ -20,4 +20,12 @@ class PreferenceUtil(context: Context) {
 
     fun getScriptResult(): String? =
         preferences.getString("SCRIPT", null)
+
+    fun getOnBoarding(key: String, defValue: Boolean):Boolean{
+        return preferences.getBoolean(key,defValue)
+    }
+
+    fun setOnBoarding(key: String, defValue: Boolean){
+        preferences.edit().putBoolean(key, defValue).apply()
+    }
 }

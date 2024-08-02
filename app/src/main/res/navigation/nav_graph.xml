@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_splashFragment_to_onboarding1Fragment"
             app:destination="@id/onboarding1Fragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -393,6 +396,9 @@
         <action
             android:id="@+id/action_onboarding5Fragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_onboarding5Fragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/noteFragment"

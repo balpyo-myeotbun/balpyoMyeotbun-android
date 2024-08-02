@@ -15,6 +15,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.findFragment
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.balpyo.Script.Data.ScriptResultData
@@ -34,10 +36,12 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var sharedPreferenceManager: PreferenceUtil
 
+    var type = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         notificationActivity = NotificationActivity()
 
@@ -49,6 +53,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         MyApplication.preferences = PreferenceUtil(applicationContext)
+
+        MyApplication.mainActivity = true
 
         setFCMToken()
 
@@ -69,6 +75,26 @@ class MainActivity : AppCompatActivity() {
                 else -> setBottomNavigationVisibility(View.GONE)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        type = intent?.getStringExtra("type").toString()
+        Log.d("발표몇분", "type : ${MyApplication.type}")
+        if(MyApplication.type == "push") {
+//            navController.navigate(R.id.splashFragment)
+//            navController.navigate(R.id.loginFragment)
+            navController.navigate(R.id.homeFragment)
+            Log.d("발표몇분", "home fragment")
+            MyApplication.type = ""
+        } else {
+            navController.navigate(R.id.splashFragment)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MyApplication.mainActivity = false
     }
 
     private fun setBottomNavigationView() {
@@ -93,41 +119,6 @@ class MainActivity : AppCompatActivity() {
 
     fun setBottomNavigationVisibility(visibility: Int) {
         bottomNavigationView.visibility = visibility
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //비동기 코드, 리림 클릭 시 mainactivity에서 argument를 포함하여 대본 생성 결과로 이동
-        if (intent.getBooleanExtra("isNotification", false)) {
-            var uid = intent.getStringExtra("uid")
-            var title = intent.getStringExtra("title")
-            var secTime = intent.getLongExtra("secTime", 0)
-            var script = intent.getStringExtra("script")
-            var gptId = intent.getStringExtra("gptId")
-            var fragment = intent.getStringExtra("fragment")
-            var data = ScriptResultData(uid!!, title!!, secTime, script!!, gptId!!)
-
-            val bundle = Bundle()
-            bundle.apply {
-                this.putSerializable("data", data)
-            }
-
-            // 인텐트에서 데이터 가져오기
-            val fragmentToLoad = intent.getStringExtra("fragment_to_load")
-
-            var navController = binding.fragmentContainerView.findFragment<NavHostFragment>().navController
-
-            if (fragment != null) {
-                when (fragmentToLoad) {
-                    "DetailFragment" -> {
-                        // 대본 생성 결과 화면으로 이동
-                        val notificationIntent = Intent(notificationActivity, NotificationActivity::class.java)
-                        startActivity(notificationIntent)
-                    }
-                    else -> navController.navigate(R.id.homeFragment)
-                }
-            }
-        }
     }
 
     fun setTransparentStatusBar() {

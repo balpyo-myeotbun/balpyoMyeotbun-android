@@ -8,7 +8,7 @@ data class StorageDetailResponse(
 
 data class StorageDetailResult(
     val scriptId: Long,
-    val script: String,
+    val script: String?,
     val gptId: String?,
     val uid: String?,
     val title: String,

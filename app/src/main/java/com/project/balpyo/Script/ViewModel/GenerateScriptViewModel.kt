@@ -39,64 +39,6 @@ class GenerateScriptViewModel : ViewModel() {
     var script = MutableLiveData<String>()
     var gptId = MutableLiveData<String>()
 
-    //알림을 띄워 클릭 시 메인액티비티로 이동, 메인액티비티에서 대본 결과 프래그먼트로 이동시키려했으나 실패하여 현재 안쓰임
-    fun showNotification(context : Context, title: String, secTime : Long, uid : String, script : String, gptId : String ) {
-
-        val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra("isNotification", true)
-        intent.putExtra("title", title)
-        intent.putExtra("secTime", secTime)
-        intent.putExtra("uid", uid)
-        intent.putExtra("script", script)
-        intent.putExtra("gptId", gptId)
-        intent.putExtra("fragment", "DetailFragment")
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-
-        // 알림 채널 생성
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                "CHANNEL_ID",
-                "Channel Name",
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = "Channel Description"
-            }
-
-            // 알림 매니저에 채널 추가
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
-        }
-        // 알림을 만들고 설정
-        val notification = NotificationCompat.Builder(context, "CHANNEL_ID")
-            .setContentTitle("대본이 완성되었어요!")
-            .setContentText("알림을 클릭하여 대본을 확인해보세요.")
-            .setSmallIcon(R.drawable.ic_logo_balpyo)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .build()
-
-        //알림을 표시
-        with(NotificationManagerCompat.from(context)) {
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // 권한 요청 다이얼로그를 표시
-                ActivityCompat.requestPermissions(
-                    context as Activity,
-                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                    PERMISSION_REQUEST_CODE
-                )
-                return
-            }
-            notify(0, notification)
-        }
-    }
-
     //대본 생성이 완료되면 결과 프래그먼트로 이동하도록 설정, 코루틴
     fun generateScript(fragment: Fragment, mainActivity: MainActivity) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -112,11 +54,12 @@ class GenerateScriptViewModel : ViewModel() {
                     MyApplication.scriptSubtopic,
                     MyApplication.scriptTime,
                     "1234",
+                    mutableListOf("SCRIPT"),
                     "false",
                     MyApplication.preferences.getFCMToken().toString()
                 )
 
-                Log.d("##", "scripit info : ${inputScriptInfo}")
+                Log.d("##", "script info : ${inputScriptInfo}")
                 Log.d("발표몇분", "대본 생성 요청")
 
                 apiClient.apiService.generateScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", inputScriptInfo)?.enqueue(object : Callback<GenerateScriptResponse> {
@@ -129,8 +72,8 @@ class GenerateScriptViewModel : ViewModel() {
                             var result: GenerateScriptResponse? = response.body()
                             Log.d("##", "onResponse 성공: " + result?.toString())
 
-                            MyApplication.preferences.setScriptResult(result?.result?.resultScript.toString())
-                            Log.d("발표몇분", "스크립트 저장 : ${MyApplication.preferences.getScriptResult()}")
+//                            MyApplication.preferences.setScriptResult(result?.result?.resultScript.toString())
+//                            Log.d("발표몇분", "스크립트 저장 : ${MyApplication.preferences.getScriptResult()}")
 
                         } else {
                             // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

@@ -31,5 +31,9 @@ class MyApplication : Application() {
         //이메일 회원가입
         var email = ""
         var password = ""
+
+        // FCM
+        var type = ""
+        var mainActivity = false
     }
 }

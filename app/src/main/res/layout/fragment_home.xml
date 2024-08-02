@@ -129,6 +129,19 @@
                     app:strokeColor="@color/gray1"
                     app:strokeWidth="1dp" />
 
+                <ImageButton
+                    android:id="@+id/tooltip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_tooltip"
+                    android:translationZ="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_home_script"
+                    app:layout_constraintStart_toStartOf="@+id/ll_home_script" />
+
                 <ImageView
                     android:id="@+id/imageView_loading"
                     android:layout_width="62dp"

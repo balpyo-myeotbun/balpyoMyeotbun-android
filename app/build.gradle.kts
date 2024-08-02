@@ -105,4 +105,7 @@ dependencies {
 
     // gif
     implementation("com.airbnb.android:lottie:5.0.2")
+
+    // tooltip
+    implementation("com.github.skydoves:balloon:1.6.6")
 }

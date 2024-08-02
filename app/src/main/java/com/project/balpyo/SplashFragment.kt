@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceUtil
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.databinding.FragmentSplashBinding
 
@@ -16,17 +18,15 @@ class SplashFragment : Fragment() {
     lateinit var binding: FragmentSplashBinding
     lateinit var mainActivity: MainActivity
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mainActivity = activity as MainActivity
-        mainActivity.setTransparentStatusBar()
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding = FragmentSplashBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
+        mainActivity.setTransparentStatusBar()
+        MyApplication.preferences = PreferenceUtil(mainActivity)
 
         binding.run {
             val token = PreferenceHelper.getUserToken(requireContext())
@@ -36,9 +36,12 @@ class SplashFragment : Fragment() {
                     findNavController().navigate(R.id.homeFragment)
                 }, 3000)
             } else {
-                // 온보딩 화면으로 이동
                 Handler().postDelayed({
-                    findNavController().navigate(R.id.onboarding1Fragment)
+                    if(MyApplication.preferences.getOnBoarding("isFirst", true)) {
+                        findNavController().navigate(R.id.onboarding1Fragment)
+                    } else {
+                        findNavController().navigate(R.id.loginFragment)
+                    }
                 }, 3000)
             }
         }

@@ -36,4 +36,6 @@
     <!-- highlight text -->
     <color name="search_color">#FFF500</color>
 
+    <color name="tooltip_color">#D9D9D9</color>
+
 </resources>

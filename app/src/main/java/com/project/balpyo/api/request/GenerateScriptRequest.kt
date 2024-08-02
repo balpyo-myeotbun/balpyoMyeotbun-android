@@ -8,6 +8,7 @@ data class GenerateScriptRequest(
     val keywords: String,
     val secTime: Long,
     @SerializedName("balpyoAPIKey") val balpyoApikey: String,
+    val tag: List<String>,
     val test: String,
     val fcmtoken: String
 )
