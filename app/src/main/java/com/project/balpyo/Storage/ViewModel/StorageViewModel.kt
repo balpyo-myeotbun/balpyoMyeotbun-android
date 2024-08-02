@@ -91,7 +91,6 @@ class StorageViewModel: ViewModel() {
                 // 통신 실패
                 Log.d("##", "onFailure 에러: " + t.message.toString());
 
-
                 NavHostFragment.findNavController(fragment).popBackStack()
             }
         })
@@ -110,7 +109,7 @@ class StorageViewModel: ViewModel() {
                     var result: StorageDetailResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
                     //ssml 태그를 제외한 일반 스크립트만을 저장하기 위함
-                    var normalScript = replaceScriptToNormal(result?.result!!.script)
+                    var normalScript = replaceScriptToNormal(result?.result!!.script.toString())
                     storageDetail.value = StorageDetailResult(result?.result!!.scriptId, normalScript,  result?.result!!.gptId,  result?.result!!.uid,  result?.result!!.title,  result?.result!!.secTime, result?.result!!.voiceFilePath, result?.result!!.useAi, result?.result!!.tag, result?.result!!.generating)
                     //NavHostFragment.findNavController(fragment).navigate(R.id.storageEditDeleteFragment)
 
@@ -130,7 +129,6 @@ class StorageViewModel: ViewModel() {
             override fun onFailure(call: Call<StorageDetailResponse>, t: Throwable) {
                 // 통신 실패
                 Log.d("##", "onFailure 에러: " + t.message.toString());
-
 
                 NavHostFragment.findNavController(fragment).popBackStack()
             }

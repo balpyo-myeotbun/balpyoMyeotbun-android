@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
@@ -21,14 +22,17 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.Home.HomeFragment
 import com.project.balpyo.MainActivity
+import com.project.balpyo.NotificationActivity
 import com.project.balpyo.R
 import com.project.balpyo.Script.Data.ScriptResultData
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
+import com.project.balpyo.Script.ViewModel.ScriptDetailViewModel
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.StoreScriptRequest
+import com.project.balpyo.api.response.StorageDetailResult
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.databinding.FragmentScriptResultBinding
 import retrofit2.Call
@@ -39,104 +43,53 @@ import retrofit2.Response
 class ScriptResultFragment : Fragment() {
 
     lateinit var binding: FragmentScriptResultBinding
+    lateinit var notificationActivity: NotificationActivity
     lateinit var mainActivity: MainActivity
 
     lateinit var viewModel: GenerateScriptViewModel
+    lateinit var scriptViewModel: ScriptDetailViewModel
 
     var editable = false
-    var scriptGptId = ""
+
+    var gptId = ""
+    var title = ""
+    var secTime = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScriptResultBinding.inflate(layoutInflater)
-        mainActivity = activity as MainActivity
+        notificationActivity = activity as NotificationActivity
+        mainActivity = MainActivity()
 
-        //알림 클릭 후 펜딩인텐트로 메인 액티비티에서 넘어왔을 시 수행 코드
-        //현재 펜딩인텐트 관련 코드 주석처리로 동작하지 않음
-        arguments?.let { bundle ->
-            viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
-            val data = bundle.getSerializable("data") as ScriptResultData // "key"를 사용하여 데이터를 가져옴
-            binding.editTextScript.setText(data.script)
-            scriptGptId = data.gptId
-            initToolBar()
-            binding.editTextScript.isFocusableInTouchMode = false
-            var minute = (data.secTime.toInt()) / 60
-            var second = (data.secTime.toInt()) % 60
+        scriptViewModel = ViewModelProvider(notificationActivity)[ScriptDetailViewModel::class.java]
+        viewModel = ViewModelProvider(notificationActivity)[GenerateScriptViewModel::class.java]
 
-            binding.textViewGoalTime.text = "${minute}분 ${second}초에 맞는"
-            binding.textViewScriptTitle.text = "${data.title}"
+        scriptViewModel.run {
+            scriptResult.observe(notificationActivity) {
+                gptId = it.gptId.toString()
+                title = it.title
+                secTime = it.secTime
 
-            var fullText = binding.textViewSuccess.text
+                binding.run {
+                    editTextScript.setText(it.script)
+                    var minute = (it.secTime.toInt()) / 60
+                    var second = (it.secTime.toInt()) % 60
 
-            val spannableString = SpannableString(fullText)
-
-            // 시작 인덱스와 끝 인덱스 사이의 텍스트에 다른 색상 적용
-            val startIndex = 0
-            val endIndex = data.title.length
-            spannableString.setSpan(
-                ForegroundColorSpan(Color.parseColor("#EB2A63")), // 색상 설정
-                startIndex,
-                endIndex,
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-            )// 스타일 적용 범위 설정
-            binding.textViewSuccess.text = spannableString
-            binding.buttonStore.setOnClickListener {
-                storeScript(data)
-                var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                var navController = navHostFragment.navController
-                navController.navigate(R.id.homeFragment)
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(navController.graph.startDestinationRoute, true) // 스택의 처음부터 현재 위치까지 모두 팝
-                    .build()
-                navController.navigate(R.id.homeFragment, null, navOptions)
-            }
-        } ?: run {
-            //기존 코드
-            viewModel = ViewModelProvider(mainActivity)[GenerateScriptViewModel::class.java]
-            viewModel.run {
-                script.observe(mainActivity) {
-                    binding.editTextScript.setText(it)
-                    Log.d("발표몇분", "${it}")
+                    textViewGoalTime.text = "${minute}분 ${second}초"
+                    textViewScriptTitle.text = "${it.title}"
                 }
-                gptId.observe(mainActivity) {
-                    scriptGptId = it.toString()
-                    Log.d("발표몇분", "${scriptGptId}")
-                }
-            }
-            initToolBar()
-            binding.editTextScript.isFocusableInTouchMode = false
-            MyApplication.scriptGenerating = false
-
-            binding.run {
-                var minute = (MyApplication.scriptTime.toInt()) / 60
-                var second = (MyApplication.scriptTime.toInt()) % 60
-
-                textViewGoalTime.text = "${minute}분 ${second}초에 맞는"
-                textViewScriptTitle.text = "${MyApplication.scriptTitle}"
-
-                var fullText = textViewSuccess.text
-
-                val spannableString = SpannableString(fullText)
-
-                val startIndex = 0
-                val endIndex = MyApplication.scriptTitle.length
-                spannableString.setSpan(
-                    ForegroundColorSpan(Color.parseColor("#EB2A63")), // 색상 설정
-                    startIndex, // 시작 인덱스
-                    endIndex, // 끝 인덱스 (exclusive)
-                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE // 스타일 적용 범위 설정
-                )
-
-                textViewSuccess.text = spannableString
-                buttonStore.setOnClickListener {
-                    storeScript()
-                }
+                Log.d("발표몇분", "${it}")
             }
         }
 
+        initToolBar()
+        binding.editTextScript.isFocusableInTouchMode = false
+        MyApplication.scriptGenerating = false
+
         binding.run {
+            /*
             buttonEdit.setOnClickListener {
                 if (editable) {
                     buttonEdit.backgroundTintList =
@@ -153,13 +106,14 @@ class ScriptResultFragment : Fragment() {
                 }
                 editable = !editable
             }
-
-            editTextScript.setOnLongClickListener {
-                copyStr(requireContext(), editTextScript.text.toString())
-            }
+            */
 
             buttonStore.setOnClickListener {
                 storeScript()
+            }
+
+            editTextScript.setOnLongClickListener {
+                copyStr(requireContext(), editTextScript.text.toString())
             }
         }
         return binding.root
@@ -175,24 +129,12 @@ class ScriptResultFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.VISIBLE
+            toolbar.buttonBack.visibility = View.INVISIBLE
             toolbar.buttonClose.visibility = View.VISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.textViewTitle.run {
                 visibility = View.VISIBLE
                 text = "대본 생성"
-            }
-            toolbar.buttonBack.setOnClickListener {
-                // 뒤로가기 버튼 클릭시 동작
-                /*val transaction: FragmentTransaction =
-                    mainActivity!!.supportFragmentManager.beginTransaction()
-                val homeFragment = HomeFragment()
-                transaction.replace(R.id.fragmentContainerView, homeFragment)
-                transaction.commit()*/
-                /*var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                var navController = navHostFragment.navController
-                navController.navigate(R.id.homeFragment)*/
-                findNavController().popBackStack()
             }
 
             toolbar.buttonClose.setOnClickListener {
@@ -205,16 +147,30 @@ class ScriptResultFragment : Fragment() {
                 /*var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
                 var navController = navHostFragment.navController
                 navController.navigate(R.id.homeFragment)*/
-                findNavController().popBackStack()
+//                val mainIntent = Intent(notificationActivity, MainActivity::class.java)
+//                mainIntent.putExtra("type", "push")
+//                startActivity(mainIntent)
+
+                MyApplication.type = "push"
+
+                if(MyApplication.mainActivity) {
+                    notificationActivity.finish()
+                } else {
+                    notificationActivity.finish()
+                    val mainIntent = Intent(notificationActivity, MainActivity::class.java)
+                    mainIntent.putExtra("type", "push")
+                    startActivity(mainIntent)
+                }
+//                findNavController().popBackStack()
             }
         }
     }
 
     fun storeScript() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
+        var apiClient = ApiClient(notificationActivity)
+        var tokenManager = TokenManager(notificationActivity)
 
-        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), scriptGptId, MyApplication.scriptTitle, MyApplication.scriptTime)
+        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), gptId.toString(), title.toString(), listOf("SCRIPT"), secTime)
         Log.d("##", "script info : ${inputScriptInfo}")
 
         apiClient.apiService.storeScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",inputScriptInfo)?.enqueue(object :
@@ -224,46 +180,17 @@ class ScriptResultFragment : Fragment() {
                     // 정상적으로 통신이 성공된 경우
                     var result: StoreScriptResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
-                    var navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                    var navController = navHostFragment.navController
-                    navController.navigate(R.id.homeFragment)
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo(navController.graph.startDestinationRoute, true) // 스택의 처음부터 현재 위치까지 모두 팝
-                        .build()
 
-                    navController.navigate(R.id.homeFragment, null, navOptions)
+                    MyApplication.type = "push"
 
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: StoreScriptResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                }
-            }
-
-            override fun onFailure(call: Call<StoreScriptResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
-    }
-
-    fun storeScript(data : ScriptResultData) {
-        var apiClient = ApiClient(mainActivity)
-
-        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), data.gptId, data.title, data.secTime)
-        Log.d("##", "script info : ${inputScriptInfo}")
-
-        apiClient.apiService.storeScript(data.uid,inputScriptInfo)?.enqueue(object :
-            Callback<StoreScriptResponse> {
-            override fun onResponse(call: Call<StoreScriptResponse>, response: Response<StoreScriptResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: StoreScriptResponse? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
+                    if(MyApplication.mainActivity) {
+                        notificationActivity.finish()
+                    } else {
+                        notificationActivity.finish()
+                        val mainIntent = Intent(notificationActivity, MainActivity::class.java)
+                        mainIntent.putExtra("type", "push")
+                        startActivity(mainIntent)
+                    }
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

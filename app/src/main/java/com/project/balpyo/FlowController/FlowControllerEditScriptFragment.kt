@@ -64,7 +64,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
         }
         viewModel.storageDetailForBottomSheet.observe(mainActivity){
             if (it != null) {
-                flowControllerViewModel.setNormalScript(it.script)
+                flowControllerViewModel.setNormalScript(it.script.toString())
                 binding.etScript.setText(flowControllerViewModel.getNormalScriptData().value)
             }
         }

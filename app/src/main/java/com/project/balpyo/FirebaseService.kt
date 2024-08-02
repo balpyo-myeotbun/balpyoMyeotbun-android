@@ -18,21 +18,27 @@ class FirebaseService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        Log.d(javaClass.name, "onMessageReceived: ${message.from} ")
+        Log.d("발표몇분", "onMessageReceived: ${message.from} ")
+        Log.d("발표몇분", "onMessageReceived: ${message.data.toString()} ")
+        Log.d("발표몇분", "onMessageReceived: ${message.data["scriptId"]} ")
         message.notification?.let {
-            showNotification(messageTitle = it.title ?: "", messageBody = it.body ?: "")
+            showNotification(messageTitle = it.title ?: "", messageBody = it.body ?: "", scriptId = message.data["scriptId"].toString() ?: "")
         }
     }
 
-    private fun showNotification(messageTitle: String, messageBody: String) {
+
+
+    private fun showNotification(messageTitle: String, messageBody: String, scriptId: String) {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val notificationID = (System.currentTimeMillis() / 7).toInt() // 고유 ID 지정
 
         createNotificationChannel(notificationManager)
-        val intent = Intent(this, MainActivity::class.java).apply {
+        val intent = Intent(this, NotificationActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             putExtra("fragment", "DetailFragment")
-            setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            putExtra("scriptId", scriptId)
         }
 
         val pendingIntent = PendingIntent.getActivity(
