@@ -105,4 +105,7 @@ dependencies {
 
     // gif
     implementation("com.airbnb.android:lottie:5.0.2")
+
+    //kakao
+    implementation ("com.kakao.sdk:v2-user:2.10.0")
 }
