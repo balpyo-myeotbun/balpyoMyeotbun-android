@@ -1,17 +1,23 @@
 package com.project.balpyo
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.AuthErrorCause
+import com.kakao.sdk.user.UserApiClient
 import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
 import com.project.balpyo.Script.ScriptTitleFragment
 import com.project.balpyo.TimeCalculator.TimeCalculatorScriptFragment
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.GenerateScriptRequest
@@ -48,11 +54,85 @@ class LoginFragment : Fragment() {
             btnLoginEmail.setOnClickListener {
                 findNavController().navigate(R.id.emailLoginFragment)
             }
-            btnLoginKakao.setOnClickListener{
+            btnLoginKakao.setOnClickListener {
                 val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
                     isKaKao = true
                 )
                 findNavController().navigate(action)
+            }
+
+
+            val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+                if (error != null) {
+                    when {
+                        error.toString() == AuthErrorCause.AccessDenied.toString() -> {
+                            Toast.makeText(requireContext(), "접근이 거부 됨(동의 취소)", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        error.toString() == AuthErrorCause.InvalidClient.toString() -> {
+                            Toast.makeText(requireContext(), "유효하지 않은 앱", Toast.LENGTH_SHORT).show()
+                        }
+
+                        error.toString() == AuthErrorCause.InvalidGrant.toString() -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "인증 수단이 유효하지 않아 인증할 수 없는 상태",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        error.toString() == AuthErrorCause.InvalidRequest.toString() -> {
+                            Toast.makeText(requireContext(), "요청 파라미터 오류", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        error.toString() == AuthErrorCause.InvalidScope.toString() -> {
+                            Toast.makeText(requireContext(), "유효하지 않은 scope ID", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        error.toString() == AuthErrorCause.Misconfigured.toString() -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "설정이 올바르지 않음(android key hash)",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        error.toString() == AuthErrorCause.ServerError.toString() -> {
+                            Toast.makeText(requireContext(), "서버 내부 에러", Toast.LENGTH_SHORT).show()
+                        }
+
+                        error.toString() == AuthErrorCause.Unauthorized.toString() -> {
+                            Toast.makeText(requireContext(), "앱이 요청 권한이 없음", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        else -> { // Unknown
+                            Toast.makeText(requireContext(), "기타 에러", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else if (token != null) {
+                    Log.d("token", token.accessToken)
+                    //PreferenceHelper.saveUserToken(requireContext(), token.accessToken)
+                    //PreferenceHelper.saveUserType(requireContext(), "kakao")
+                    Toast.makeText(requireContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                    val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
+                        isKaKao = true
+                    )
+                    findNavController().navigate(action)
+                }
+            }
+            btnLoginKakao.setOnClickListener {
+                if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
+                    UserApiClient.instance.loginWithKakaoTalk(requireContext(), callback = callback)
+                } else {
+                    UserApiClient.instance.loginWithKakaoAccount(
+                        requireContext(),
+                        callback = callback
+                    )
+                }
             }
         }
 
