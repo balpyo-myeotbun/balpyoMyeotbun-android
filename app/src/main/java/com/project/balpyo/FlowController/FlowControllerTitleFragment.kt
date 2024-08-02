@@ -14,6 +14,7 @@ import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.databinding.FragmentFlowControllerTitleBinding
 import kr.bydelta.koala.okt.SentenceSplitter
@@ -100,7 +101,7 @@ class FlowControllerTitleFragment : Fragment() {
             toolbar.textViewPage.visibility = View.VISIBLE
             toolbar.textViewPage.text = "1/5"
             toolbar.buttonBack.setOnClickListener {
-                viewModel.clearValueStorageDataForBottomSheet(TokenManager(mainActivity).getUid()!!)
+                viewModel.clearValueStorageDataForBottomSheet("Bearer ${PreferenceHelper.getUserToken(mainActivity)!!}")
                 flowControllerViewModel.initialize()
                 findNavController().popBackStack()
             }

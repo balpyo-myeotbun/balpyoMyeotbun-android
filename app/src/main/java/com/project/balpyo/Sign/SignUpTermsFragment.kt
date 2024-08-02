@@ -2,6 +2,7 @@ package com.project.balpyo.Sign
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.project.balpyo.LoadingFragmentArgs
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Sign.ViewModel.SignViewModel
@@ -63,8 +63,12 @@ class SignUpTermsFragment : Fragment() {
                 toggleAllChecks(checkAll, checkImage, uncheckImage, black, disable, primary)
             }
             btnSignupTerms.setOnClickListener{
-                if(args.isKaKao) {}
-                else viewModel.signUp(this@SignUpTermsFragment, mainActivity)
+                if(args.isKaKao) {
+                    Log.d("", args.isKaKao.toString())
+                }
+                else {
+                    viewModel.signUp(this@SignUpTermsFragment, mainActivity)
+                }
             }
         }
         return binding.root
@@ -131,7 +135,8 @@ class SignUpTermsFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
-            toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewPage.visibility = View.VISIBLE
+            toolbar.textViewPage.text = "3/3"
             toolbar.textViewTitle.visibility = View.INVISIBLE
             toolbar.buttonBack.setOnClickListener {
                 findNavController().popBackStack()

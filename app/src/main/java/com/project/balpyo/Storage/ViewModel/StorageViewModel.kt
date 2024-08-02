@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.NavHostFragment
 import com.project.balpyo.Storage.LoadScriptBottomSheet.LoadScriptBottomSheetFragment
 import com.project.balpyo.MainActivity
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.response.StorageDetailResponse
@@ -36,7 +37,7 @@ class StorageViewModel: ViewModel() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        apiClient.apiService.getStorageList("${tokenManager.getUid()}")?.enqueue(object :
+        apiClient.apiService.getStorageList("Bearer ${PreferenceHelper.getUserToken(mainActivity)}")?.enqueue(object :
             Callback<StorageListResponse> {
             override fun onResponse(call: Call<StorageListResponse>, response: Response<StorageListResponse>) {
                 if (response.isSuccessful) {
@@ -62,8 +63,10 @@ class StorageViewModel: ViewModel() {
                         var title = result?.result!!.get(i).title
                         var secTime = result?.result!!.get(i).secTime
                         var filePath = result?.result!!.get(i).voiceFilePath
+                        var useAi = result?.result!!.get(i).useAi
+                        var tag = result?.result!!.get(i).tag
 
-                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime, filePath)
+                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime,filePath,useAi, tag)
                         tempList.add(s1)
                     }
 
@@ -99,7 +102,7 @@ class StorageViewModel: ViewModel() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        apiClient.apiService.getStorageDetail("${tokenManager.getUid()}", scriptId)?.enqueue(object :
+        apiClient.apiService.getStorageDetail("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", scriptId)?.enqueue(object :
             Callback<StorageDetailResponse> {
             override fun onResponse(call: Call<StorageDetailResponse>, response: Response<StorageDetailResponse>) {
                 if (response.isSuccessful) {
@@ -108,7 +111,7 @@ class StorageViewModel: ViewModel() {
                     Log.d("##", "onResponse 성공: " + result?.toString())
                     //ssml 태그를 제외한 일반 스크립트만을 저장하기 위함
                     var normalScript = replaceScriptToNormal(result?.result!!.script)
-                    storageDetail.value = StorageDetailResult(result?.result!!.scriptId, normalScript,  result?.result!!.gptId,  result?.result!!.uid,  result?.result!!.title,  result?.result!!.secTime)
+                    storageDetail.value = StorageDetailResult(result?.result!!.scriptId, normalScript,  result?.result!!.gptId,  result?.result!!.uid,  result?.result!!.title,  result?.result!!.secTime, result?.result!!.voiceFilePath, result?.result!!.useAi, result?.result!!.tag, result?.result!!.generating)
                     //NavHostFragment.findNavController(fragment).navigate(R.id.storageEditDeleteFragment)
 
                 } else {
@@ -141,7 +144,7 @@ class StorageViewModel: ViewModel() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        apiClient.apiService.getStorageList("${tokenManager.getUid()}")?.enqueue(object :
+        apiClient.apiService.getStorageList("Bearer ${PreferenceHelper.getUserToken(mainActivity)}")?.enqueue(object :
             Callback<StorageListResponse> {
             override fun onResponse(call: Call<StorageListResponse>, response: Response<StorageListResponse>) {
                 if (response.isSuccessful) {
@@ -167,8 +170,10 @@ class StorageViewModel: ViewModel() {
                         var title = result?.result!!.get(i).title
                         var secTime = result?.result!!.get(i).secTime
                         var filePath = result?.result!!.get(i).voiceFilePath
+                        var useAi = result?.result!!.get(i).useAi
+                        var tag = result?.result!!.get(i).tag
 
-                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime, filePath)
+                        var s1 = StorageListResult(scriptId, script, gptId, uid, title, secTime, filePath, useAi, tag)
                         tempList.add(s1)
                     }
 
@@ -200,7 +205,7 @@ class StorageViewModel: ViewModel() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        apiClient.apiService.getStorageDetail("${tokenManager.getUid()}", scriptId)?.enqueue(object :
+        apiClient.apiService.getStorageDetail("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", scriptId)?.enqueue(object :
             Callback<StorageDetailResponse> {
             override fun onResponse(call: Call<StorageDetailResponse>, response: Response<StorageDetailResponse>) {
                 if (response.isSuccessful) {
@@ -208,8 +213,7 @@ class StorageViewModel: ViewModel() {
                     var result: StorageDetailResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    storageDetailForBottomSheet.value = StorageDetailResult(result?.result!!.scriptId, result?.result!!.script,  result?.result!!.gptId,  result?.result!!.uid,  result?.result!!.title,  result?.result!!.secTime)
-
+                    storageDetailForBottomSheet.value = StorageDetailResult(result?.result!!.scriptId, result?.result!!.script,  result?.result!!.gptId,  result?.result!!.uid,  result?.result!!.title,  result?.result!!.secTime, result?.result!!.voiceFilePath, result?.result!!.useAi, result?.result!!.tag, result?.result!!.generating)
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: StorageDetailResponse? = response.body()
@@ -234,6 +238,8 @@ class StorageViewModel: ViewModel() {
     }
     //바텀시트 뷰모델 초기화
     fun clearValueStorageDataForBottomSheet(uid : String) {
-        storageDetailForBottomSheet.value = StorageDetailResult(0,"","", uid,"",0)
+        storageDetailForBottomSheet.value = StorageDetailResult(0,"","", uid,"",0,"",false,
+            listOf(""), false
+        )
     }
 }

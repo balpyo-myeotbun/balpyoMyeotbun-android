@@ -1,6 +1,9 @@
 package com.project.balpyo.Sign.ViewModel
 
 import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
@@ -8,18 +11,21 @@ import com.project.balpyo.R
 import com.project.balpyo.Sign.SignUpCompleteFragment
 import com.project.balpyo.Sign.SignUpTermsFragment
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.SignInRequest
 import com.project.balpyo.api.request.SignUpRequest
 import com.project.balpyo.api.response.BaseResponse
 import com.project.balpyo.api.response.SignInResponse
+import com.project.balpyo.api.response.StorageListResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SignViewModel: ViewModel() {
-    fun signUp(fragment: SignUpTermsFragment, mainActivity: MainActivity) {
+    var signInResponse = MutableLiveData<SignInResponse>()
+    fun signUp(fragment: Fragment, mainActivity: MainActivity) {
         var apiClient = ApiClient(mainActivity)
 
         apiClient.apiService.signUp(SignUpRequest(MyApplication.email, MyApplication.email, MyApplication.password))?.enqueue(object :
@@ -29,8 +35,7 @@ class SignViewModel: ViewModel() {
                     // 정상적으로 통신이 성공된 경우
                     var result: BaseResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
-                    fragment.findNavController().navigate(R.id.signUpCompleteFragment)
-
+                    fragment.findNavController().navigate(R.id.signUpCertificationFragment)
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: BaseResponse? = response.body()
@@ -49,7 +54,7 @@ class SignViewModel: ViewModel() {
         })
     }
 
-    fun signIn(fragment: SignUpCompleteFragment, mainActivity: MainActivity) {
+    fun signIn(fragment: Fragment, mainActivity: MainActivity) {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
@@ -61,8 +66,12 @@ class SignViewModel: ViewModel() {
                     var result: SignInResponse? = response.body()
                     tokenManager.saveToken("${result?.token}")
                     Log.d("##", "onResponse 성공: " + result?.toString())
-                    fragment.findNavController().navigate(R.id.homeFragment)
-
+                    signInResponse.value = result!!
+                    if(result.roles[0] == "ROLE_USER") {
+                        PreferenceHelper.saveUserToken(mainActivity, result.token)
+                        PreferenceHelper.saveUserId(mainActivity, result.email)
+                        PreferenceHelper.saveUserType(mainActivity, "email")
+                    }
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: SignInResponse? = response.body()
@@ -71,12 +80,52 @@ class SignViewModel: ViewModel() {
                     Log.d("##", "onResponse 실패: " + response.body())
                     val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                     Log.d("##", "Error Response: $errorBody")
+                    Toast.makeText(fragment.requireContext(), "아이디 혹은 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
+                Toast.makeText(fragment.requireContext(), "네트워크를 확인해주세요", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    fun signInForNavigate(fragment: Fragment, mainActivity: MainActivity) {
+        var apiClient = ApiClient(mainActivity)
+        var tokenManager = TokenManager(mainActivity)
+
+        apiClient.apiService.signIn(SignInRequest(MyApplication.email,MyApplication.password))?.enqueue(object :
+            Callback<SignInResponse> {
+            override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    var result: SignInResponse? = response.body()
+                    tokenManager.saveToken("${result?.token}")
+                    Log.d("##", "onResponse 성공: " + result?.toString())
+                    signInResponse.value = result!!
+                    if(result.roles[0] != "ROLE_UNVERIFIED_USER") {
+                        PreferenceHelper.saveUserToken(mainActivity, result.token)
+                        PreferenceHelper.saveUserId(mainActivity, result.email)
+                        PreferenceHelper.saveUserType(mainActivity, "email")
+                        fragment.findNavController().navigate(R.id.homeFragment)
+                    }
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: SignInResponse? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                    Toast.makeText(fragment.requireContext(), "아이디 혹은 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString())
+                Toast.makeText(fragment.requireContext(), "네트워크를 확인해주세요", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -85,7 +85,7 @@ class SignUpEmailFragment : Fragment() {
             btnSignupEmail.setOnClickListener {
                 val enteredDomain = if (domain.isEmpty()) adapter.editbinding.tvSpinnerItemBackgroundEdit.text.toString() else domain
                 MyApplication.email = (etSignupEmailId.text.toString().trim() + "@" + enteredDomain.trim())
-                findNavController().navigate(R.id.signUpCertificationFragment)
+                findNavController().navigate(R.id.signUpPasswordFragment)
             }
         }
         return binding.root
@@ -109,7 +109,8 @@ class SignUpEmailFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
-            toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewPage.visibility = View.VISIBLE
+            toolbar.textViewPage.text = "1/3"
             toolbar.textViewTitle.visibility = View.INVISIBLE
             toolbar.buttonBack.setOnClickListener {
                 findNavController().popBackStack()

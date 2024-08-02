@@ -42,7 +42,7 @@ class SignUpCompleteFragment : Fragment() {
             }
             Glide.with(requireContext()).load(R.raw.account_complete).into(imageViewTarget)
             btnSignupEmail.setOnClickListener {
-                viewModel.signIn(this@SignUpCompleteFragment, mainActivity)
+                viewModel.signInForNavigate(this@SignUpCompleteFragment, mainActivity)
             }
         }
         return binding.root

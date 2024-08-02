@@ -164,8 +164,8 @@ class FlowControllerAddTimeFragment : Fragment() {
         return items.joinToString("\n") {
             when (it) {
                 is MultiTypeItem.TextItem -> it.text
-                is MultiTypeItem.BreathButtonItem -> getString(R.string.breathButton)
-                is MultiTypeItem.PPTButtonItem -> getString(R.string.pptButton)
+                is MultiTypeItem.BreathButtonItem -> "숨 고르기+1"
+                is MultiTypeItem.PPTButtonItem -> "PPT 넘김+2"
             }
         }
     }

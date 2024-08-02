@@ -36,6 +36,7 @@ class SignUpPasswordFragment : Fragment() {
         binding = FragmentSignUpPasswordBinding.inflate(layoutInflater)
         initToolBar()
         observeKeyboardState()
+
         binding.run {
             etSignupPw.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
@@ -179,7 +180,8 @@ class SignUpPasswordFragment : Fragment() {
         binding.run {
             toolbar.buttonBack.visibility = View.VISIBLE
             toolbar.buttonClose.visibility = View.INVISIBLE
-            toolbar.textViewPage.visibility = View.INVISIBLE
+            toolbar.textViewPage.visibility = View.VISIBLE
+            toolbar.textViewPage.text = "2/3"
             toolbar.textViewTitle.visibility = View.INVISIBLE
             toolbar.buttonBack.setOnClickListener {
                 findNavController().popBackStack()

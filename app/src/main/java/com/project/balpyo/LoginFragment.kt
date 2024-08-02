@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
                 verifyUid()
             }
             btnLoginEmail.setOnClickListener {
-                findNavController().navigate(R.id.signUpEmailFragment)
+                findNavController().navigate(R.id.emailLoginFragment)
             }
             btnLoginKakao.setOnClickListener{
                 val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(

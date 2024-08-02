@@ -49,10 +49,10 @@ class StorageAdapter (var result: List<StorageListResult>) :
 
             result[position].tag?.forEach {
                 when (it) {
-                    "note" -> tagNote.visibility = View.VISIBLE
-                    "script" -> tagScript.visibility = View.VISIBLE
-                    "time" -> tagTime.visibility = View.VISIBLE
-                    "flow" -> tagFlow.visibility = View.VISIBLE
+                    "NOTE" -> tagNote.visibility = View.VISIBLE
+                    "SCRIPT" -> tagScript.visibility = View.VISIBLE
+                    "TIME" -> tagTime.visibility = View.VISIBLE
+                    "FLOW" -> tagFlow.visibility = View.VISIBLE
                 }
             }
         }

@@ -14,28 +14,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_signup_certification_email"
         style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginTop="80dp"
-        android:text="인증 링크가 발송되었습니다"
+        android:text="\n인증 링크가 발송되었습니다"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/tv_signup_certification"
         style="@style/Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
-        android:text="발송된 메일의 링크를 눌러 인증해주세요"
+        android:text="마지막 단계에요! 메일의 링크를 눌러 인증해주세요"
         android:textColor="@color/disabled"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="@+id/tv_signup_certification_email"
+        app:layout_constraintTop_toBottomOf="@+id/tv_signup_certification_email" />
 
     <ImageView
         android:id="@+id/iv_certification"
@@ -45,4 +46,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_signup_certification"
+        style="@style/BottomNextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="109dp"
+        android:layout_marginEnd="16dp"
+        android:text="인증 완료"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_certification" />
 </androidx.constraintlayout.widget.ConstraintLayout>

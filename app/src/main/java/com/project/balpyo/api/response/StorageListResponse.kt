@@ -10,9 +10,10 @@ data class StorageListResult(
     val scriptId: Long,
     val script: String?,
     val gptId: String?,
-    val uid: String,
+    val uid: String?,
     val title: String,
     val secTime: Long,
     val voiceFilePath: String?,
-    val tag : List<String>? = listOf("note") //테스트 코드, 추후 api 명세나오면 수정
+    val useAi: Boolean,
+    val tag : List<String> //테스트 코드, 추후 api 명세나오면 수정
 )

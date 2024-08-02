@@ -22,6 +22,7 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.Utils.PreferenceUtil
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
@@ -118,7 +119,7 @@ class GenerateScriptViewModel : ViewModel() {
                 Log.d("##", "scripit info : ${inputScriptInfo}")
                 Log.d("발표몇분", "대본 생성 요청")
 
-                apiClient.apiService.generateScript("${tokenManager.getUid()}", inputScriptInfo)?.enqueue(object : Callback<GenerateScriptResponse> {
+                apiClient.apiService.generateScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", inputScriptInfo)?.enqueue(object : Callback<GenerateScriptResponse> {
                     override fun onResponse(
                         call: Call<GenerateScriptResponse>,
                         response: Response<GenerateScriptResponse>

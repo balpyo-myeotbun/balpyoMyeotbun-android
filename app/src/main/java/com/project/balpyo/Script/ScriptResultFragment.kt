@@ -25,6 +25,7 @@ import com.project.balpyo.R
 import com.project.balpyo.Script.Data.ScriptResultData
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.StoreScriptRequest
@@ -216,7 +217,7 @@ class ScriptResultFragment : Fragment() {
         var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), scriptGptId, MyApplication.scriptTitle, MyApplication.scriptTime)
         Log.d("##", "script info : ${inputScriptInfo}")
 
-        apiClient.apiService.storeScript("${tokenManager.getUid()}",inputScriptInfo)?.enqueue(object :
+        apiClient.apiService.storeScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",inputScriptInfo)?.enqueue(object :
             Callback<StoreScriptResponse> {
             override fun onResponse(call: Call<StoreScriptResponse>, response: Response<StoreScriptResponse>) {
                 if (response.isSuccessful) {
