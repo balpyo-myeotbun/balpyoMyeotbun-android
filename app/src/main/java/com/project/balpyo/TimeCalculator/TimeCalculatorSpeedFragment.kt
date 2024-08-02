@@ -21,6 +21,7 @@ import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.GenerateAudioRequest
@@ -105,7 +106,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
         var tokenManager = TokenManager(mainActivity)
 
         val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt(), "1234")
-        apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
+        apiClient.apiService.generateAudio("Bearer ${PreferenceHelper.getUserToken(mainActivity)!!}", "audio/mp3", request)?.enqueue(object :
             Callback<GenerateAudioResponse> {
             override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
                 if (response.isSuccessful) {

@@ -36,6 +36,7 @@ import com.project.balpyo.Script.Adapter.SubTopicCheckAdapter
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Sign.SignUpTermsFragment
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.ManageScriptRequest
@@ -351,7 +352,7 @@ class ScriptCheckFragment : Fragment() {
 
         var manageScript = ManageScriptRequest("스크립트 생성", "빈 스크립트 생성", MyApplication.scriptTime, true)
 
-        apiClient.apiService.manageScript("${tokenManager.getUid()}",manageScript)?.enqueue(object :
+        apiClient.apiService.manageScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",manageScript)?.enqueue(object :
             Callback<ManageScriptResponse> {
             override fun onResponse(call: Call<ManageScriptResponse>, response: Response<ManageScriptResponse>) {
                 if (response.isSuccessful) {

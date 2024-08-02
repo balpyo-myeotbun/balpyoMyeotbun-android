@@ -44,19 +44,20 @@ interface ApiService {
     // 스크립트 생성
     @POST("user/ai/script")
     fun generateScript(
-        @Header("UID") uid: String,
+        @Header("Authorization") token: String,
         @Body parameters: GenerateScriptRequest
     ): Call<GenerateScriptResponse>
 
     // 스크립트 저장
     @POST("every/manage/script")
     fun storeScript(
-        @Header("UID") uid: String,
+        @Header("Authorization") token: String,
         @Body parameters: StoreScriptRequest
     ): Call<StoreScriptResponse>
 
     @POST("polly/uploadSpeech")
     fun generateAudio(
+        @Header("Authorization") token: String,
         @Header("Accept") accept: String,
         @Body parameters: GenerateAudioRequest
     ): Call<GenerateAudioResponse>
@@ -64,27 +65,27 @@ interface ApiService {
     // 보관함 리스트 조회
     @GET("every/manage/script/all")
     fun getStorageList(
-        @Header("UID") uid: String
+        @Header("Authorization") token: String,
     ): Call<StorageListResponse>
 
     // 보관함 상세 조회
     @GET("every/manage/script/detail/{scriptId}")
     fun getStorageDetail(
-        @Header("UID") uid: String,
+        @Header("Authorization") token: String,
         @Path("scriptId") scriptId:Int
     ): Call<StorageDetailResponse>
 
     // 스크립트 수정
     @PATCH("every/manage/script/detail/{scriptId}")
     fun editScript(
-        @Header("UID") uid: String,
+        @Header("Authorization") token: String,
         @Path("scriptId") scriptId:Int,
         @Body parameters: EditScriptRequest
     ): Call<EditScriptResponse>
 
     // 스크립트 삭제
     @DELETE("every/manage/script/detail/{scriptId}")
-    fun deleteScript(@Header("UID") uid: String, @Path("scriptId") scriptId: Int): Call<Void>
+    fun deleteScript(@Header("Authorization") token: String, @Path("scriptId") scriptId: Int): Call<Void>
 
     @POST("api/auth/signup")
     fun signUp(@Body parameters: SignUpRequest): Call<BaseResponse>
@@ -93,5 +94,5 @@ interface ApiService {
     fun signIn(@Body parameters: SignInRequest): Call<SignInResponse>
 
     @POST("every/manage/script")
-    fun manageScript(@Header("UID") uid: String, @Body parameters: ManageScriptRequest): Call<ManageScriptResponse>
+    fun manageScript(@Header("Authorization") token: String, @Body parameters: ManageScriptRequest): Call<ManageScriptResponse>
 }
