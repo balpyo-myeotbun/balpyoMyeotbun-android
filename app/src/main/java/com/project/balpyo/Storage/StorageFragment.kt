@@ -258,10 +258,10 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
         Log.d("", searchList.toString())
 
         val filterTag = when (position) {
-            0 -> "script"
-            1 -> "time"
-            2 -> "flow"
-            3 -> "note"
+            0 -> "SCRIPT"
+            1 -> "TIME"
+            2 -> "FLOW"
+            3 -> "NOTE"
             else -> ""
         }
 
@@ -396,10 +396,10 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
 
     private fun createTestData(): MutableList<StorageListResult> {
         return mutableListOf(
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 1", 0, "", listOf("note", "script")),
-            StorageListResult(1,"하이라이트 되는 텍스트 앞에 보여줄 텍스트가 없을 경우 바로 하이라이트되는 줄을 보여줍니다","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 2", 0, "", listOf("flow")),
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 3", 0, "", listOf("note", "time")),
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 국회는 의원의 자격을 심사하며, 의원을 징계할 수 있다. 개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 4", 0, "", listOf("flow", "note"))
+            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 1", 0, "", true, listOf("NOTE", "SCRIPT")),
+            StorageListResult(1,"하이라이트 되는 텍스트 앞에 보여줄 텍스트가 없을 경우 바로 하이라이트되는 줄을 보여줍니다","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 2", 0, "", true, listOf("FLOW")),
+            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 3", 0, "", false, listOf("NOTE", "TIME")),
+            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 국회는 의원의 자격을 심사하며, 의원을 징계할 수 있다. 개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 4", 0, "", true, listOf("FLOW", "NOTE"))
         )
     }
 

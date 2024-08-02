@@ -66,7 +66,9 @@ class SignUpTermsFragment : Fragment() {
                 if(args.isKaKao) {
                     Log.d("", args.isKaKao.toString())
                 }
-                else viewModel.signUp(this@SignUpTermsFragment, mainActivity)
+                else {
+                    viewModel.signUp(this@SignUpTermsFragment, mainActivity)
+                }
             }
         }
         return binding.root

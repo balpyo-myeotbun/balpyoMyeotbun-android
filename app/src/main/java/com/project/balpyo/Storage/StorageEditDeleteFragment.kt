@@ -14,6 +14,7 @@ import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.EditScriptRequest
@@ -110,7 +111,7 @@ class StorageEditDeleteFragment : Fragment() {
 
         var editScript = EditScriptRequest(scriptId, binding.editTextScript.text.toString(), binding.toolbar.textViewTitle.text.toString(), secTime)
 
-        apiClient.apiService.editScript("${tokenManager.getUid()}",scriptId.toInt(), editScript)?.enqueue(object :
+        apiClient.apiService.editScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",scriptId.toInt(), editScript)?.enqueue(object :
             Callback<EditScriptResponse> {
             override fun onResponse(call: Call<EditScriptResponse>, response: Response<EditScriptResponse>) {
                 if (response.isSuccessful) {
@@ -149,7 +150,7 @@ class StorageEditDeleteFragment : Fragment() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        apiClient.apiService.deleteScript("${tokenManager.getUid()}",scriptId.toInt())?.enqueue(object :
+        apiClient.apiService.deleteScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",scriptId.toInt())?.enqueue(object :
             Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {

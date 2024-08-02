@@ -22,11 +22,11 @@
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_signUpEmailFragment"
-            app:destination="@id/signUpEmailFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_signUpTermsFragment"
             app:destination="@id/signUpTermsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_emailLoginFragment"
+            app:destination="@id/emailLoginFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerTitleFragment"
@@ -266,8 +266,8 @@
         android:label="fragment_sign_up_email"
         tools:layout="@layout/fragment_sign_up_email" >
         <action
-            android:id="@+id/action_signUpEmailFragment_to_signUpCertificationFragment"
-            app:destination="@id/signUpCertificationFragment" />
+            android:id="@+id/action_signUpEmailFragment_to_signUpPasswordFragment"
+            app:destination="@id/signUpPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpCertificationFragment"
@@ -275,14 +275,18 @@
         android:label="fragment_sign_up_certification"
         tools:layout="@layout/fragment_sign_up_certification" >
         <action
-            android:id="@+id/action_signUpCertificationFragment_to_signUpPasswordFragment"
-            app:destination="@id/signUpPasswordFragment" />
+            android:id="@+id/action_signUpCertificationFragment_to_signUpCompleteFragment"
+            app:destination="@id/signUpCompleteFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpCompleteFragment"
         android:name="com.project.balpyo.Sign.SignUpCompleteFragment"
         android:label="fragment_sign_up_complete"
-        tools:layout="@layout/fragment_sign_up_complete" />
+        tools:layout="@layout/fragment_sign_up_complete" >
+        <action
+            android:id="@+id/action_signUpCompleteFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpPasswordFragment"
         android:name="com.project.balpyo.Sign.SignUpPasswordFragment"
@@ -303,13 +307,13 @@
         android:name="com.project.balpyo.Sign.SignUpTermsFragment"
         android:label="fragment_sign_up_terms"
         tools:layout="@layout/fragment_sign_up_terms" >
-        <action
-            android:id="@+id/action_signUpTermsFragment_to_signUpCompleteFragment"
-            app:destination="@id/signUpCompleteFragment" />
         <argument
             android:name="isKaKao"
             app:argType="boolean"
             android:defaultValue="false"/>
+        <action
+            android:id="@+id/action_signUpTermsFragment_to_signUpCertificationFragment"
+            app:destination="@id/signUpCertificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPageFragment"
@@ -386,5 +390,14 @@
         <action
             android:id="@+id/action_onboarding5Fragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailLoginFragment"
+        android:name="com.project.balpyo.Sign.EmailLoginFragment"
+        android:label="fragment_email_login"
+        tools:layout="@layout/fragment_email_login" >
+        <action
+            android:id="@+id/action_emailLoginFragment_to_signUpEmailFragment"
+            app:destination="@id/signUpEmailFragment" />
     </fragment>
 </navigation>

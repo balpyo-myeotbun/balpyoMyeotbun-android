@@ -22,6 +22,7 @@ import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.LoadingFragment
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.EditScriptRequest
@@ -52,26 +53,32 @@ class FlowControllerPreviewFragment : Fragment() {
         binding = FragmentFlowControllerPreviewBinding.inflate(layoutInflater)
         initToolBar()
         binding.tvScript.movementMethod = ScrollingMovementMethod.getInstance()
-        val spannable = SpannableStringBuilder(flowControllerViewModel.getCustomScriptData().value)
-        val scriptCharSequence: CharSequence = flowControllerViewModel.getCustomScriptData().value!!
-        ///숨 고르기랑 ppt 넘김 회색으로 변경
-        val patterns = listOf("숨 고르기 \\(1초\\)", "PPT 넘김 \\(2초\\)")
-        patterns.forEach { pattern ->
-            val regex = Regex(pattern)
-            regex.findAll(scriptCharSequence).forEach { matchResult ->
-                val start = matchResult.range.first
-                val end = matchResult.range.last + 1
-                spannable.setSpan(
-                    ForegroundColorSpan(Color.GRAY),
-                    start,
-                    end,
-                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
-        }
+        var script = flowControllerViewModel.getCustomScriptData().value
+        if(script != null) {
+            script = script.replace("숨 고르기+1", getString(R.string.breathButton))
+            script = script.replace("PPT 넘김+2", getString(R.string.pptButton))
 
-        binding.tvScript.text = spannable
-        Log.d("script", flowControllerViewModel.getCustomScriptData().value.toString())
+            val spannable = SpannableStringBuilder(script)
+            val scriptCharSequence: CharSequence = script
+            ///숨 고르기랑 ppt 넘김 회색으로 변경
+            val patterns = listOf("숨 고르기 \\(1초\\)", "PPT 넘김 \\(2초\\)")
+            patterns.forEach { pattern ->
+                val regex = Regex(pattern)
+                regex.findAll(scriptCharSequence).forEach { matchResult ->
+                    val start = matchResult.range.first
+                    val end = matchResult.range.last + 1
+                    spannable.setSpan(
+                        ForegroundColorSpan(Color.GRAY),
+                        start,
+                        end,
+                        SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+
+            binding.tvScript.text = spannable
+            Log.d("script", script)
+        }
 
         binding.btnGenerate.setOnClickListener {
             generateAudio(requireActivity())
@@ -120,7 +127,7 @@ class FlowControllerPreviewFragment : Fragment() {
             getAudioDuration(getAudioUrlData().value!!, { duration ->
                 val durationInSeconds = duration / 1000
                 var editScript = EditScriptRequest(getScriptIdData().value!!, getCustomScriptData().value!!, getTitleData().value!!, durationInSeconds.toLong())
-                apiClient.apiService.editScript("${tokenManager.getUid()}",getScriptIdData().value!!.toInt(), editScript)?.enqueue(object :
+                apiClient.apiService.editScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",getScriptIdData().value!!.toInt(), editScript)?.enqueue(object :
                     Callback<EditScriptResponse> {
                     override fun onResponse(call: Call<EditScriptResponse>, response: Response<EditScriptResponse>) {
                         if (response.isSuccessful) {
@@ -159,7 +166,7 @@ class FlowControllerPreviewFragment : Fragment() {
         val apiClient = ApiClient(mainActivity)
 
         val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), flowControllerViewModel.getSpeedData().value!!, "1234")
-        apiClient.apiService.generateAudio("audio/mp3", request)?.enqueue(object :
+        apiClient.apiService.generateAudio("Bearer ${PreferenceHelper.getUserToken(mainActivity)}","audio/mp3", request)?.enqueue(object :
             Callback<GenerateAudioResponse> {
             override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
                 if (response.isSuccessful) {
