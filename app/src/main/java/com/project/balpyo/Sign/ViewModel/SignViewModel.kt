@@ -67,9 +67,11 @@ class SignViewModel: ViewModel() {
                     tokenManager.saveToken("${result?.token}")
                     Log.d("##", "onResponse 성공: " + result?.toString())
                     signInResponse.value = result!!
-                    PreferenceHelper.saveUserToken(mainActivity, result.token)
-                    PreferenceHelper.saveUserId(mainActivity, result.email)
-                    PreferenceHelper.saveUserType(mainActivity, "email")
+                    if(result.roles[0] == "ROLE_USER") {
+                        PreferenceHelper.saveUserToken(mainActivity, result.token)
+                        PreferenceHelper.saveUserId(mainActivity, result.email)
+                        PreferenceHelper.saveUserType(mainActivity, "email")
+                    }
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: SignInResponse? = response.body()
@@ -102,10 +104,12 @@ class SignViewModel: ViewModel() {
                     tokenManager.saveToken("${result?.token}")
                     Log.d("##", "onResponse 성공: " + result?.toString())
                     signInResponse.value = result!!
-                    PreferenceHelper.saveUserToken(mainActivity, result.token)
-                    PreferenceHelper.saveUserId(mainActivity, result.email)
-                    PreferenceHelper.saveUserType(mainActivity, "email")
-                    fragment.findNavController().navigate(R.id.homeFragment)
+                    if(result.roles[0] != "ROLE_UNVERIFIED_USER") {
+                        PreferenceHelper.saveUserToken(mainActivity, result.token)
+                        PreferenceHelper.saveUserId(mainActivity, result.email)
+                        PreferenceHelper.saveUserType(mainActivity, "email")
+                        fragment.findNavController().navigate(R.id.homeFragment)
+                    }
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: SignInResponse? = response.body()
