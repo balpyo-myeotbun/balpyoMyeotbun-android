@@ -85,7 +85,7 @@ class SignUpEmailFragment : Fragment() {
             btnSignupEmail.setOnClickListener {
                 val enteredDomain = if (domain.isEmpty()) adapter.editbinding.tvSpinnerItemBackgroundEdit.text.toString() else domain
                 MyApplication.email = (etSignupEmailId.text.toString().trim() + "@" + enteredDomain.trim())
-                findNavController().navigate(R.id.signUpCertificationFragment)
+                findNavController().navigate(R.id.signUpPasswordFragment)
             }
         }
         return binding.root

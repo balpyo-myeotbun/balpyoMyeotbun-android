@@ -36,13 +36,7 @@ class SignUpPasswordFragment : Fragment() {
         binding = FragmentSignUpPasswordBinding.inflate(layoutInflater)
         initToolBar()
         observeKeyboardState()
-        arguments?.let {
-            val email = it.getString("email")
-            if (email != null) {
-                MyApplication.email = email
-                Log.d("email", email)
-            }
-        }
+
         binding.run {
             etSignupPw.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
