@@ -1,17 +1,21 @@
 package com.project.balpyo.Sign
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.project.balpyo.R
+import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentSignUpCertificationBinding
 
 class SignUpCertificationFragment : Fragment() {
@@ -32,9 +36,6 @@ class SignUpCertificationFragment : Fragment() {
                 }
             }
             Glide.with(requireContext()).load(R.raw.send_email).into(imageViewTarget)
-            Handler().postDelayed({
-                findNavController().navigate(R.id.signUpPasswordFragment)
-            }, 3000)
         }
         return binding.root
     }
