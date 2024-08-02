@@ -201,6 +201,10 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                     }
                 }
 
+                llStorageMainNote.setOnClickListener {
+                    findNavController().navigate(R.id.noteFragment)
+                }
+
                 ivStorageMainFilter.setOnClickListener {
                     isSearchFilter = false
                     filterBottomSheet.show(childFragmentManager,filterBottomSheet.tag)
