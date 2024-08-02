@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.databinding.FragmentMyPageAccountBinding
 
 class MyPageAccountFragment : Fragment() {
@@ -25,6 +26,7 @@ class MyPageAccountFragment : Fragment() {
             tvMypageAccountCancel.setOnClickListener {
                 findNavController().navigate(R.id.myPageCancelAccountFragment)
             }
+            tvMypageAccountEmail.text = PreferenceHelper.getUserId(mainActivity)
         }
         return binding.root
     }

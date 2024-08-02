@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import com.project.balpyo.Script.ScriptTitleFragment
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment
 import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.SignInRequest
@@ -123,15 +125,19 @@ class HomeFragment : Fragment() {
             }
 
             //추후 닉네임 하이라이팅 처리
-            val nickName = "발표"
-            val spannableTitle = SpannableString(tvHomeStorageTitle.text)
-            spannableTitle.setSpan(
-                ForegroundColorSpan(resources.getColor(R.color.primary)),
-                0,
-                nickName.length,
-                SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
-            )
-            tvHomeStorageTitle.text = spannableTitle
+            val nickName = PreferenceHelper.getUserNickname(mainActivity)
+            if (nickName != null) {
+                Log.d("", nickName)
+                tvHomeStorageTitle.text = "${nickName}님의 보관함"
+                val spannableTitle = SpannableString(tvHomeStorageTitle.text)
+                spannableTitle.setSpan(
+                    ForegroundColorSpan(resources.getColor(R.color.primary)),
+                    0,
+                    nickName.length,
+                    SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
+                )
+                tvHomeStorageTitle.text = spannableTitle
+            }
         }
 
         return binding.root

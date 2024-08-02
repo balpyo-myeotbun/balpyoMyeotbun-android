@@ -8,6 +8,7 @@ object PreferenceHelper {
     private const val PREFS_NAME = "balpyo_prefs"
     private const val KEY_TOKEN = "key_token"
     private const val KEY_USER_ID = "key_user_id"
+    private const val KEY_USER_NICKNAME = "key_user_nickname"
     private const val KEY_USER_TYPE = "key_user_type"
 
     private fun getPreferences(context: Context): SharedPreferences {
@@ -33,10 +34,19 @@ object PreferenceHelper {
         val prefs = getPreferences(context)
         prefs.edit().putString(KEY_USER_ID, userId).apply()
     }
+    fun saveUserNickname(context: Context, userNickname: String) {
+        val prefs = getPreferences(context)
+        prefs.edit().putString(KEY_USER_NICKNAME, userNickname).apply()
+    }
 
     fun getUserId(context: Context): String? {
         val prefs = getPreferences(context)
         return prefs.getString(KEY_USER_ID, null)
+    }
+
+    fun getUserNickname(context: Context): String? {
+        val prefs = getPreferences(context)
+        return prefs.getString(KEY_USER_NICKNAME, null)
     }
 
     fun clearUserId(context: Context) {

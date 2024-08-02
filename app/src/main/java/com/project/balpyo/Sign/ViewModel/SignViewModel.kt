@@ -70,6 +70,7 @@ class SignViewModel: ViewModel() {
                     if(result.roles[0] == "ROLE_USER") {
                         PreferenceHelper.saveUserToken(mainActivity, result.token)
                         PreferenceHelper.saveUserId(mainActivity, result.email)
+                        PreferenceHelper.saveUserNickname(mainActivity, result.username)
                         PreferenceHelper.saveUserType(mainActivity, "email")
                     }
                 } else {
@@ -107,6 +108,7 @@ class SignViewModel: ViewModel() {
                     if(result.roles[0] != "ROLE_UNVERIFIED_USER") {
                         PreferenceHelper.saveUserToken(mainActivity, result.token)
                         PreferenceHelper.saveUserId(mainActivity, result.email)
+                        PreferenceHelper.saveUserNickname(mainActivity, result.username)
                         PreferenceHelper.saveUserType(mainActivity, "email")
                         fragment.findNavController().navigate(R.id.homeFragment)
                     }

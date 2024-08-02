@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_disable"
+    android:background="@color/gray1"
     tools:context=".MyPage.MyPageFragment">
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/pretendard_bold"
         android:text="고독한 사자님"
-        android:textColor="@color/text"
+        android:textColor="@color/primary"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_mypage_main_email"
         app:layout_constraintStart_toStartOf="@+id/tv_mypage_main_email" />
@@ -49,6 +49,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="293dp"
         android:background="@drawable/background_home"
+        android:elevation="12dp"
         android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
