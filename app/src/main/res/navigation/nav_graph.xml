@@ -284,6 +284,12 @@
         android:name="com.project.balpyo.Sign.SignUpPasswordFragment"
         android:label="fragment_sign_up_password"
         tools:layout="@layout/fragment_sign_up_password" >
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="default@example.com" />
+        <deepLink android:id="@+id/deepLink"
+            app:uri="balpyo://host?email={email}" />
         <action
             android:id="@+id/action_signUpPasswordFragment_to_signUpTermsFragment"
             app:destination="@id/signUpTermsFragment" />
@@ -298,7 +304,8 @@
             app:destination="@id/signUpCompleteFragment" />
         <argument
             android:name="isKaKao"
-            app:argType="boolean" />
+            app:argType="boolean"
+            android:defaultValue="false"/>
     </fragment>
     <fragment
         android:id="@+id/myPageFragment"
