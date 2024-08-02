@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,15 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
-import android.widget.Switch
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.google.gson.annotations.SerializedName
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -85,8 +82,26 @@ class FlowControllerResultFragment : Fragment() {
             else -> println("none")
         }
 
-        val script = flowControllerViewModel.getCustomScriptData().value.toString()
-        scriptTextView.text = script
+        var script = flowControllerViewModel.getCustomScriptData().value.toString()
+        //script = script.replace(getString(R.string.breathButton), "\n${getString(R.string.breathButton)}\n")
+        //script = script.replace(getString(R.string.pptButton), "\n${getString(R.string.pptButton)}\n")
+
+        val spannable = SpannableStringBuilder(script)
+        val patterns = listOf("숨 고르기 \\(1초\\)", "PPT 넘김 \\(2초\\)")
+        patterns.forEach { pattern ->
+            val regex = Regex(pattern)
+            regex.findAll(script).forEach { matchResult ->
+                val start = matchResult.range.first
+                val end = matchResult.range.last + 1
+                spannable.setSpan(
+                    ForegroundColorSpan(Color.GRAY),
+                    start,
+                    end,
+                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+        scriptTextView.text = spannable
         speechMarks = flowControllerViewModel.getSpeechMarks().value!!
 
         val breakTimeToRealWord = breakTimeToRealWord(speechMarks)
@@ -238,6 +253,8 @@ class FlowControllerResultFragment : Fragment() {
         "600ms" to listOf("!"),
         "801ms" to listOf("?"),
         "800ms" to listOf("\n"),
+        "1000ms" to listOf("${R.string.breathButton}"),
+        "2000ms" to listOf("${R.string.pptButton}")
     )
     //스피치 마크의 <break time="---ms"/>를 기존의 단어로 변환한 스피치마크 반환
     private fun breakTimeToRealWord(speechMarks : List<SpeechMark>) : List<SpeechMark>{
@@ -319,7 +336,6 @@ class FlowControllerResultFragment : Fragment() {
                     highlightedLine = scriptTextView.layout.getLineForOffset(endIndex)
                 }
             }
-
             spannableString.setSpan(
                 ForegroundColorSpan(Color.BLACK),
                 lastEndIndex,

@@ -65,10 +65,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
-
-        animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
-
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
         mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
 
         //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]

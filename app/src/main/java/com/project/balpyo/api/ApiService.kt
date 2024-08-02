@@ -1,7 +1,6 @@
 package com.project.balpyo.api
 
 import com.project.balpyo.api.request.EditScriptRequest
-import com.project.balpyo.api.request.FcmRequest
 import com.project.balpyo.api.request.GenerateAudioRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
@@ -12,7 +11,6 @@ import com.project.balpyo.api.request.StoreScriptRequest
 import com.project.balpyo.api.response.BaseResponse
 import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.api.response.EditScriptResponse
-import com.project.balpyo.api.response.FcmResponse
 import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.ManageScriptResponse

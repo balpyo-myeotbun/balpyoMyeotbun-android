@@ -52,26 +52,32 @@ class FlowControllerPreviewFragment : Fragment() {
         binding = FragmentFlowControllerPreviewBinding.inflate(layoutInflater)
         initToolBar()
         binding.tvScript.movementMethod = ScrollingMovementMethod.getInstance()
-        val spannable = SpannableStringBuilder(flowControllerViewModel.getCustomScriptData().value)
-        val scriptCharSequence: CharSequence = flowControllerViewModel.getCustomScriptData().value!!
-        ///숨 고르기랑 ppt 넘김 회색으로 변경
-        val patterns = listOf("숨 고르기 \\(1초\\)", "PPT 넘김 \\(2초\\)")
-        patterns.forEach { pattern ->
-            val regex = Regex(pattern)
-            regex.findAll(scriptCharSequence).forEach { matchResult ->
-                val start = matchResult.range.first
-                val end = matchResult.range.last + 1
-                spannable.setSpan(
-                    ForegroundColorSpan(Color.GRAY),
-                    start,
-                    end,
-                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
-        }
+        var script = flowControllerViewModel.getCustomScriptData().value
+        if(script != null) {
+            //script = script.replace(getString(R.string.breathButton), "\n${getString(R.string.breathButton)}\n")
+            //script = script.replace(getString(R.string.pptButton), "\n${getString(R.string.pptButton)}\n")
 
-        binding.tvScript.text = spannable
-        Log.d("script", flowControllerViewModel.getCustomScriptData().value.toString())
+            val spannable = SpannableStringBuilder(script)
+            val scriptCharSequence: CharSequence = script
+            ///숨 고르기랑 ppt 넘김 회색으로 변경
+            val patterns = listOf("숨 고르기 \\(1초\\)", "PPT 넘김 \\(2초\\)")
+            patterns.forEach { pattern ->
+                val regex = Regex(pattern)
+                regex.findAll(scriptCharSequence).forEach { matchResult ->
+                    val start = matchResult.range.first
+                    val end = matchResult.range.last + 1
+                    spannable.setSpan(
+                        ForegroundColorSpan(Color.GRAY),
+                        start,
+                        end,
+                        SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+
+            binding.tvScript.text = spannable
+            Log.d("script", script)
+        }
 
         binding.btnGenerate.setOnClickListener {
             generateAudio(requireActivity())
