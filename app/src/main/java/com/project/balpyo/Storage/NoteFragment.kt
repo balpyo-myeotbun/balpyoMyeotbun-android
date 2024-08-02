@@ -106,7 +106,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        var manageScript = ManageScriptRequest("${binding.editTextNote.text}", "${binding.editTextTitle.text}", 0, false)
+        var manageScript = ManageScriptRequest("${binding.editTextNote.text}", "${binding.editTextTitle.text}", 0, listOf("NOTE"), false)
 
         apiClient.apiService.manageScript("${tokenManager.getUid()}",manageScript)?.enqueue(object :
             Callback<ManageScriptResponse> {
