@@ -350,7 +350,8 @@ class ScriptCheckFragment : Fragment() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        var manageScript = ManageScriptRequest("스크립트 생성", "빈 스크립트 생성", MyApplication.scriptTime, true)
+        var manageScript = ManageScriptRequest("", MyApplication.scriptTitle, MyApplication.scriptTime, listOf("SCRIPT"),
+            true)
 
         apiClient.apiService.manageScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",manageScript)?.enqueue(object :
             Callback<ManageScriptResponse> {

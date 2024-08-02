@@ -28,20 +28,36 @@
         app:layout_constraintStart_toStartOf="@+id/textView_script_title"
         app:layout_constraintTop_toBottomOf="@+id/textView_script_title" />
 
-    <TextView
-        android:id="@+id/textView_goal_time"
+    <LinearLayout
+        android:id="@+id/layout_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="0분 0초에 맞는"
-        android:textColor="@color/text"
-        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            android:id="@+id/textView_goal_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="0분 0초"
+            android:textColor="@color/primary"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="에 맞는"
+            android:textColor="@color/text"
+            android:textSize="22sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView_script_title"
@@ -50,12 +66,12 @@
         android:layout_marginStart="20dp"
         android:fontFamily="@font/pretendard_bold"
         android:text="대본 제목"
-        android:textColor="@color/text"
+        android:textColor="@color/primary"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@id/textView_goal_time"
+        app:layout_constraintEnd_toEndOf="@id/layout_goal"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_goal_time" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_goal" />
 
     <EditText
         android:id="@+id/editText_script"
@@ -64,7 +80,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="19dp"
         android:enabled="true"
         android:editable="false"
         android:background="@drawable/background_text"
@@ -76,30 +92,30 @@
         android:scrollbars="vertical"
         android:textColor="@color/gray4"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_edit"
+        app:layout_constraintBottom_toTopOf="@+id/button_store"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_success" />
 
-    <Button
-        android:id="@+id/button_edit"
-        style="@style/BottomNextButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/pretendard_regular"
-        android:text="대본 수정하기"
-        android:textColor="@color/gray3"
-        android:textSize="16sp"
-        app:cornerRadius="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_store"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/gray3"
-        app:strokeWidth="1dp" />
+<!--    <Button-->
+<!--        android:id="@+id/button_edit"-->
+<!--        style="@style/BottomNextButton"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginBottom="4dp"-->
+<!--        android:backgroundTint="@android:color/transparent"-->
+<!--        android:fontFamily="@font/pretendard_regular"-->
+<!--        android:text="대본 수정하기"-->
+<!--        android:textColor="@color/gray3"-->
+<!--        android:textSize="16sp"-->
+<!--        app:cornerRadius="8dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/button_store"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:strokeColor="@color/gray3"-->
+<!--        app:strokeWidth="1dp" />-->
 
     <Button
         android:id="@+id/button_store"

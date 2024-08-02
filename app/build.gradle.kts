@@ -108,4 +108,7 @@ dependencies {
 
     //kakao
     implementation ("com.kakao.sdk:v2-user:2.10.0")
+
+    // tooltip
+    implementation("com.github.skydoves:balloon:1.6.6")
 }

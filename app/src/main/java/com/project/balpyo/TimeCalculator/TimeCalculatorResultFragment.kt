@@ -266,7 +266,7 @@ class TimeCalculatorResultFragment : Fragment() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), "", MyApplication.timeCalculatorTitle, MyApplication.timeCalculatorTime)
+        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), "", MyApplication.timeCalculatorTitle, listOf("TIME"), MyApplication.timeCalculatorTime)
         Log.d("##", "script info : ${inputScriptInfo}")
 
         apiClient.apiService.storeScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",inputScriptInfo)?.enqueue(object :

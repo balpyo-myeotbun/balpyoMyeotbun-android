@@ -1,5 +1,6 @@
 package com.project.balpyo.Home
 
+
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -35,6 +36,10 @@ import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.SignInResponse
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentHomeBinding
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 
 class HomeFragment : Fragment() {
 
@@ -57,16 +62,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mainActivity = activity as MainActivity
-        mainActivity.setTransparentStatusBar()
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
+
         binding = FragmentHomeBinding.inflate(layoutInflater)
         animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
         mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
@@ -75,10 +77,33 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.getStorageList(this@HomeFragment, mainActivity)
 
+        mainActivity.setTransparentStatusBar()
+
+        animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
+
+        val balloon = Balloon.Builder(mainActivity)
+            .setWidthRatio(1.0f)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setText("대본 생성 기능은 한 번에 하나의 대본을 생성할 수 있습니다.")
+            .setTextColorResource(R.color.text)
+            .setTextSize(12f)
+            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            .setArrowSize(10)
+            .setArrowPosition(0.5f)
+            .setArrowColorResource(R.color.tooltip_color)
+            .setElevation(0)
+            .setPaddingLeft(8)
+            .setPaddingRight(8)
+            .setMarginTop(3)
+            .setMarginHorizontal(10)
+            .setCornerRadius(2f)
+            .setBackgroundDrawableResource(R.drawable.background_tooltip)
+//            .setBalloonAnimation(BalloonAnimation.ELASTIC)
+            .build()
+
         viewModel.run {
             storageList.observe(mainActivity) {
                 binding.run {
-
                     rvHome.run {
                         //현재 전체 리스트 받아오기 때문에 5개만 보여주기 위함, 추후 api 나눠지면 다시 처리
                         var list = it
@@ -115,7 +140,11 @@ class HomeFragment : Fragment() {
                 mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
             }
             llHomeScript.setOnClickListener {
-                findNavController().navigate(R.id.scriptTitleFragment)
+                if(MyApplication.scriptGenerating) {
+                    balloon.showAlignBottom(binding.tooltip)
+                } else {
+                    findNavController().navigate(R.id.scriptTitleFragment)
+                }
             }
             llHomeTime.setOnClickListener {
                 findNavController().navigate(R.id.timeCalculatorTitleFragment)
@@ -188,9 +217,11 @@ class HomeFragment : Fragment() {
                 animationDrawable.start()
                 imageViewLoading.visibility = View.VISIBLE
                 imageViewBackgroundLoading.visibility = View.VISIBLE
+                tooltip.visibility = View.VISIBLE
             } else {
                 imageViewLoading.visibility = View.INVISIBLE
                 imageViewBackgroundLoading.visibility = View.INVISIBLE
+                tooltip.visibility = View.INVISIBLE
             }
         }
     }
