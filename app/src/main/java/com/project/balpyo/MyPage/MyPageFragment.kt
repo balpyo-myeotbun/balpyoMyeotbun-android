@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.databinding.FragmentMyPageBinding
 
 class MyPageFragment : Fragment() {
@@ -46,6 +47,8 @@ class MyPageFragment : Fragment() {
             llMypageIntroduction.setOnClickListener {
                 openUrl("https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d")
             }
+            tvMypageMainEmail.text = PreferenceHelper.getUserId(mainActivity)
+            tvMypageMainNickname.text = PreferenceHelper.getUserNickname(mainActivity)
 
         }
         return binding.root

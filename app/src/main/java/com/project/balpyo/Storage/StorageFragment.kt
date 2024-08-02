@@ -26,6 +26,7 @@ import com.project.balpyo.Storage.Adapter.SearchAdapter
 import com.project.balpyo.Storage.Adapter.SearchHistoryAdapter
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetFragment
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetListener
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentStorageBinding
@@ -230,7 +231,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                 }
 
                 // 닉네임 하이라이팅 처리
-                highlightNickname("발표")
+                highlightNickname()
             }
         }
 
@@ -396,21 +397,25 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
 
     private fun createTestData(): MutableList<StorageListResult> {
         return mutableListOf(
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 1", 0, "", true, listOf("NOTE", "SCRIPT")),
-            StorageListResult(1,"하이라이트 되는 텍스트 앞에 보여줄 텍스트가 없을 경우 바로 하이라이트되는 줄을 보여줍니다","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 2", 0, "", true, listOf("FLOW")),
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 3", 0, "", false, listOf("NOTE", "TIME")),
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 국회는 의원의 자격을 심사하며, 의원을 징계할 수 있다. 개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다.","0", TokenManager(requireContext()).getUid()!!, "테스트 대본 4", 0, "", true, listOf("FLOW", "NOTE"))
+            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", "", "테스트 대본 1", 0, "", true, listOf("NOTE", "SCRIPT")),
+            StorageListResult(1,"하이라이트 되는 텍스트 앞에 보여줄 텍스트가 없을 경우 바로 하이라이트되는 줄을 보여줍니다","0", "", "테스트 대본 2", 0, "", true, listOf("FLOW")),
+            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", "", "테스트 대본 3", 0, "", false, listOf("NOTE", "TIME")),
+            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 국회는 의원의 자격을 심사하며, 의원을 징계할 수 있다. 개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다.","0", "", "테스트 대본 4", 0, "", true, listOf("FLOW", "NOTE"))
         )
     }
 
-    private fun highlightNickname(nickName: String) {
-        val spannableTitle = SpannableString(binding.tvStorageMainNickname.text)
-        spannableTitle.setSpan(
-            ForegroundColorSpan(resources.getColor(R.color.primary)),
-            0,
-            nickName.length,
-            SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
-        )
-        binding.tvStorageMainNickname.text = spannableTitle
+    private fun highlightNickname() {
+        val nickName = PreferenceHelper.getUserNickname(mainActivity)
+        if (nickName != null) {
+            binding.tvStorageMainNickname.text = "${nickName}님의 보관함"
+            val spannableTitle = SpannableString(binding.tvStorageMainNickname.text)
+            spannableTitle.setSpan(
+                ForegroundColorSpan(resources.getColor(R.color.primary)),
+                0,
+                nickName.length,
+                SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
+            )
+            binding.tvStorageMainNickname.text = spannableTitle
+        }
     }
 }

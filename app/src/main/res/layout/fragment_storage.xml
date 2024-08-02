@@ -131,12 +131,13 @@
         <TextView
             android:id="@+id/tv_storage_main_nickname"
             style="@style/Title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
             android:layout_marginTop="14dp"
-            android:text="발표 님의 보관함"
+            android:text="빛나는검은색사자12345678"
             android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/ll_storage_main_note"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -278,7 +279,7 @@
         android:id="@+id/cl_storage_search_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.databinding.FragmentMyPageProfileBinding
 
 class MyPageProfileFragment : Fragment() {
@@ -20,6 +21,10 @@ class MyPageProfileFragment : Fragment() {
         binding = FragmentMyPageProfileBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        binding.run {
+            tvMypageProfileEmail.text = PreferenceHelper.getUserId(mainActivity)
+            tvMypageProfileNickname.text = PreferenceHelper.getUserNickname(mainActivity)
+        }
         initToolBar()
         return binding.root
     }
