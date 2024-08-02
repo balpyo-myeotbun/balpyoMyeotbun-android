@@ -418,4 +418,10 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
             binding.tvStorageMainNickname.text = spannableTitle
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        updateLayoutMode(LayoutMode.MAIN)
+        updateToolbarMode(ToolbarMode.MAIN)
+    }
 }
