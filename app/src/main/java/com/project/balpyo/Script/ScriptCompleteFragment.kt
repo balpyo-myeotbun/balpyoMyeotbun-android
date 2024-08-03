@@ -75,16 +75,14 @@ class ScriptCompleteFragment : Fragment() {
             if(ActivityCompat.shouldShowRequestPermissionRationale(mainActivity, Manifest.permission.POST_NOTIFICATIONS)){
                 //설명 필요 (사용자가 요청을 거부한 적이 있음)
                 ActivityCompat.requestPermissions(mainActivity, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE )
-                findNavController().navigate(R.id.homeFragment)
             } else {
                 //설명 필요 X
                 ActivityCompat.requestPermissions(mainActivity, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE )
-                findNavController().navigate(R.id.homeFragment)
             }
         }else{
             //권한 허용
-            findNavController().navigate(R.id.homeFragment)
         }
+        findNavController().navigate(R.id.homeFragment)
     }
 
     fun initToolBar() {

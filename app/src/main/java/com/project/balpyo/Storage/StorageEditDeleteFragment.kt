@@ -1,6 +1,8 @@
 package com.project.balpyo.Storage
 
 import android.os.Bundle
+import android.text.InputType
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +16,9 @@ import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetFragment
+import com.project.balpyo.Storage.StorageEditBottomSheet.StorageBottomSheetListener
+import com.project.balpyo.Storage.StorageEditBottomSheet.StorageEditBottomSheetFragment
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
@@ -23,14 +28,17 @@ import com.project.balpyo.databinding.FragmentStorageEditDeleteBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import scala.None
 
-class StorageEditDeleteFragment : Fragment() {
+class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
     lateinit var binding: FragmentStorageEditDeleteBinding
     lateinit var mainActivity: MainActivity
 
     lateinit var viewModel: StorageViewModel
 
     private lateinit var flowControllerViewModel: FlowControllerViewModel
+
+    var bottomSheet = StorageEditBottomSheetFragment()
 
     var editable = false
 
@@ -56,38 +64,30 @@ class StorageEditDeleteFragment : Fragment() {
             storageDetail.observe(mainActivity) {
                 binding.editTextScript.setText(it.script.toString())
                 binding.toolbar.textViewTitle.text = it.title.toString()
+                binding.textViewScriptTitle.text = it.title.toString()
                 scriptId = it.scriptId.toLong()
-                secTime = it.secTime.toLong()
+                var minute = (it.secTime.toInt()) / 60
+                var second = (it.secTime.toInt()) % 60
+
+                binding.textViewGoalTime.text = "${minute}분 ${second}초"
             }
         }
 
         initToolBar()
 
-        var keyListner = binding.editTextScript.keyListener
         binding.editTextScript.keyListener = null
         binding.run {
-            buttonEdit.setOnClickListener {
-                if(editable) {
-                    if(flowControllerViewModel.getIsEditData().value == true)
-                    {
-                        flowControllerViewModel.setNormalScript(viewModel.storageDetail.value?.script!!)
-                        flowControllerViewModel.setTitle(viewModel.storageDetail.value?.title!!)
-                        flowControllerViewModel.setScriptId(viewModel.storageDetail.value?.scriptId!!)
-                        findNavController().navigate(R.id.flowControllerEditScriptFragment)
-                    }
-                    else
-                        editScript()
-                } else {
-                    buttonEdit.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gray4)
-                    buttonEdit.text = "대본 저장하기"
-                    buttonEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                    editTextScript.keyListener = keyListner
-                }
-                editable = !editable
+            buttonStore.visibility = View.INVISIBLE
+            buttonMenu.visibility = View.VISIBLE
+
+            editTextScript.isFocusableInTouchMode = false
+
+            buttonMenu.setOnClickListener {
+                bottomSheet.show(childFragmentManager,bottomSheet.tag)
             }
 
-            buttonDelete.setOnClickListener {
-                deleteScript()
+            buttonStore.setOnClickListener {
+                editScript()
             }
         }
         return binding.root
@@ -105,6 +105,26 @@ class StorageEditDeleteFragment : Fragment() {
         }
     }
 
+    override fun onNoteSelected(position: Int) {
+
+        var keyListner = binding.editTextScript.keyListener
+
+        if (position == 2) {
+            Log.d("발표몇분", "수정")
+            binding.buttonStore.visibility = View.VISIBLE
+            binding.buttonMenu.visibility = View.GONE
+
+            binding.editTextScript.run {
+                isFocusableInTouchMode = true
+                isFocusable = true
+                inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
+            }
+
+        } else {
+            deleteScript()
+        }
+    }
+
     fun editScript() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
@@ -119,13 +139,11 @@ class StorageEditDeleteFragment : Fragment() {
                     var result: EditScriptResponse? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    Toast.makeText(mainActivity, "대본이 수정됐습니다.", Toast.LENGTH_SHORT).show()
-
                     binding.run {
-                        buttonEdit.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.primary)
-                        buttonEdit.text = "대본 수정하기"
-                        buttonEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                        editTextScript.keyListener = null
+                        buttonStore.visibility = View.INVISIBLE
+                        buttonMenu.visibility = View.VISIBLE
+
+                        editTextScript.isFocusableInTouchMode = false
                     }
 
                 } else {
@@ -160,6 +178,8 @@ class StorageEditDeleteFragment : Fragment() {
 
                     viewModel.getStorageList(this@StorageEditDeleteFragment, mainActivity)
 
+                    findNavController().popBackStack()
+
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: Void? = response.body()
@@ -177,6 +197,4 @@ class StorageEditDeleteFragment : Fragment() {
             }
         })
     }
-
-
 }
