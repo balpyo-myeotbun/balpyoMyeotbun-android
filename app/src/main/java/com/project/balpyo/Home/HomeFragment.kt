@@ -21,24 +21,11 @@ import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-import com.project.balpyo.Script.ScriptTimeFragment
-import com.project.balpyo.Script.ScriptTitleFragment
-import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
-import com.project.balpyo.TimeCalculator.TimeCalculatorTitleFragment
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.Utils.PreferenceHelper
-import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.SignInRequest
-import com.project.balpyo.api.request.SignUpRequest
-import com.project.balpyo.api.response.BaseResponse
-import com.project.balpyo.api.response.GenerateUidResponse
-import com.project.balpyo.api.response.SignInResponse
-import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentHomeBinding
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
-import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 
 class HomeFragment : Fragment() {
@@ -175,9 +162,9 @@ class HomeFragment : Fragment() {
     private fun setupBannerViewPager() {
         val bannerAdapter = BannerVPAdapter(this)
 
-        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_flow_bg), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
-        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_time_bg), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
-        bannerAdapter.addFragment(BannerFragment(resources.getColor(R.color.tag_script_bg), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
+        bannerAdapter.addFragment(BannerFragment(resources.getDrawable(R.drawable.background_banner), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
+        bannerAdapter.addFragment(BannerFragment(resources.getDrawable(R.drawable.background_banner), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
+        bannerAdapter.addFragment(BannerFragment(resources.getDrawable(R.drawable.background_banner), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
         binding.vpHome.adapter = bannerAdapter
         binding.vpHome.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.vpHome.setCurrentItem(0, false) // 초기 페이지 설정
