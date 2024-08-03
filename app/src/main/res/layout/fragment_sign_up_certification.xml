@@ -30,11 +30,13 @@
     <TextView
         android:id="@+id/tv_signup_certification"
         style="@style/Medium"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
+        android:layout_marginEnd="22dp"
         android:text="마지막 단계에요! 메일의 링크를 눌러 인증해주세요"
         android:textColor="@color/disabled"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_signup_certification_email"
         app:layout_constraintTop_toBottomOf="@+id/tv_signup_certification_email" />
 
