@@ -138,7 +138,7 @@ class FlowControllerResultFragment : Fragment() {
             findNavController().popBackStack(R.id.flowControllerTitleFragment, false)
         }
         binding.btnStorage.setOnClickListener {
-            findNavController().navigate(R.id.storageFragment)
+            mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
         }
         binding.ivFlowResultMenu.setOnClickListener {
 
