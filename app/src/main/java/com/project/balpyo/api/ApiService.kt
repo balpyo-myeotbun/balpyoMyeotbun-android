@@ -87,10 +87,10 @@ interface ApiService {
     @DELETE("every/manage/script/detail/{scriptId}")
     fun deleteScript(@Header("Authorization") token: String, @Path("scriptId") scriptId: Int): Call<Void>
 
-    @POST("api/auth/signup")
+    @POST("auth/signup")
     fun signUp(@Body parameters: SignUpRequest): Call<BaseResponse>
 
-    @POST("api/auth/signin")
+    @POST("auth/signin")
     fun signIn(@Body parameters: SignInRequest): Call<SignInResponse>
 
     @POST("every/manage/script")
