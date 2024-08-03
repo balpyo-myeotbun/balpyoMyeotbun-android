@@ -45,6 +45,8 @@ class FlowControllerEditScriptFragment() : Fragment() {
             editTextMarginBottom = etScript.marginBottom
 
             etScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
+            btnBottomNext.isEnabled = etScript.text.isNotEmpty()
+            btnKeyboardNext.isEnabled = etScript.text.isNotEmpty()
 
             etScript.addTextChangedListener {
                 btnBottomNext.isEnabled = etScript.text.isNotEmpty()
