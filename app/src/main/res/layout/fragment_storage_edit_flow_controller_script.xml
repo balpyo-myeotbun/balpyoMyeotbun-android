@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/cl_storage_edit_flow_script"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Storage.StorageEditFlowControllerScriptFragment"
+android:background="@color/white">
+
+<include
+    android:id="@+id/toolbar"
+    layout="@layout/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<TextView
+    android:id="@+id/tv_storage_edit_flow_script_title"
+    style="@style/Title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="22dp"
+    android:layout_marginTop="66dp"
+    android:text="대본을 입력해주세요"
+    android:textColor="@color/text"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <EditText
+        android:id="@+id/et_storage_edit_flow_script_script"
+        style="@style/MultiLineEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="93dp"
+        android:hint="발표 대본을 입력해주세요"
+        app:layout_constraintBottom_toTopOf="@+id/btn_bottom_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_storage_edit_flow_script_title" />
+
+    <Button
+    android:id="@+id/btn_bottom_next"
+    style="@style/BottomNextButton"
+    android:layout_width="0dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="46dp"
+    android:enabled="false"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+<!-- 키보드 위 버튼 -->
+
+<Button
+    android:id="@+id/btn_keyboard_next"
+    style="@style/KeyBoardNextButton"
+    android:layout_gravity="bottom"
+    android:enabled="false"
+    android:lineSpacingExtra="4dp"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

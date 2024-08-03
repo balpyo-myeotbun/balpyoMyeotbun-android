@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.TimeCalculator.TimeCalculatorResultFragmentDirections
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.request.GenerateAudioRequest
@@ -62,6 +63,7 @@ class FlowControllerResultFragment : Fragment() {
             false
         )
         initToolBar()
+        binding.sbTime.isEnabled = false
 
         val speed = flowControllerViewModel.getSpeedData().value
         when(speed) {
@@ -88,20 +90,7 @@ class FlowControllerResultFragment : Fragment() {
         script = script.replace("PPT 넘김+2", "PPT 넘김 (2초)")
         Log.d("", script)
         val spannable = SpannableStringBuilder(script)
-        val patterns = listOf("숨 고르기 \\(1초\\)", "PPT 넘김 \\(2초\\)")
-        patterns.forEach { pattern ->
-            val regex = Regex(pattern)
-            regex.findAll(script).forEach { matchResult ->
-                val start = matchResult.range.first
-                val end = matchResult.range.last + 1
-                spannable.setSpan(
-                    ForegroundColorSpan(Color.GRAY),
-                    start,
-                    end,
-                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
-        }
+
         scriptTextView.text = spannable
         speechMarks = flowControllerViewModel.getSpeechMarks().value!!
 
@@ -120,6 +109,7 @@ class FlowControllerResultFragment : Fragment() {
             if (isPlaying) {
                 pausePlayback()
             } else {
+                binding.sbTime.isEnabled = true
                 startPlayback()
             }
         }
@@ -149,6 +139,9 @@ class FlowControllerResultFragment : Fragment() {
         }
         binding.btnStorage.setOnClickListener {
             findNavController().navigate(R.id.storageFragment)
+        }
+        binding.ivFlowResultMenu.setOnClickListener {
+
         }
 
         return binding.root
@@ -309,39 +302,39 @@ class FlowControllerResultFragment : Fragment() {
 
     private fun highlightText(progress: Int) {
         val spannableString = SpannableString(scriptTextView.text)
-        synchronized(realSpeechMark) {
-            var lastEndIndex = 0
-            var highlightedLine = -1
+        var lastEndIndex = 0
+        var highlightedLine = -1
 
-            for (mark in realSpeechMark) {
-                if (mark.time <= progress && progress <= mark.time + 1000) {
-                    val startIndex = 0
-                    val endIndex = mark.end
+        for (mark in realSpeechMark) {
+            if (mark.time - 200 <= progress && progress <= mark.time + 1000) {
+                val startIndex = 0
+                val endIndex = mark.end
 
-                    spannableString.setSpan(
-                        ForegroundColorSpan(resources.getColor(R.color.primary)),
-                        startIndex,
-                        endIndex,
-                        SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
-                    )
-                    lastEndIndex = endIndex
-                    highlightedLine = scriptTextView.layout.getLineForOffset(endIndex)
-                }
+                spannableString.setSpan(
+                    ForegroundColorSpan(resources.getColor(R.color.primary)),
+                    startIndex,
+                    endIndex,
+                    SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                lastEndIndex = endIndex
+                highlightedLine = scriptTextView.layout.getLineForOffset(endIndex)
             }
-            spannableString.setSpan(
-                ForegroundColorSpan(Color.BLACK),
-                lastEndIndex,
-                spannableString.length,
-                SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-            )
+        }
 
-            scriptTextView.text = spannableString
-            if (highlightedLine < 4) {
-                scrollTextViewToLine(0)
-            }
-            if (highlightedLine > 4) {
-                scrollTextViewToLine(highlightedLine)
-            }
+        spannableString.setSpan(
+            ForegroundColorSpan(Color.BLACK),
+            lastEndIndex,
+            scriptTextView.text.length,
+            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        scriptTextView.text = spannableString
+        Log.d("lastEndIndex", lastEndIndex.toString())
+        Log.d("", scriptTextView.text.length.toString())
+        if (highlightedLine < 4) {
+            scrollTextViewToLine(0)
+        }
+        if (highlightedLine > 4) {
+            scrollTextViewToLine(highlightedLine)
         }
     }
 
@@ -400,7 +393,11 @@ class FlowControllerResultFragment : Fragment() {
         }
     }
     fun generateAudio() {
-        findNavController().navigate(R.id.loadingFragment)
+        val action = FlowControllerResultFragmentDirections.actionFlowControllerResultFragmentToLoadingFragment(
+            toolbarTitle = "발표연습",
+            comment = "화면을 나가면 저장되지 않아요!"
+        )
+        findNavController().navigate(action)
         var apiClient = ApiClient(mainActivity)
 
         val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), flowControllerViewModel.getSpeedData().value!!, "1234")
