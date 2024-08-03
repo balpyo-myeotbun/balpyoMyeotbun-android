@@ -80,6 +80,9 @@
         <action
             android:id="@+id/action_flowControllerResultFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_flowControllerResultFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerSpeedFragment"
