@@ -113,7 +113,7 @@ class SignUpPasswordFragment : Fragment() {
                 if(isPasswordLengthValid(pw) && isPasswordComplex(pw) && pw == checkPw){
                     MyApplication.password = pw
                     val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
-                        isKaKao = false
+                        type = null
                     )
                     findNavController().navigate(action)
                 }

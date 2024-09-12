@@ -317,9 +317,9 @@
         android:label="fragment_sign_up_terms"
         tools:layout="@layout/fragment_sign_up_terms" >
         <argument
-            android:name="isKaKao"
-            app:argType="boolean"
-            android:defaultValue="false"/>
+            android:name="type"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_signUpTermsFragment_to_signUpCertificationFragment"
             app:destination="@id/signUpCertificationFragment" />

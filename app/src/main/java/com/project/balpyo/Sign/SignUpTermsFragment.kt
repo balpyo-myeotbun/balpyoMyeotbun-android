@@ -63,11 +63,16 @@ class SignUpTermsFragment : Fragment() {
                 toggleAllChecks(checkAll, checkImage, uncheckImage, black, disable, primary)
             }
             btnSignupTerms.setOnClickListener{
-                if(args.isKaKao) {
-                    Log.d("", args.isKaKao.toString())
-                }
-                else {
-                    viewModel.signUp(this@SignUpTermsFragment, mainActivity)
+                when (args.type) {
+                    "kakao" -> {
+                        Log.d("", args.type.toString())
+                    }
+                    "google" -> {
+                        Log.d("", args.type.toString())
+                    }
+                    else -> {
+                        viewModel.signUp(this@SignUpTermsFragment, mainActivity)
+                    }
                 }
             }
         }

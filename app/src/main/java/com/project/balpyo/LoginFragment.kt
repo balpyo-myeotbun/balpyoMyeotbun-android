@@ -1,6 +1,5 @@
 package com.project.balpyo
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,20 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.FragmentTransaction
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.navigation.fragment.findNavController
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
-import com.project.balpyo.Script.ScriptTitleFragment
-import com.project.balpyo.TimeCalculator.TimeCalculatorScriptFragment
-import com.project.balpyo.Utils.MyApplication
-import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.GenerateScriptRequest
-import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.VerifyUidResponse
 import com.project.balpyo.databinding.FragmentLoginBinding
@@ -33,6 +26,8 @@ class LoginFragment : Fragment() {
 
     lateinit var binding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
+
+    private lateinit var googleLoginHelper: GoogleSignInHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,13 +42,28 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        googleLoginHelper = GoogleSignInHelper(requireContext())
+
+        binding.tvLoginEmail.setOnClickListener {
+            googleLoginHelper.requestGoogleLogin(
+                onSuccess = { message ->
+                    Log.d("GoogleLogin", message)
+                    val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
+                        type = "google"
+                    )
+                    findNavController().navigate(action)
+            },
+                onFailure = { errorMessage ->
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                })
+        }
         binding.run {
             btnLoginEmail.setOnClickListener {
-                findNavController().navigate(R.id.emailLoginFragment)
+
             }
             btnLoginKakao.setOnClickListener {
                 val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
-                    isKaKao = true
+                    type = "kakao"
                 )
                 findNavController().navigate(action)
             }
@@ -114,9 +124,8 @@ class LoginFragment : Fragment() {
                     Log.d("token", token.accessToken)
                     //PreferenceHelper.saveUserToken(requireContext(), token.accessToken)
                     //PreferenceHelper.saveUserType(requireContext(), "kakao")
-                    Toast.makeText(requireContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                     val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
-                        isKaKao = true
+                        type = "kakao"
                     )
                     findNavController().navigate(action)
                 }
