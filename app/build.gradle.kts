@@ -78,6 +78,7 @@ dependencies {
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.9.0")
+    implementation(libs.play.services.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -111,4 +112,14 @@ dependencies {
 
     // tooltip
     implementation("com.github.skydoves:balloon:1.6.6")
+
+    //Google Credential
+    implementation("androidx.credentials:credentials:1.3.0-alpha01")
+
+    // optional - needed for credentials support from play services, for devices running
+    // Android 13 and below.
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
+
+    //구글 로그인 지원용
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 }
