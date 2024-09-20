@@ -63,10 +63,14 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     
     // seekbar library
-    implementation("com.github.warkiz.widget:indicatorseekbar:2.1.2")
-    implementation("com.google.android.exoplayer:exoplayer:2.15.1")
+    implementation(files("libs\\indicatorseekbar-2.1.2.aar"))
+    //JCenter 지원 중단으로 새로운 환경에서는 implementation불가 -> aar 수동 추가
+    //implementation("com.github.warkiz.widget:indicatorseekbar:2.1.2")
+
     // recyclerView library
-    implementation("com.arasthel:spannedgridlayoutmanager:3.0.2")
+    implementation(files("libs\\spannedgridlayoutmanager-3.0.2.aar"))
+    //JCenter 지원 중단으로 새로운 환경에서는 implementation불가 -> aar 수동 추가
+    //implementation("com.arasthel:spannedgridlayoutmanager:3.0.2")
 
     // api
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
