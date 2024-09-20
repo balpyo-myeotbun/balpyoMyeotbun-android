@@ -22,11 +22,11 @@ class SignUpTermsFragment : Fragment() {
     lateinit var binding: FragmentSignUpTermsBinding
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: SignViewModel
-    var checkService = false
-    var checkPersonal = false
-    var checkAge = false
-    var checkMarketing = false
-    var checkAll = false
+    private var checkService = false
+    private var checkPersonal = false
+    private var checkAge = false
+    private var checkMarketing = false
+    private var checkAll = false
 
     private val args: SignUpTermsFragmentArgs by navArgs()
     override fun onCreateView(
@@ -65,10 +65,10 @@ class SignUpTermsFragment : Fragment() {
             btnSignupTerms.setOnClickListener{
                 when (args.type) {
                     "kakao" -> {
-                        Log.d("", args.type.toString())
+                        Log.d("SignUp", args.type.toString())
                     }
                     "google" -> {
-                        Log.d("", args.type.toString())
+                        Log.d("SignUp", args.type.toString())
                     }
                     else -> {
                         viewModel.signUp(this@SignUpTermsFragment, mainActivity)

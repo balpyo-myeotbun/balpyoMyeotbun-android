@@ -44,23 +44,25 @@ class LoginFragment : Fragment() {
 
         googleLoginHelper = GoogleSignInHelper(requireContext())
 
-        binding.tvLoginEmail.setOnClickListener {
-            googleLoginHelper.requestGoogleLogin(
-                onSuccess = { message ->
-                    Log.d("GoogleLogin", message)
-                    val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
-                        type = "google"
-                    )
-                    findNavController().navigate(action)
-            },
-                onFailure = { errorMessage ->
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-                })
-        }
         binding.run {
             btnLoginEmail.setOnClickListener {
-
+                findNavController().navigate(R.id.emailLoginFragment)
             }
+
+            binding.btnLoginGoogle.setOnClickListener {
+                googleLoginHelper.requestGoogleLogin(
+                    onSuccess = { message ->
+                        Log.d("GoogleLogin", message)
+                        val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
+                            type = "google"
+                        )
+                        findNavController().navigate(action)
+                    },
+                    onFailure = { errorMessage ->
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                    })
+            }
+
             btnLoginKakao.setOnClickListener {
                 val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
                     type = "kakao"
