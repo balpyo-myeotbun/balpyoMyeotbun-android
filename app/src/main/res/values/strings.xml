@@ -10,4 +10,7 @@
     <string name="onboarding2">발표 시간과 주제만 입력하면\n적절한 분량의 대본을 만들 수 있어요</string>
     <string name="onboarding3">이제 소리내어 읽지 않아도 돼요.\n대본만으로 예상 발표시간을 알 수 있어요</string>
     <string name="onboarding4">화면에 표시된 글자를 따라 읽으며\n발표 연습을 할 수 있어요</string>
+
+    <!-- 회원 탈퇴 -->
+    <string name="cancel_account">회원 탈퇴 시, 생성 및 저장된 대본을 포함한 모든 활동 내역이 영구적으로 삭제됩니다.\n\n탈퇴와 동시에 계정에 저장된 모든 데이터는\n즉시 파기되며, 이는 복구가 불가능합니다.\n\n이 점 참고하시어 신중히 결정해 주시기 바랍니다.</string>
 </resources>
