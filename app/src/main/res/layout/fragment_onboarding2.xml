@@ -6,14 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Onboarding.Onboarding2Fragment">
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/imageView"
         android:layout_width="106dp"
         android:layout_height="132dp"
         android:layout_marginTop="207dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/onboarding_script"
+        app:lottie_repeatCount="0" />
 
     <TextView
         android:id="@+id/textView_title"

@@ -29,17 +29,6 @@ class Onboarding2Fragment : Fragment() {
         mainActivity = activity as MainActivity
 
         binding.run {
-
-            val imageViewTarget = object : DrawableImageViewTarget(imageView) {
-                override fun onResourceReady(resource: Drawable, transition: com.bumptech.glide.request.transition.Transition<in Drawable>?) {
-                    super.onResourceReady(resource, transition)
-                    if (resource is GifDrawable) {
-                        resource.setLoopCount(1)
-                    }
-                }
-            }
-            Glide.with(mainActivity).load(R.raw.onboarding_script).override(106, 132).into(imageViewTarget)
-
             buttonNext.setOnClickListener {
                 findNavController().navigate(R.id.onboarding3Fragment)
             }
