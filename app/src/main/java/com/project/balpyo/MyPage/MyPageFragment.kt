@@ -32,9 +32,6 @@ class MyPageFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         binding.run {
-            tvMypageMainEmail.setOnClickListener {
-                findNavController().navigate(R.id.myPageAccountFragment)
-            }
             llMypagePersonal.setOnClickListener {
                 findNavController().navigate(R.id.myPageProfileFragment)
             }
@@ -47,7 +44,6 @@ class MyPageFragment : Fragment() {
             llMypageIntroduction.setOnClickListener {
                 openUrl("https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d")
             }
-            tvMypageMainEmail.text = PreferenceHelper.getUserId(mainActivity)
             tvMypageMainNickname.text = PreferenceHelper.getUserNickname(mainActivity)
 
         }

@@ -33,7 +33,7 @@ class MyPageCancelAccountFragment : Fragment() {
                 btnMypageCancelAccount.isEnabled = checkCancel
                 if(checkCancel){
                     tvMypageCancelAccount.setTextColor(requireActivity().getColor(R.color.text))
-                    ivMypageCancelAccount.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_checked_gray4))
+                    ivMypageCancelAccount.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_checked_error))
                 }
                 else{
                     tvMypageCancelAccount.setTextColor(requireActivity().getColor(R.color.disabled))
