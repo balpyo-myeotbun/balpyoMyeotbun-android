@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="36dp"
+    android:background="@drawable/background_dialog"
+    tools:context=".ErrorFragment">
+
+    <ImageView
+        android:id="@+id/imageView_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="159dp"
+        android:src="@drawable/ic_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:text="ERROR!"
+        android:textColor="@color/primary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_error"
+        app:layout_constraintStart_toStartOf="@+id/imageView_error"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_error" />
+
+    <TextView
+        android:id="@+id/textView_description"
+        style="@style/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="160dp"
+        android:text="길을 잃어버렸어요\n이전화면으로 돌아가주세요"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView_error"
+        app:layout_constraintStart_toStartOf="@+id/textView_error"
+        app:layout_constraintTop_toBottomOf="@+id/textView_error"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
