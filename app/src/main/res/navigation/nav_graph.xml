@@ -338,9 +338,9 @@
     </fragment>
     <fragment
         android:id="@+id/myPageProfileFragment"
-        android:name="com.project.balpyo.MyPage.MyPageProfileFragment"
+        android:name="com.project.balpyo.MyPage.MyPageAccountEditFragment"
         android:label="fragment_my_page_profile"
-        tools:layout="@layout/fragment_my_page_profile" />
+        tools:layout="@layout/fragment_my_page_account_edit" />
     <fragment
         android:id="@+id/myPageCancelAccountFragment"
         android:name="com.project.balpyo.MyPage.MyPageCancelAccountFragment"
