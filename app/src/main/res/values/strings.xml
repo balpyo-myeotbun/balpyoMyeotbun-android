@@ -13,4 +13,5 @@
 
     <!-- 회원 탈퇴 -->
     <string name="cancel_account">회원 탈퇴 시, 생성 및 저장된 대본을 포함한 모든 활동 내역이 영구적으로 삭제됩니다.\n\n탈퇴와 동시에 계정에 저장된 모든 데이터는\n즉시 파기되며, 이는 복구가 불가능합니다.\n\n이 점 참고하시어 신중히 결정해 주시기 바랍니다.</string>
+    <string name="cancel_account_button"><u>회원 탈퇴하기</u></string>
 </resources>
