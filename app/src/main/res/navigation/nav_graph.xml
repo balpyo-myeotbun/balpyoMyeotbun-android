@@ -326,6 +326,9 @@
         <action
             android:id="@+id/action_signUpTermsFragment_to_signUpCertificationFragment"
             app:destination="@id/signUpCertificationFragment" />
+        <action
+            android:id="@+id/action_signUpTermsFragment_to_signUpTermsAllFragment"
+            app:destination="@id/signUpTermsAllFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPageFragment"
@@ -436,5 +439,17 @@
         <action
             android:id="@+id/action_storageEditFlowControllerTimeFragment_to_loadingFragment"
             app:destination="@id/loadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpTermsAllFragment"
+        android:name="com.project.balpyo.Sign.SignUpTermsAllFragment"
+        android:label="fragment_sign_up_terms_all"
+        tools:layout="@layout/fragment_sign_up_terms_all" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="content"
+            app:argType="string" />
     </fragment>
 </navigation>

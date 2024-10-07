@@ -22,6 +22,8 @@ class SignUpTermsFragment : Fragment() {
     lateinit var binding: FragmentSignUpTermsBinding
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: SignViewModel
+    lateinit var serviceTerms : String
+    lateinit var personalTerms : String
     private var checkService = false
     private var checkPersonal = false
     private var checkAge = false
@@ -29,6 +31,15 @@ class SignUpTermsFragment : Fragment() {
     private var checkAll = false
 
     private val args: SignUpTermsFragmentArgs by navArgs()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val serviceTermsStream = resources.openRawResource(R.raw.service_term)
+        serviceTerms = serviceTermsStream.bufferedReader().use { it.readText() }
+
+        val personalTermsStream = resources.openRawResource(R.raw.service_term)
+        personalTerms = personalTermsStream.bufferedReader().use { it.readText() }
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,6 +73,22 @@ class SignUpTermsFragment : Fragment() {
                 checkAll = !checkAll
                 toggleAllChecks(checkAll, checkImage, uncheckImage, black, disable, primary)
             }
+
+            tvSignupTermsService.setOnClickListener {
+                val action = SignUpTermsFragmentDirections.actionSignUpTermsFragmentToSignUpTermsAllFragment(
+                    title = "서비스 이용약관",
+                    content = serviceTerms
+                )
+                findNavController().navigate(action)
+            }
+            tvSignupTermsPersonal.setOnClickListener {
+                val action = SignUpTermsFragmentDirections.actionSignUpTermsFragmentToSignUpTermsAllFragment(
+                    title = "개인정보 수집 및 이용",
+                    content = personalTerms
+                )
+                findNavController().navigate(action)
+            }
+
             btnSignupTerms.setOnClickListener{
                 when (args.type) {
                     "kakao" -> {
