@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.balpyo.Script.Data.ScriptResultData
 import com.project.balpyo.Script.ScriptResultFragment
@@ -87,7 +88,11 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.homeFragment)
             Log.d("발표몇분", "home fragment")
             MyApplication.type = ""
-        } else {
+        }
+        else if(MyApplication.type == "google") {
+            MyApplication.type = ""
+        }
+        else {
             navController.navigate(R.id.splashFragment)
         }
     }
