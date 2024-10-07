@@ -29,6 +29,12 @@ class SignUpPasswordFragment : Fragment() {
     var isComplete = false
     var pw : String = ""
     var checkPw : String = ""
+
+    override fun onStart() {
+        super.onStart()
+        if(isCheck)
+            binding.llSignupCheckPw.visibility = View.VISIBLE
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -112,10 +118,7 @@ class SignUpPasswordFragment : Fragment() {
             btnSignupPwNext.setOnClickListener{
                 if(isPasswordLengthValid(pw) && isPasswordComplex(pw) && pw == checkPw){
                     MyApplication.password = pw
-                    val action = LoginFragmentDirections.actionLoginFragmentToSignUpTermsFragment(
-                        type = null
-                    )
-                    findNavController().navigate(action)
+                    findNavController().navigate(R.id.signUpTermsFragment)
                 }
                 else{
                     llSignupCheckPw.visibility = View.VISIBLE
