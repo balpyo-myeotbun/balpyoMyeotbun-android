@@ -1,7 +1,9 @@
 package com.project.balpyo.Home
 
 
+import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -37,18 +39,6 @@ class HomeFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var animationDrawable: AnimationDrawable
-
-    //배너 자동 스크롤
-    private val autoScrollRunnable = object : Runnable {
-        override fun run() {
-            val currentItem = binding.vpHome.currentItem
-            val totalItemCount = binding.vpHome.adapter?.itemCount ?: 0
-            val nextItem = if (currentItem + 1 >= totalItemCount) 0 else currentItem + 1
-            binding.vpHome.setCurrentItem(nextItem, true)
-            handler.postDelayed(this, 3000)
-        }
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -116,7 +106,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        setupBannerViewPager()
 
         binding.run {
 
@@ -140,6 +129,10 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.flowControllerTitleFragment)
             }
 
+            ivBannerHome.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
+                startActivity(intent)
+            }
             //추후 닉네임 하이라이팅 처리
             val nickName = PreferenceHelper.getUserNickname(mainActivity)
             if (nickName != null) {
@@ -157,42 +150,6 @@ class HomeFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun setupBannerViewPager() {
-        val bannerAdapter = BannerVPAdapter(this)
-
-        bannerAdapter.addFragment(BannerFragment(resources.getDrawable(R.drawable.background_banner), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
-        bannerAdapter.addFragment(BannerFragment(resources.getDrawable(R.drawable.background_banner), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
-        bannerAdapter.addFragment(BannerFragment(resources.getDrawable(R.drawable.background_banner), "https://balpyo.notion.site/BALPYO-2affad5c2bf740bc80ec32e7df45dc5d"))
-        binding.vpHome.adapter = bannerAdapter
-        binding.vpHome.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.vpHome.setCurrentItem(0, false) // 초기 페이지 설정
-        val spannablePage = SpannableString(binding.tvHomePage.text)
-        spannablePage.setSpan(
-            ForegroundColorSpan(resources.getColor(R.color.white)),
-            0,
-            1,
-            SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
-        )
-        binding.tvHomePage.text = spannablePage
-        binding.vpHome.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                val totalItemCount = binding.vpHome.adapter?.itemCount ?: 0
-                binding.tvHomePage.text = "${position + 1}/$totalItemCount"
-                val spannablePage = SpannableString(binding.tvHomePage.text)
-                spannablePage.setSpan(
-                    ForegroundColorSpan(resources.getColor(R.color.white)),
-                    0,
-                    "${position + 1}".length,
-                    SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
-                )
-                binding.tvHomePage.text = spannablePage
-            }
-        })
-
-        handler.post(autoScrollRunnable)
     }
 
     override fun onResume() {
@@ -218,9 +175,5 @@ class HomeFragment : Fragment() {
         mainActivity.resetStatusBar()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        handler.removeCallbacks(autoScrollRunnable)
-    }
 
 }

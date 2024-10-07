@@ -19,38 +19,41 @@
             android:layout_height="wrap_content"
             android:clipChildren="false">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vp_home"
+            <ImageView
+                android:id="@+id/iv_banner_home"
                 android:layout_width="match_parent"
-                android:layout_height="206dp"
-                android:background="@color/primary_disable"
+                android:layout_height="230dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/banner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/iv_home_page"
+            <TextView
+                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/background_viewpager2_page_number"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-                app:layout_constraintEnd_toEndOf="@+id/vp_home" />
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="63dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="발표몇분을\n소개합니다!"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_home_page"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView13"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="22dp"
                 android:fontFamily="@font/pretendard_regular"
-                android:letterSpacing="0.18"
-                android:text="1/3"
-                android:textColor="@color/disabled"
-                android:textSize="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_home_page"
-                app:layout_constraintEnd_toEndOf="@+id/iv_home_page"
-                app:layout_constraintStart_toStartOf="@+id/iv_home_page"
-                app:layout_constraintTop_toTopOf="@+id/iv_home_page" />
+                android:text="발표몇분의 Notion을 확인해보세요!"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView10"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
