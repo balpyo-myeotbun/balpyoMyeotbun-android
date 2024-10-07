@@ -115,7 +115,7 @@ class StorageEditFlowControllerScriptFragment : Fragment() {
             toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.textViewTitle.text = "발표 연습"
             toolbar.textViewPage.visibility = View.VISIBLE
-            toolbar.textViewPage.text = "2/5"
+            toolbar.textViewPage.text = "1/2"
             toolbar.buttonBack.setOnClickListener {
                 findNavController().popBackStack()
             }

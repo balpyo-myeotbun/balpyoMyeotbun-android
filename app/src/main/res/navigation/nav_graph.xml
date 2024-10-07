@@ -209,6 +209,9 @@
         <action
             android:id="@+id/action_storageFragment_to_noteFragment"
             app:destination="@id/noteFragment" />
+        <action
+            android:id="@+id/action_storageFragment_to_storageEditFlowControllerScriptFragment"
+            app:destination="@id/storageEditFlowControllerScriptFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeCalculatorTitleFragment"
@@ -416,5 +419,22 @@
         <action
             android:id="@+id/action_emailLoginFragment_to_signUpEmailFragment"
             app:destination="@id/signUpEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storageEditFlowControllerScriptFragment"
+        android:name="com.project.balpyo.Storage.StorageEditFlowControllerScriptFragment"
+        android:label="fragment_storage_edit_flow_controller_script"
+        tools:layout="@layout/fragment_storage_edit_flow_controller_script" >
+        <action
+            android:id="@+id/action_storageEditFlowControllerScriptFragment_to_storageEditFlowControllerTimeFragment"
+            app:destination="@id/storageEditFlowControllerTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storageEditFlowControllerTimeFragment"
+        android:name="com.project.balpyo.StorageEditFlowControllerTimeFragment"
+        android:label="StorageEditFlowControllerTimeFragment" >
+        <action
+            android:id="@+id/action_storageEditFlowControllerTimeFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
     </fragment>
 </navigation>

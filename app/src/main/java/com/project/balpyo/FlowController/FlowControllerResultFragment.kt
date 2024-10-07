@@ -14,13 +14,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.project.balpyo.FlowController.BottomSheet.FlowControllerEditBottomSheetFragment
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Storage.LoadScriptBottomSheet.LoadScriptBottomSheetFragment
+import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetFragment
+import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetListener
 import com.project.balpyo.TimeCalculator.TimeCalculatorResultFragmentDirections
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
@@ -33,7 +38,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-class FlowControllerResultFragment : Fragment() {
+class FlowControllerResultFragment : Fragment(), NoteBottomSheetListener{
 
     lateinit var mainActivity: MainActivity
     private lateinit var scriptTextView: TextView
@@ -46,6 +51,7 @@ class FlowControllerResultFragment : Fragment() {
     private var isPlaying = false
     private lateinit var viewDataBinding: FragmentFlowControllerResultBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
+    var bottomSheet = NoteBottomSheetFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -135,13 +141,14 @@ class FlowControllerResultFragment : Fragment() {
         }
 
         binding.btnEdit.setOnClickListener {
-            findNavController().popBackStack(R.id.flowControllerTitleFragment, false)
+            val bottomSheetFragment = FlowControllerEditBottomSheetFragment()
+            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
         }
         binding.btnStorage.setOnClickListener {
             mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
         }
         binding.ivFlowResultMenu.setOnClickListener {
-
+            bottomSheet.show(childFragmentManager,bottomSheet.tag)
         }
 
         return binding.root
@@ -428,5 +435,13 @@ class FlowControllerResultFragment : Fragment() {
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }
         })
+    }
+    override fun onNoteSelected(position: Int) {
+        if (position == 2) {
+            findNavController().navigate(R.id.storageEditFlowControllerScriptFragment)
+        }
+        else {
+            Log.d("fc", "delete")
+        }
     }
 }
