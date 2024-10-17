@@ -105,7 +105,10 @@ class SignUpPasswordFragment : Fragment() {
             btnKeyboardNext.setOnClickListener {
                 if(isPasswordLengthValid(pw) && isPasswordComplex(pw) && pw == checkPw){
                     MyApplication.password = pw
-                    findNavController().navigate(R.id.signUpTermsFragment)
+                    val action = SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToSignUpTermsFragment(
+                        type = null
+                    )
+                    findNavController().navigate(action)
                 }
                 else{
                     llSignupCheckPw.visibility = View.VISIBLE
@@ -118,7 +121,10 @@ class SignUpPasswordFragment : Fragment() {
             btnSignupPwNext.setOnClickListener{
                 if(isPasswordLengthValid(pw) && isPasswordComplex(pw) && pw == checkPw){
                     MyApplication.password = pw
-                    findNavController().navigate(R.id.signUpTermsFragment)
+                    val action = SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToSignUpTermsFragment(
+                        type = null
+                    )
+                    findNavController().navigate(action)
                 }
                 else{
                     llSignupCheckPw.visibility = View.VISIBLE
