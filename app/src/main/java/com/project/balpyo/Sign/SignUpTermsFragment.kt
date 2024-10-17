@@ -51,7 +51,7 @@ class SignUpTermsFragment : Fragment() {
         initToolBar()
 
         val checkImage = requireContext().getDrawable(R.drawable.ic_check_selected)
-        val uncheckImage = requireContext().getDrawable(R.drawable.ic_check_unselected)
+        val uncheckImage = requireContext().getDrawable(R.drawable.ic_uncheck)
         val black = requireActivity().getColor(R.color.text)
         val disable = requireActivity().getColor(R.color.disabled)
         val primary = requireActivity().getColor(R.color.primary)
