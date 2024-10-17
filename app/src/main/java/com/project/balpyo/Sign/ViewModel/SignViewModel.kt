@@ -28,7 +28,7 @@ class SignViewModel: ViewModel() {
     fun signUp(fragment: Fragment, mainActivity: MainActivity) {
         var apiClient = ApiClient(mainActivity)
 
-        apiClient.apiService.signUp(SignUpRequest(MyApplication.email, MyApplication.email, MyApplication.password))?.enqueue(object :
+        apiClient.apiService.signUp(SignUpRequest(MyApplication.email, MyApplication.password))?.enqueue(object :
             Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.isSuccessful) {
