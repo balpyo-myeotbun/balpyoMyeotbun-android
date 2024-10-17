@@ -43,7 +43,7 @@ class SignUpTermsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSignUpTermsBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
