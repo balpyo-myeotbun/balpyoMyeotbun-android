@@ -1,6 +1,5 @@
 package com.project.balpyo.Storage.Adapter
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.text.SpannableString
 import android.text.style.BackgroundColorSpan
@@ -8,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.R
+import com.project.balpyo.api.data.Tag
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.ItemStorageBinding
 
@@ -44,7 +43,7 @@ class SearchAdapter (var result: List<StorageListResult>) :
         holder.run {
             title.text = result[position].title
             content.maxLines = 3
-            content.text = result[position].script?.let { highlightText(it) }
+            content.text = highlightText(result[position].content)
 
             // 태그 초기화
             tagNote.visibility = View.GONE
@@ -52,12 +51,12 @@ class SearchAdapter (var result: List<StorageListResult>) :
             tagTime.visibility = View.GONE
             tagFlow.visibility = View.GONE
 
-            result[position].tag?.forEach {
+            result[position].tags.forEach {
                 when (it) {
-                    "NOTE" -> tagNote.visibility = View.VISIBLE
-                    "SCRIPT" -> tagScript.visibility = View.VISIBLE
-                    "TIME" -> tagTime.visibility = View.VISIBLE
-                    "FLOW" -> tagFlow.visibility = View.VISIBLE
+                    Tag.NOTE.value -> tagNote.visibility = View.VISIBLE
+                    Tag.SCRIPT.value -> tagScript.visibility = View.VISIBLE
+                    Tag.TIME.value -> tagTime.visibility = View.VISIBLE
+                    Tag.FLOW.value -> tagFlow.visibility = View.VISIBLE
                 }
             }
         }

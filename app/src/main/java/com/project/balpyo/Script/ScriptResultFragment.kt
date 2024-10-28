@@ -5,26 +5,15 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import com.project.balpyo.Home.HomeFragment
 import com.project.balpyo.MainActivity
 import com.project.balpyo.NotificationActivity
-import com.project.balpyo.R
-import com.project.balpyo.Script.Data.ScriptResultData
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Script.ViewModel.ScriptDetailViewModel
 import com.project.balpyo.Utils.MyApplication
@@ -32,7 +21,6 @@ import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.TokenManager
 import com.project.balpyo.api.request.StoreScriptRequest
-import com.project.balpyo.api.response.StorageDetailResult
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.databinding.FragmentScriptResultBinding
 import retrofit2.Call
@@ -51,7 +39,6 @@ class ScriptResultFragment : Fragment() {
 
     var editable = false
 
-    var gptId = ""
     var title = ""
     var secTime = 0L
 
@@ -68,12 +55,11 @@ class ScriptResultFragment : Fragment() {
 
         scriptViewModel.run {
             scriptResult.observe(notificationActivity) {
-                gptId = it.gptId.toString()
                 title = it.title
                 secTime = it.secTime
 
                 binding.run {
-                    editTextScript.setText(it.script)
+                    editTextScript.setText(it.content)
                     var minute = (it.secTime.toInt()) / 60
                     var second = (it.secTime.toInt()) % 60
 
@@ -109,7 +95,8 @@ class ScriptResultFragment : Fragment() {
             */
 
             buttonStore.setOnClickListener {
-                storeScript()
+                //TODO: script 저장이 필요한가? 생성과 동시에 보관함 저장? 버튼 눌러야 저장?
+            // storeScript()
             }
 
             editTextScript.setOnLongClickListener {
@@ -166,7 +153,7 @@ class ScriptResultFragment : Fragment() {
         }
     }
 
-    fun storeScript() {
+    /*fun storeScript() {
         var apiClient = ApiClient(notificationActivity)
         var tokenManager = TokenManager(notificationActivity)
 
@@ -208,5 +195,5 @@ class ScriptResultFragment : Fragment() {
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }
         })
-    }
+    }*/
 }

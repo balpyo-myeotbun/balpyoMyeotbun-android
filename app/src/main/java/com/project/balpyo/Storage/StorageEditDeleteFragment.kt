@@ -2,21 +2,16 @@ package com.project.balpyo.Storage
 
 import android.os.Bundle
 import android.text.InputType
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
-import com.project.balpyo.R
-import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetFragment
 import com.project.balpyo.Storage.StorageEditBottomSheet.StorageBottomSheetListener
 import com.project.balpyo.Storage.StorageEditBottomSheet.StorageEditBottomSheetFragment
 import com.project.balpyo.Utils.PreferenceHelper
@@ -28,7 +23,6 @@ import com.project.balpyo.databinding.FragmentStorageEditDeleteBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import scala.None
 
 class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
     lateinit var binding: FragmentStorageEditDeleteBinding
@@ -62,10 +56,10 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.run {
             storageDetail.observe(mainActivity) {
-                binding.editTextScript.setText(it.script.toString())
+                binding.editTextScript.setText(it.content.toString())
                 binding.toolbar.textViewTitle.text = it.title.toString()
                 binding.textViewScriptTitle.text = it.title.toString()
-                scriptId = it.scriptId.toLong()
+                scriptId = it.id.toLong()
                 var minute = (it.secTime.toInt()) / 60
                 var second = (it.secTime.toInt()) % 60
 
@@ -165,9 +159,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
     }
 
     fun deleteScript() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
-
+        val apiClient = ApiClient(mainActivity)
         apiClient.apiService.deleteScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",scriptId.toInt())?.enqueue(object :
             Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -176,7 +168,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
                     var result: Void? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    viewModel.getStorageList(this@StorageEditDeleteFragment, mainActivity)
+                    viewModel.getStorageList(mainActivity)
 
                     findNavController().popBackStack()
 

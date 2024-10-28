@@ -27,7 +27,7 @@ import com.project.balpyo.Storage.Adapter.SearchHistoryAdapter
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetFragment
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetListener
 import com.project.balpyo.Utils.PreferenceHelper
-import com.project.balpyo.api.TokenManager
+import com.project.balpyo.api.data.Tag
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentStorageBinding
 import java.util.Locale
@@ -59,8 +59,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
     lateinit var searchHistoryManager: SearchHistoryManager
     lateinit var searchHistoryAdapter: SearchHistoryAdapter
 
-    // 테스트 데이터 추가
-    var list : MutableList<StorageListResult> = mutableListOf()
+    var storageList : MutableList<StorageListResult> = mutableListOf()
     var searchList: MutableList<StorageListResult> = mutableListOf()
     var filterList: MutableList<StorageListResult> = mutableListOf()
 
@@ -84,10 +83,8 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
         searchHistoryManager = SearchHistoryManager(requireContext())
         setupObservers()
 
-        // 테스트 데이터 추가
-        list = createTestData()
-
-        viewModel.storageList.observe(mainActivity) {
+        viewModel.storageList.observe(mainActivity) { list->
+            storageList = list
             binding.run {
                 rvStorageMain.run {
                     storageAdapter = StorageAdapter(list)
@@ -103,13 +100,9 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                         object : StorageAdapter.OnItemClickListener {
                             override fun onItemClick(position: Int) {
                                 viewModel.getStorageDetail(
-                                    this@StorageFragment,
                                     mainActivity,
-                                    it[position].scriptId.toInt()
+                                    list[position].id.toInt()
                                 )
-                                /*if (viewModel.storageList.value?.get(position)?.voiceFilePath != null) {
-                                    flowControllerViewModel.setIsEdit(true)
-                                }*/
                                 findNavController().navigate(R.id.storageEditDeleteFragment)
                             }
                         }
@@ -121,9 +114,8 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                         object : StorageAdapter.OnItemClickListener {
                             override fun onItemClick(position: Int) {
                                 viewModel.getStorageDetail(
-                                    this@StorageFragment,
                                     mainActivity,
-                                    it[position].scriptId.toInt()
+                                    list[position].id.toInt()
                                 )
                                 /*if (viewModel.storageList.value?.get(position)?.voiceFilePath != null) {
                                     flowControllerViewModel.setIsEdit(true)
@@ -189,9 +181,8 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                         updateLayoutMode(LayoutMode.EMPTY_RESULT)
                         searchAdapter.setItems(mutableListOf())
                     } else {
-                        searchList = list.filter {
-                            it.script?.lowercase(Locale.getDefault())?.contains(searchText.lowercase(Locale.getDefault()))
-                                ?: false
+                        searchList = storageList.filter {
+                            it.content.lowercase(Locale.getDefault()).contains(searchText.lowercase(Locale.getDefault()))
                         }.toMutableList()
                         if (searchList.isEmpty()) {
                             updateLayoutMode(LayoutMode.EMPTY_RESULT)
@@ -259,19 +250,19 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
     }
 
     private fun applyFilter(position: Int, isSearchFilter: Boolean) {
-        val sourceList = if (isSearchFilter) searchList else list
+        val sourceList = if (isSearchFilter) searchList else storageList
         Log.d("", searchList.toString())
 
         val filterTag = when (position) {
-            0 -> "SCRIPT"
-            1 -> "TIME"
-            2 -> "FLOW"
-            3 -> "NOTE"
+            0 -> Tag.SCRIPT.value
+            1 -> Tag.TIME.value
+            2 -> Tag.FLOW.value
+            3 -> Tag.NOTE.value
             else -> ""
         }
 
         filterList = if (filterTag.isNotEmpty()) {
-            sourceList.filter { it.tag?.contains(filterTag) == true }.toMutableList()
+            sourceList.filter { it.tags.contains(filterTag) }.toMutableList()
         } else {
             sourceList.toMutableList()
         }
@@ -397,15 +388,6 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
         else{
             updateLayoutMode(LayoutMode.EMPTY_RECENT)
         }
-    }
-
-    private fun createTestData(): MutableList<StorageListResult> {
-        return mutableListOf(
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", "", "테스트 대본 1", 0, "", true, listOf("NOTE", "SCRIPT")),
-            StorageListResult(1,"하이라이트 되는 텍스트 앞에 보여줄 텍스트가 없을 경우 바로 하이라이트되는 줄을 보여줍니다","0", "", "테스트 대본 2", 0, "", true, listOf("FLOW")),
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 하이라이트 되는 텍스트가 3번째 줄에 나오도록 합니다.","0", "", "테스트 대본 3", 0, "", false, listOf("NOTE", "TIME")),
-            StorageListResult(1,"개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다. 국회는 의원의 자격을 심사하며, 의원을 징계할 수 있다. 개인과 가족생활은 개인의 존엄과 양성의 평등을 기초로 성립되고 유지되어야 하며, 국가는 이를 보장한다.","0", "", "테스트 대본 4", 0, "", true, listOf("FLOW", "NOTE"))
-        )
     }
 
     private fun highlightNickname() {
