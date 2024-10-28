@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
 import com.project.balpyo.MainActivity
-import com.project.balpyo.R
+import com.project.balpyo.Storage.StorageFragmentDirections
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.BaseDto
@@ -19,6 +19,7 @@ import com.project.balpyo.api.request.GenerateNoteRequest
 import com.project.balpyo.api.response.EditScriptResponse
 import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.api.response.SpeechMark
+import com.project.balpyo.api.response.StorageListResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,28 +32,38 @@ class FlowControllerViewModel : ViewModel() {
     private var title: MutableLiveData<String> = MutableLiveData()
     private var normalScript: MutableLiveData<String> = MutableLiveData("")
     private var customScript: MutableLiveData<String> = MutableLiveData()
-    private var serviceCustomScript: MutableLiveData<String> = MutableLiveData()
     private var splitScriptToSentences: MutableLiveData<List<String>> = MutableLiveData()
     private var speed: MutableLiveData<Int> = MutableLiveData(0)
     private var isEdit : MutableLiveData<Boolean> = MutableLiveData(false)
     private var scriptId : MutableLiveData<Long> = MutableLiveData()
     private var audioUrl : MutableLiveData<String> = MutableLiveData()
     private var speechMarks : MutableLiveData<List<SpeechMark>> = MutableLiveData()
+    private var flowControllerResult : MutableLiveData<StorageListResult> = MutableLiveData()
     var generateAudioResponse : MutableLiveData<GenerateAudioResponse> = MutableLiveData()
-    var generateNoteResponse : MutableLiveData<BaseDto> = MutableLiveData()
-
+    var generateFlowControllerResponse : MutableLiveData<BaseDto> = MutableLiveData()
     fun initialize() {
-        title = MutableLiveData()
-        normalScript = MutableLiveData("")
-        customScript = MutableLiveData()
-        serviceCustomScript = MutableLiveData()
-        splitScriptToSentences = MutableLiveData()
-        speed = MutableLiveData(0)
-        isEdit = MutableLiveData(false)
-        scriptId = MutableLiveData()
-        audioUrl = MutableLiveData()
-        speechMarks = MutableLiveData()
+        title.value = ""
+        normalScript.value = ""
+        customScript.value = ""
+        splitScriptToSentences.value = listOf()
+        speed.value = 0
+        isEdit.value = false
+        audioUrl.value = ""
+        speechMarks.value = listOf()
     }
+
+    fun setFlowControllerResult(storageListResult: StorageListResult){
+        flowControllerResult.value = storageListResult
+        setSpeechMarks(storageListResult.speechMark)
+        //TODO: 커스텀 필드 추가 시 추가
+        setCustomScript(storageListResult.content)
+        setNormalScript(storageListResult.content)
+        setScriptId(storageListResult.id)
+        setAudioUrl(storageListResult.voiceFilePath!!)
+        setSpeed(storageListResult.speed.toInt())
+        setTitle(storageListResult.title)
+    }
+
     fun editScript(mainActivity: MainActivity) {
         val apiClient = ApiClient(mainActivity)
             getAudioDuration(getAudioUrlData().value!!, { duration ->
@@ -144,8 +155,11 @@ class FlowControllerViewModel : ViewModel() {
                     override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
                         if (response.isSuccessful) {
                             val result: BaseDto? = response.body()
-                            generateNoteResponse.value = result!!
-                            navController.navigate(R.id.flowControllerResultFragment)
+                            generateFlowControllerResponse.value = result!!
+                            val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                                isNew = true
+                            )
+                            navController.navigate(action)
                         } else {
                             Log.d("##", "onResponse 실패: " + response.code())
                         }
@@ -161,7 +175,7 @@ class FlowControllerViewModel : ViewModel() {
     }
 
 
-    fun getAudioDuration(url: String, onDurationRetrieved: (Int) -> Unit, onError: (Exception) -> Unit) {
+    private fun getAudioDuration(url: String, onDurationRetrieved: (Int) -> Unit, onError: (Exception) -> Unit) {
         val mediaPlayer = MediaPlayer()
         try {
             mediaPlayer.setDataSource(url)
@@ -183,7 +197,6 @@ class FlowControllerViewModel : ViewModel() {
     fun getTitleData(): MutableLiveData<String> = title
     fun getNormalScriptData(): MutableLiveData<String> = normalScript
     fun getCustomScriptData(): MutableLiveData<String> = customScript
-    fun getServiceCustomScriptData(): MutableLiveData<String> = serviceCustomScript
     fun getSpeedData(): MutableLiveData<Int> = speed
     fun getIsEditData():MutableLiveData<Boolean> = isEdit
 
@@ -200,9 +213,6 @@ class FlowControllerViewModel : ViewModel() {
     }
     fun setCustomScript(text: String) {
         customScript.value = text
-    }
-    fun setServiceCustomScript(text: String) {
-        serviceCustomScript.value = text
     }
 
     fun setSplitScriptToSentences(list: List<String>){

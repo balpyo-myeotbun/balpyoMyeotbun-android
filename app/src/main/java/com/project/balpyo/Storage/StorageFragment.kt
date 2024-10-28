@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,14 +19,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.Storage.Adapter.StorageAdapter
-import com.project.balpyo.Storage.ViewModel.StorageViewModel
+import com.project.balpyo.LoginFragmentDirections
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Storage.Adapter.SearchAdapter
 import com.project.balpyo.Storage.Adapter.SearchHistoryAdapter
+import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetFragment
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetListener
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.data.Tag
 import com.project.balpyo.api.response.StorageListResult
@@ -67,6 +69,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
     var isSearchFilter = false
 
     val filterBottomSheet = FilterBottomSheetFragment()
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,24 +106,81 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                     mainActivity,
                                     list[position].id.toInt()
                                 )
-                                findNavController().navigate(R.id.storageEditDeleteFragment)
+                                val tags = list[position].tags
+
+                                if (tags.contains("SCRIPT") || tags.contains("FLOW") || tags.contains(
+                                        "TIME"
+                                    )
+                                ) {
+                                    if (tags.contains("SCRIPT")) {
+                                        //TODO: findNavController().navigate()
+
+                                    } else if (tags.contains("FLOW")) {
+                                        flowControllerViewModel.initialize()
+                                        flowControllerViewModel.setFlowControllerResult(list[position])
+                                        val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                                            isNew = false
+                                        )
+                                        findNavController().navigate(action)
+
+                                    } else if (tags.contains("TIME")) {
+                                        //TODO: findNavController().navigate()
+                                    }
+                                } else if (tags.contains("NOTE")) {
+                                    flowControllerViewModel.initialize()
+                                    flowControllerViewModel.setFlowControllerResult(list[position])
+                                    val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                                        isNew = false
+                                    )
+                                    findNavController().navigate(action)
+                                } else {
+                                    //TODO: 예외
+                                }
+                                //findNavController().navigate(R.id.storageEditDeleteFragment)
                             }
                         }
                 }
-                rvStorageSearchResult.run{
+                rvStorageSearchResult.run {
                     adapter = searchAdapter
                     layoutManager = LinearLayoutManager(mainActivity)
-                    storageAdapter.itemClickListener =
-                        object : StorageAdapter.OnItemClickListener {
+                    searchAdapter.itemClickListener =
+                        object : SearchAdapter.OnItemClickListener {
                             override fun onItemClick(position: Int) {
                                 viewModel.getStorageDetail(
                                     mainActivity,
                                     list[position].id.toInt()
                                 )
-                                /*if (viewModel.storageList.value?.get(position)?.voiceFilePath != null) {
-                                    flowControllerViewModel.setIsEdit(true)
-                                }*/
-                                findNavController().navigate(R.id.storageEditDeleteFragment)
+                                val tags = list[position].tags
+
+                                if (tags.contains("SCRIPT") || tags.contains("FLOW") || tags.contains(
+                                        "TIME"
+                                    )
+                                ) {
+                                    if (tags.contains("SCRIPT")) {
+                                        //TODO: findNavController().navigate()
+
+                                    } else if (tags.contains("FLOW")) {
+                                        flowControllerViewModel.initialize()
+                                        flowControllerViewModel.setFlowControllerResult(list[position])
+                                        val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                                            isNew = false
+                                        )
+                                        findNavController().navigate(action)
+
+                                    } else if (tags.contains("TIME")) {
+                                       //TODO: findNavController().navigate()
+                                    }
+                                } else if (tags.contains("NOTE")) {
+                                    flowControllerViewModel.initialize()
+                                    flowControllerViewModel.setFlowControllerResult(list[position])
+                                    val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                                        isNew = false
+                                    )
+                                    findNavController().navigate(action)
+                                } else {
+                                    //TODO: 예외
+                                }
+                                //findNavController().navigate(R.id.storageEditDeleteFragment)
                             }
                         }
                 }
@@ -150,9 +210,12 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                         before: Int,
                         count: Int
                     ) {
-                        updateToolbarMode(ToolbarMode.EDIT)
-                        showSearchHistory()
-                        ivStorageSearchDelete.visibility = if (!s.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+                        if (!s.isNullOrEmpty()) {
+                            updateToolbarMode(ToolbarMode.EDIT)
+                            showSearchHistory()
+                            ivStorageSearchDelete.visibility =
+                                if (s.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                        }
                     }
 
                     override fun afterTextChanged(s: Editable?) {}
@@ -405,9 +468,18 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        updateLayoutMode(LayoutMode.MAIN)
-        updateToolbarMode(ToolbarMode.MAIN)
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                mainActivity.binding.bottomNavigation.selectedItemId = R.id.homeFragment
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }

@@ -8,22 +8,37 @@
     android:paddingVertical="22dp"
     tools:context=".FlowController.BottomSheet.FlowControllerEditBottomSheetFragment">
 
-    <TextView
-        android:id="@+id/tv_flow_edit_bs_delete"
-        style="@style/Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/fl_flow_edit_bs_delete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="26dp"
-        android:layout_weight="1"
-        android:text="삭제하기"
-        android:textColor="@color/gray3" />
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/tv_flow_edit_bs_edit"
-        style="@style/Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="수정하기"
-        android:textColor="@color/gray3" />
+        <TextView
+            android:id="@+id/tv_flow_edit_bs_delete"
+            style="@style/Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="삭제하기"
+            android:textColor="@color/gray3" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_flow_edit_bs_edit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_flow_edit_bs_edit"
+            style="@style/Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="수정하기"
+            android:textColor="@color/gray3" />
+    </FrameLayout>
+
 </LinearLayout>

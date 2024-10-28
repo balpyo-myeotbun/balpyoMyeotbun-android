@@ -42,6 +42,8 @@ class StorageEditFlowControllerScriptFragment : Fragment() {
             editTextMarginBottom = etStorageEditFlowScriptScript.marginBottom
 
             etStorageEditFlowScriptScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
+            btnBottomNext.isEnabled = etStorageEditFlowScriptScript.text.isNotEmpty()
+            btnKeyboardNext.isEnabled = etStorageEditFlowScriptScript.text.isNotEmpty()
 
             etStorageEditFlowScriptScript.addTextChangedListener {
                 btnBottomNext.isEnabled = etStorageEditFlowScriptScript.text.isNotEmpty()

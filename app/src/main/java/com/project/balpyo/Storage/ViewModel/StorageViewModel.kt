@@ -17,8 +17,8 @@ import retrofit2.Response
 class StorageViewModel: ViewModel() {
     var storageList = MutableLiveData<MutableList<StorageListResult>>()
     var storageListForBottomSheet = MutableLiveData<MutableList<StorageListResult>>()
-    var storageDetail = MutableLiveData<StorageDetailResult?>()
-    var storageDetailForBottomSheet = MutableLiveData<StorageDetailResult?>()
+    var storageDetail = MutableLiveData<StorageDetailResult>()
+    var storageDetailForBottomSheet = MutableLiveData<StorageDetailResult>()
 
 
     init {
@@ -157,9 +157,7 @@ class StorageViewModel: ViewModel() {
                     val result: StorageDetailResult? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    if (result != null) {
                         storageDetailForBottomSheet.value = result
-                    }
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                     var result: StorageDetailResult? = response.body()
@@ -177,6 +175,35 @@ class StorageViewModel: ViewModel() {
             }
         })
     }
+
+    fun deleteScript(mainActivity: MainActivity, id : Long) {
+        val apiClient = ApiClient(mainActivity)
+
+        apiClient.apiService.deleteScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",id.toInt()).enqueue(object :
+            Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    // 정상적으로 통신이 성공된 경우
+                    val result: Void? = response.body()
+
+                } else {
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    var result: Void? = response.body()
+                    Log.d("##", "onResponse 실패")
+                    Log.d("##", "onResponse 실패: " + response.code())
+                    Log.d("##", "onResponse 실패: " + response.body())
+                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                    Log.d("##", "Error Response: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                // 통신 실패
+                Log.d("##", "onFailure 에러: " + t.message.toString());
+            }
+        })
+    }
+
     //바텀시트 뷰모델 초기화
     fun clearValueStorageDataForBottomSheet() {
         storageDetailForBottomSheet.value = StorageDetailResult(
