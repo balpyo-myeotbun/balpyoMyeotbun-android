@@ -2,6 +2,7 @@ package com.project.balpyo.api
 
 import com.project.balpyo.api.request.EditScriptRequest
 import com.project.balpyo.api.request.GenerateAudioRequest
+import com.project.balpyo.api.request.GenerateNoteRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
 import com.project.balpyo.api.request.ManageScriptRequest
@@ -95,4 +96,9 @@ interface ApiService {
 
     @POST("every/manage/script")
     fun manageScript(@Header("Authorization") token: String, @Body parameters: ManageScriptRequest): Call<ManageScriptResponse>
+
+    //노트 생성
+    @POST("scripts/note")
+    fun generateNote(@Header("Authorization") token: String, @Body parameters: GenerateNoteRequest): Call<BaseDto>
+
 }
