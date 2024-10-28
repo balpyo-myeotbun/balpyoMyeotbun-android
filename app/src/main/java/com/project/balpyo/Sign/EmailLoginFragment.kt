@@ -29,7 +29,12 @@ class EmailLoginFragment : Fragment() {
             btnEmailLogin.setOnClickListener {
                 MyApplication.email = etEmailLoginEmail.text.trim().toString()
                 MyApplication.password = etEmailLoginPw.text.trim().toString()
-                viewModel.signInForNavigate(this@EmailLoginFragment, mainActivity)
+                viewModel.signIn(this@EmailLoginFragment, mainActivity)
+                viewModel.signInResponse.observe(mainActivity){
+                    if(it.token.isNotEmpty())
+                        findNavController().navigate(R.id.homeFragment)
+                }
+                /*TODO: 추후 인증 여부 확인*/
             }
             tvEmailLogin.setOnClickListener {
                 findNavController().navigate(R.id.signUpEmailFragment)

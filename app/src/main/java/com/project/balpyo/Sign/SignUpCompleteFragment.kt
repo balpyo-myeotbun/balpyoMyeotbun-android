@@ -42,7 +42,12 @@ class SignUpCompleteFragment : Fragment() {
             }
             Glide.with(requireContext()).load(R.raw.account_complete).into(imageViewTarget)
             btnSignupEmail.setOnClickListener {
-                viewModel.signInForNavigate(this@SignUpCompleteFragment, mainActivity)
+                viewModel.signIn(this@SignUpCompleteFragment, mainActivity)
+                viewModel.signInResponse.observe(mainActivity){
+                    if(it.token.isNotEmpty())
+                        findNavController().navigate(R.id.homeFragment)
+                }
+                /*TODO: 추후 인증 여부 확인*/
             }
         }
         return binding.root

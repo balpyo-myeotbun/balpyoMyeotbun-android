@@ -88,12 +88,15 @@ interface ApiService {
     @DELETE("every/manage/script/detail/{scriptId}")
     fun deleteScript(@Header("Authorization") token: String, @Path("scriptId") scriptId: Int): Call<Void>
 
+    //회원가입
     @POST("auth/signup")
     fun signUp(@Body parameters: SignUpRequest): Call<BaseResponse>
 
+    //로그인
     @POST("auth/signin")
     fun signIn(@Body parameters: SignInRequest): Call<SignInResponse>
 
+    //TODO: 삭제 예정 -> generateNote로 변경
     @POST("every/manage/script")
     fun manageScript(@Header("Authorization") token: String, @Body parameters: ManageScriptRequest): Call<ManageScriptResponse>
 

@@ -49,12 +49,18 @@ class SignUpCertificationFragment : Fragment() {
             btnSignupCertification.setOnClickListener {
                 viewModel.signIn(this@SignUpCertificationFragment, mainActivity)
                 viewModel.signInResponse.observe(mainActivity){
+                    if(it.token.isNotEmpty())
+                        findNavController().navigate(R.id.signUpCompleteFragment)
+                    /*TODO: 추후 인증 등급 확인 시 다시 추가할 예정
+
                     if(it.roles[0] == "ROLE_USER"){
+
                         findNavController().navigate(R.id.signUpCompleteFragment)
                     }
                     else{
                         Toast.makeText(requireContext(),"인증이 되지 않았어요. 발송된 메일의 링크를 눌러주세요", Toast.LENGTH_SHORT).show()
                     }
+                    */
                 }
             }
         }

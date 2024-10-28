@@ -23,109 +23,80 @@ import retrofit2.Response
 class SignViewModel: ViewModel() {
     var signInResponse = MutableLiveData<SignInResponse>()
     fun signUp(fragment: Fragment, mainActivity: MainActivity) {
-        var apiClient = ApiClient(mainActivity)
+        val apiClient = ApiClient(mainActivity)
 
-        apiClient.apiService.signUp(SignUpRequest(MyApplication.email, MyApplication.password))?.enqueue(object :
-            Callback<BaseResponse> {
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    val result: BaseResponse? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-                    fragment.findNavController().navigate(R.id.signUpCertificationFragment)
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: BaseResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
+        apiClient.apiService.signUp(SignUpRequest(MyApplication.email, MyApplication.password))
+            .enqueue(object :
+                Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse? = response.body()
+                        Log.d("##", "onResponse 성공: " + result?.toString())
+                        fragment.findNavController().navigate(R.id.signUpCertificationFragment)
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse? = response.body()
+                        Log.d("##", "onResponse 실패")
+                        Log.d("##", "onResponse 실패: " + response.code())
+                        Log.d("##", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("##", "Error Response: $errorBody")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("##", "onFailure 에러: " + t.message.toString());
+                }
+            })
     }
 
     fun signIn(fragment: Fragment, mainActivity: MainActivity) {
         val apiClient = ApiClient(mainActivity)
         val tokenManager = TokenManager(mainActivity)
 
-        apiClient.apiService.signIn(SignInRequest(MyApplication.email,MyApplication.password))?.enqueue(object :
-            Callback<SignInResponse> {
-            override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    val result: SignInResponse? = response.body()
-                    tokenManager.saveToken("${result?.token}")
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-                    signInResponse.value = result!!
-                    if(result.roles[0] == "ROLE_USER") {
+        apiClient.apiService.signIn(SignInRequest(MyApplication.email,MyApplication.password))
+            .enqueue(object :
+                Callback<SignInResponse> {
+                override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: SignInResponse? = response.body()
+                        tokenManager.saveToken("${result?.token}")
+                        Log.d("##", "onResponse 성공: " + result?.toString())
+                        signInResponse.value = result!!
+
                         PreferenceHelper.saveUserToken(mainActivity, result.token)
                         PreferenceHelper.saveUserId(mainActivity, result.email)
                         PreferenceHelper.saveUserNickname(mainActivity, result.username)
                         PreferenceHelper.saveUserType(mainActivity, "email")
+
+                        /* TODO: 추후 인증 등급 확인 시 다시 추가할 예정
+                        if(result.roles[0] == "ROLE_USER") {
+                            PreferenceHelper.saveUserToken(mainActivity, result.token)
+                            PreferenceHelper.saveUserId(mainActivity, result.email)
+                            PreferenceHelper.saveUserNickname(mainActivity, result.username)
+                            PreferenceHelper.saveUserType(mainActivity, "email")
+                        }
+                        */
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: SignInResponse? = response.body()
+                        Log.d("##", "onResponse 실패")
+                        Log.d("##", "onResponse 실패: " + response.code())
+                        Log.d("##", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("##", "Error Response: $errorBody")
+                        Toast.makeText(fragment.requireContext(), "아이디 혹은 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: SignInResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                    Toast.makeText(fragment.requireContext(), "아이디 혹은 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show()
                 }
-            }
 
-            override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString())
-                Toast.makeText(fragment.requireContext(), "네트워크를 확인해주세요", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-    fun signInForNavigate(fragment: Fragment, mainActivity: MainActivity) {
-        val apiClient = ApiClient(mainActivity)
-        val tokenManager = TokenManager(mainActivity)
-
-        apiClient.apiService.signIn(SignInRequest(MyApplication.email,MyApplication.password))?.enqueue(object :
-            Callback<SignInResponse> {
-            override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    val result: SignInResponse? = response.body()
-                    tokenManager.saveToken("${result?.token}")
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-                    signInResponse.value = result!!
-                    if(result.roles[0] != "ROLE_UNVERIFIED_USER") {
-                        PreferenceHelper.saveUserToken(mainActivity, result.token)
-                        PreferenceHelper.saveUserId(mainActivity, result.email)
-                        PreferenceHelper.saveUserNickname(mainActivity, result.username)
-                        PreferenceHelper.saveUserType(mainActivity, "email")
-                        fragment.findNavController().navigate(R.id.homeFragment)
-                    }
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: SignInResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                    Toast.makeText(fragment.requireContext(), "아이디 혹은 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show()
+                override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("##", "onFailure 에러: " + t.message.toString())
+                    Toast.makeText(fragment.requireContext(), "네트워크를 확인해주세요", Toast.LENGTH_SHORT).show()
                 }
-            }
-
-            override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString())
-                Toast.makeText(fragment.requireContext(), "네트워크를 확인해주세요", Toast.LENGTH_SHORT).show()
-            }
-        })
+            })
     }
 }
