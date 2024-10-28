@@ -8,7 +8,6 @@ import com.project.balpyo.Storage.LoadScriptBottomSheet.LoadScriptBottomSheetFra
 import com.project.balpyo.MainActivity
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.response.StorageDetailResponse
 import com.project.balpyo.api.response.StorageDetailResult
 import com.project.balpyo.api.response.StorageListResult
 import retrofit2.Call
@@ -18,7 +17,7 @@ import retrofit2.Response
 class StorageViewModel: ViewModel() {
     var storageList = MutableLiveData<MutableList<StorageListResult>>()
     var storageListForBottomSheet = MutableLiveData<MutableList<StorageListResult>>()
-    var storageDetail = MutableLiveData<StorageDetailResult>()
+    var storageDetail = MutableLiveData<StorageDetailResult?>()
     var storageDetailForBottomSheet = MutableLiveData<StorageDetailResult?>()
 
 
