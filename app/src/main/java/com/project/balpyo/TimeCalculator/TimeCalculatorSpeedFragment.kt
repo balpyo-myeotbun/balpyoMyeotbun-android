@@ -105,7 +105,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
-        val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt(), "1234")
+        val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt())
         apiClient.apiService.generateAudio("Bearer ${PreferenceHelper.getUserToken(mainActivity)!!}", "audio/mp3", request)?.enqueue(object :
             Callback<GenerateAudioResponse> {
             override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
