@@ -44,7 +44,7 @@ class LoadScriptBottomSheetAdapter(
             val item = items[actualPosition]
 
             holder.title.text = item.title
-            holder.content.text = item.content
+            holder.content.text = getFirst20CharsIgnoringSpaces(item.content)
             holder.timeStamp.text = item.timeStamp
             holder.tagNote.visibility = View.VISIBLE
 
@@ -64,6 +64,22 @@ class LoadScriptBottomSheetAdapter(
         selectedPosition = position
         notifyDataSetChanged()
         listener.onItemClicked(position - 1)
+    }
+
+    //공백을 세지 않고 20자로 제한하는 함수
+    fun getFirst20CharsIgnoringSpaces(input: String): String {
+        val result = StringBuilder()
+        var count = 0
+
+        for (char in input) {
+            if (!char.isWhitespace()) {
+                count++
+            }
+            result.append(char)
+            if (count == 20) break
+        }
+
+        return result.toString()
     }
 
     override fun getItemCount(): Int = items.size + 1

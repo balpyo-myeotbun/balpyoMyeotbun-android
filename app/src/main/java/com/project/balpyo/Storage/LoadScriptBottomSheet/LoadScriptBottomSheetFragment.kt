@@ -39,7 +39,7 @@ class LoadScriptBottomSheetFragment : BottomSheetDialogFragment(), BottomSheetLi
                 val items = mutableListOf<BottomSheetData>()
 
                 for (i in it.indices) {
-                    items.add(BottomSheetData(it[i].title))
+                    items.add(BottomSheetData(it[i].title, it[1].content))
                     scriptId.add(it[i].id)
                 }
 
