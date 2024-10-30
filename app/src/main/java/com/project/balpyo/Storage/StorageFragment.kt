@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.LoginFragmentDirections
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Storage.Adapter.SearchAdapter
@@ -30,9 +29,9 @@ import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetListener
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.data.Tag
+import com.project.balpyo.api.request.SearchParameter
 import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentStorageBinding
-import java.util.Locale
 
 enum class ToolbarMode {
     MAIN, EDIT, RESULT
@@ -86,16 +85,22 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
         searchHistoryManager = SearchHistoryManager(requireContext())
         setupObservers()
 
+        viewModel.getStorageList(mainActivity)
+
         viewModel.storageList.observe(mainActivity) { list->
             storageList = list
             binding.run {
                 rvStorageMain.run {
                     storageAdapter = StorageAdapter(list)
                     searchAdapter = SearchAdapter(list)
-                    if(list.isEmpty())
+                    updateToolbarMode(ToolbarMode.MAIN)
+                    if(list.isEmpty()) {
                         updateLayoutMode(LayoutMode.MAIN_EMPTY)
-                    else
+
+                    }
+                    else {
                         updateLayoutMode(LayoutMode.MAIN)
+                    }
 
                     adapter = storageAdapter
                     layoutManager = LinearLayoutManager(mainActivity)
@@ -180,102 +185,8 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                 } else {
                                     //TODO: 예외
                                 }
-                                //findNavController().navigate(R.id.storageEditDeleteFragment)
                             }
                         }
-                }
-
-                // 검색 버튼 클릭 이벤트 처리
-                ivStorageMainSearch.setOnClickListener {
-                    updateToolbarMode(ToolbarMode.EDIT)
-                    val inputMethodManager =
-                        requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    etStorageSearch.requestFocus()
-                    inputMethodManager.showSoftInput(etStorageSearch, InputMethodManager.SHOW_IMPLICIT)
-                    showSearchHistory()
-                }
-
-                // 검색 텍스트 변경 이벤트 처리
-                etStorageSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {}
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        if (!s.isNullOrEmpty()) {
-                            updateToolbarMode(ToolbarMode.EDIT)
-                            showSearchHistory()
-                            ivStorageSearchDelete.visibility =
-                                if (s.isNotEmpty()) View.VISIBLE else View.INVISIBLE
-                        }
-                    }
-
-                    override fun afterTextChanged(s: Editable?) {}
-                })
-
-                // 포커스 변경 이벤트 처리
-                etStorageSearch.setOnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus) updateToolbarMode(ToolbarMode.EDIT)
-                }
-
-                //검색 중인 텍스트 삭제 버튼 클릭 이벤트 처리
-                ivStorageSearchDelete.setOnClickListener {
-                    updateToolbarMode(ToolbarMode.EDIT)
-                    showSearchHistory()
-                    etStorageSearch.setText("")
-                }
-
-                // 검색 버튼 클릭 이벤트 처리
-                tvStorageSearch.setOnClickListener {
-                    updateToolbarMode(ToolbarMode.RESULT)
-                    val searchText: String = etStorageSearch.text.toString()
-                    searchHistoryManager.saveSearchQuery(searchText)
-                    searchAdapter.searchQuery = searchText
-                    searchList.clear()
-                    if (searchText.isEmpty()) {
-                        updateLayoutMode(LayoutMode.EMPTY_RESULT)
-                        searchAdapter.setItems(mutableListOf())
-                    } else {
-                        searchList = storageList.filter {
-                            it.content.lowercase(Locale.getDefault()).contains(searchText.lowercase(Locale.getDefault()))
-                        }.toMutableList()
-                        if (searchList.isEmpty()) {
-                            updateLayoutMode(LayoutMode.EMPTY_RESULT)
-                        } else {
-                            updateLayoutMode(LayoutMode.RESULT)
-                            searchAdapter.setItems(searchList)
-                        }
-                    }
-                }
-
-                llStorageMainNote.setOnClickListener {
-                    findNavController().navigate(R.id.noteFragment)
-                }
-
-                ivStorageMainFilter.setOnClickListener {
-                    isSearchFilter = false
-                    filterBottomSheet.show(childFragmentManager,filterBottomSheet.tag)
-                }
-                ivStorageSearchFilter.setOnClickListener {
-                    isSearchFilter = true
-                    filterBottomSheet.show(childFragmentManager,filterBottomSheet.tag)
-                }
-
-                tvStorageRecentDelete.setOnClickListener {
-                    searchHistoryManager.clearAllSearchHistory()
-                    showSearchHistory()
-                }
-                // 뒤로가기 버튼 클릭 이벤트 처리
-                ivStorageMainBack.setOnClickListener {
-                    mainActivity.binding.bottomNavigation.selectedItemId = R.id.homeFragment
                 }
 
                 // 검색 모드 뒤로가기 버튼 클릭 이벤트 처리
@@ -290,6 +201,109 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
 
                 // 닉네임 하이라이팅 처리
                 highlightNickname()
+            }
+        }
+        binding.run {
+            // 검색 버튼 클릭 이벤트 처리
+            ivStorageMainSearch.setOnClickListener {
+                updateToolbarMode(ToolbarMode.EDIT)
+                val inputMethodManager =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                etStorageSearch.requestFocus()
+                inputMethodManager.showSoftInput(etStorageSearch, InputMethodManager.SHOW_IMPLICIT)
+                showSearchHistory()
+            }
+
+            // 검색 텍스트 변경 이벤트 처리
+            etStorageSearch.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                    if (!s.isNullOrEmpty()) {
+                        updateToolbarMode(ToolbarMode.EDIT)
+                        showSearchHistory()
+                        ivStorageSearchDelete.visibility =
+                            if (s.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+
+            // 포커스 변경 이벤트 처리
+            etStorageSearch.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) updateToolbarMode(ToolbarMode.EDIT)
+            }
+
+            //검색 중인 텍스트 삭제 버튼 클릭 이벤트 처리
+            ivStorageSearchDelete.setOnClickListener {
+                updateToolbarMode(ToolbarMode.EDIT)
+                showSearchHistory()
+                etStorageSearch.setText("")
+            }
+
+            llStorageMainNote.setOnClickListener {
+                findNavController().navigate(R.id.noteFragment)
+            }
+
+            ivStorageMainFilter.setOnClickListener {
+                isSearchFilter = false
+                filterBottomSheet.show(childFragmentManager, filterBottomSheet.tag)
+            }
+            ivStorageSearchFilter.setOnClickListener {
+                isSearchFilter = true
+                filterBottomSheet.show(childFragmentManager, filterBottomSheet.tag)
+            }
+
+            tvStorageRecentDelete.setOnClickListener {
+                searchHistoryManager.clearAllSearchHistory()
+                showSearchHistory()
+            }
+            // 뒤로가기 버튼 클릭 이벤트 처리
+            ivStorageMainBack.setOnClickListener {
+                mainActivity.binding.bottomNavigation.selectedItemId = R.id.homeFragment
+            }
+
+            // 검색 버튼 클릭 이벤트 처리
+            tvStorageSearch.setOnClickListener {
+                val searchText: String = etStorageSearch.text.toString()
+
+                viewModel.searchList.removeObservers(mainActivity)
+                val searchParameter = SearchParameter(null, false, searchText)
+                viewModel.searchStorageList(mainActivity, searchParameter)
+
+                viewModel.searchList.observe(mainActivity) {
+                    searchList.clear()
+                    updateToolbarMode(ToolbarMode.RESULT)
+                    searchHistoryManager.saveSearchQuery(searchText)
+                    searchAdapter.searchQuery = searchText
+                    if (searchText.isEmpty()) {
+                        updateLayoutMode(LayoutMode.EMPTY_RESULT)
+                        searchAdapter.setItems(mutableListOf())
+                        Log.d("서치 텍스트 empty", viewModel.searchList.value.toString())
+                    } else {
+                        searchList = it
+                        if (searchList.isEmpty()) {
+                            updateLayoutMode(LayoutMode.EMPTY_RESULT)
+                            Log.d("서치 리스트 empty", viewModel.searchList.value.toString())
+                        } else {
+                            Log.d("서치 결과 있음", viewModel.searchList.value.toString())
+                            updateLayoutMode(LayoutMode.RESULT)
+                            searchAdapter.setItems(searchList)
+                        }
+                    }
+                }
             }
         }
 
@@ -313,8 +327,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
     }
 
     private fun applyFilter(position: Int, isSearchFilter: Boolean) {
-        val sourceList = if (isSearchFilter) searchList else storageList
-        Log.d("", searchList.toString())
+        val sourceList = if (isSearchFilter) filterList else storageList
 
         val filterTag = when (position) {
             0 -> Tag.SCRIPT.value
@@ -323,27 +336,31 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
             3 -> Tag.NOTE.value
             else -> ""
         }
+        val searchParameter = SearchParameter(filterTag, false, null)
+        viewModel.filterStorageList(mainActivity, searchParameter)
 
-        filterList = if (filterTag.isNotEmpty()) {
-            sourceList.filter { it.tags.contains(filterTag) }.toMutableList()
-        } else {
-            sourceList.toMutableList()
+        viewModel.filterList.observe(mainActivity) {
+            filterList = if (filterTag.isNotEmpty()) {
+                viewModel.filterList.value!!
+            } else {
+                sourceList.toMutableList()
+            }
+            storageAdapter.setItems(filterList)
+            searchAdapter.setItems(filterList)
+
+            if (filterList.isEmpty()) {
+                if (isSearchFilter) {
+                    updateLayoutMode(LayoutMode.EMPTY_RESULT)
+                }
+                else {
+                    updateLayoutMode(LayoutMode.MAIN_EMPTY)
+                }
+            } else {
+                if (isSearchFilter) updateLayoutMode(LayoutMode.RESULT)
+                else updateLayoutMode(LayoutMode.MAIN)
+            }
         }
 
-        storageAdapter.setItems(filterList)
-        searchAdapter.setItems(filterList)
-
-        if (filterList.isEmpty()) {
-            if (isSearchFilter) {
-                updateLayoutMode(LayoutMode.EMPTY_RESULT)
-            }
-            else {
-                updateLayoutMode(LayoutMode.MAIN_EMPTY)
-            }
-        } else {
-            if (isSearchFilter) updateLayoutMode(LayoutMode.RESULT)
-            else updateLayoutMode(LayoutMode.MAIN)
-        }
     }
 
 
@@ -356,6 +373,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                     tvStorageSearch.visibility = View.VISIBLE
                     ivStorageSearchFilter.visibility = View.INVISIBLE
                     etStorageSearch.background = requireContext().getDrawable(R.drawable.background_search_edit)
+                    ivStorageSearchDelete.visibility = if(tvStorageSearch.text.isNotEmpty()) View.VISIBLE else View.INVISIBLE
                 }
                 ToolbarMode.RESULT -> {
                     clStorageMainToolbar.visibility = View.INVISIBLE

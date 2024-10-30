@@ -104,7 +104,7 @@ interface ApiService {
     fun generateNote(@Header("Authorization") token: String, @Body parameters: GenerateNoteRequest): Call<BaseDto>
 
     //검색
-    @POST("scripts/search")
-    fun search(@Header("Authorization") token: String, @Query("tag") tag : List<String>?, @Query("isGenerating") isGenerating : Boolean?, @Query("searchValue") searchValue : String?): Call<List<BaseDto>>
+    @GET("scripts/search")
+    fun search(@Header("Authorization") token: String, @Query("tag") tag: String?, @Query("isGenerating") isGenerating: Boolean?, @Query("searchValue") searchValue: String?): Call<List<StorageListResult>>
 
 }

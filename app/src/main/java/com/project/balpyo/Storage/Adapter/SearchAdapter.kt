@@ -41,7 +41,7 @@ class SearchAdapter (var result: List<StorageListResult>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.run {
-            title.text = result[position].title
+            title.text = highlightText(result[position].title)
             content.maxLines = 3
             content.text = highlightText(result[position].content)
 
@@ -62,11 +62,13 @@ class SearchAdapter (var result: List<StorageListResult>) :
         }
     }
     private fun highlightText(originalText: String): SpannableString {
-        if(searchQuery.isNotEmpty()) {
+        if (searchQuery.isNotEmpty()) {
             var highlightText = SpannableString(originalText)
             var startIndex = originalText.indexOf(searchQuery)
-            highlightText = SpannableString(highlightText.substring(startIndex))
-            startIndex = 0
+            if (startIndex != -1) {
+                highlightText = SpannableString(highlightText.substring(startIndex))
+                startIndex = 0
+            }
 
             while (startIndex != -1) {
                 highlightText.setSpan(
@@ -78,8 +80,7 @@ class SearchAdapter (var result: List<StorageListResult>) :
                 startIndex = highlightText.indexOf(searchQuery, startIndex + 1)
             }
             return highlightText
-        }
-        else
+        } else
             return SpannableString(originalText)
     }
 

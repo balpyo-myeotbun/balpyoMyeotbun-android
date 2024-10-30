@@ -83,6 +83,10 @@
         <action
             android:id="@+id/action_flowControllerResultFragment_to_loadingFragment"
             app:destination="@id/loadingFragment" />
+        <argument
+            android:name="isNew"
+            app:argType="boolean"
+            android:defaultValue="true" />
     </fragment>
     <fragment
         android:id="@+id/flowControllerSpeedFragment"
@@ -212,6 +216,9 @@
         <action
             android:id="@+id/action_storageFragment_to_storageEditFlowControllerScriptFragment"
             app:destination="@id/storageEditFlowControllerScriptFragment" />
+        <action
+            android:id="@+id/action_storageFragment_to_flowControllerResultFragment"
+            app:destination="@id/flowControllerResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeCalculatorTitleFragment"
