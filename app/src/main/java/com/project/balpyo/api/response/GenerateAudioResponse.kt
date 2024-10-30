@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class GenerateAudioResponse (
     val profileUrl : String,
     val playTime: Int,
-    val speechMarks: List<SpeechMark>)
+    val speechMarks: List<SpeechMark>
+)
 
 data class SpeechMark(
     @SerializedName("start") var start: Int, // 초 단위

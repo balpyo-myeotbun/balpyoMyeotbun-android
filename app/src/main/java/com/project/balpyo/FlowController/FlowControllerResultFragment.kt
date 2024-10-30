@@ -1,5 +1,6 @@
 package com.project.balpyo.FlowController
 
+import android.content.Context
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -14,45 +15,39 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.project.balpyo.FlowController.BottomSheet.FlowControllerEditBottomSheetFragment
+import com.project.balpyo.FlowController.BottomSheet.FlowControllerEditBottomSheetListener
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-import com.project.balpyo.Storage.LoadScriptBottomSheet.LoadScriptBottomSheetFragment
-import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetFragment
-import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetListener
-import com.project.balpyo.TimeCalculator.TimeCalculatorResultFragmentDirections
-import com.project.balpyo.Utils.PreferenceHelper
-import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.request.GenerateAudioRequest
-import com.project.balpyo.api.response.GenerateAudioResponse
+import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.api.response.SpeechMark
 import com.project.balpyo.databinding.FragmentFlowControllerResultBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.IOException
 
-class FlowControllerResultFragment : Fragment(), NoteBottomSheetListener{
+class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetListener {
 
     lateinit var mainActivity: MainActivity
+    private lateinit var binding: FragmentFlowControllerResultBinding
     private lateinit var scriptTextView: TextView
     private lateinit var playButton: ImageView
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var handler: Handler
     private var speechMarks: List<SpeechMark> = listOf()
     private var realSpeechMark : List<SpeechMark>  = listOf()
-    private lateinit var binding: FragmentFlowControllerResultBinding
     private var isPlaying = false
     private lateinit var viewDataBinding: FragmentFlowControllerResultBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
-    var bottomSheet = NoteBottomSheetFragment()
-
+    private lateinit var storageViewModel: StorageViewModel
+    var bottomSheet = FlowControllerEditBottomSheetFragment()
+    private val args: FlowControllerResultFragmentArgs by navArgs()
+    private lateinit var callback: OnBackPressedCallback
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,6 +57,7 @@ class FlowControllerResultFragment : Fragment(), NoteBottomSheetListener{
         scriptTextView = binding.tvScript
         playButton = binding.btnPlay
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
+        storageViewModel = ViewModelProvider(requireActivity())[StorageViewModel::class.java]
         viewDataBinding = DataBindingUtil.inflate(
             LayoutInflater.from(context),
             R.layout.fragment_flow_controller_result,
@@ -121,34 +117,33 @@ class FlowControllerResultFragment : Fragment(), NoteBottomSheetListener{
         }
         binding.btnSpeed03.setOnClickListener {
             flowControllerViewModel.setSpeed(-2)
-            generateAudio()
+            //TODO: 스크립트 수정
         }
         binding.btnSpeed05.setOnClickListener {
             flowControllerViewModel.setSpeed(-1)
-            generateAudio()
+            //TODO: 스크립트 수정
         }
         binding.btnSpeed1.setOnClickListener {
             flowControllerViewModel.setSpeed(0)
-            generateAudio()
+            //TODO: 스크립트 수정
         }
         binding.btnSpeed15.setOnClickListener {
             flowControllerViewModel.setSpeed(1)
-            generateAudio()
+            //TODO: 스크립트 수정
         }
         binding.btnSpeed2.setOnClickListener {
             flowControllerViewModel.setSpeed(2)
-            generateAudio()
+            //TODO: 스크립트 수정
         }
 
         binding.btnEdit.setOnClickListener {
-            val bottomSheetFragment = FlowControllerEditBottomSheetFragment()
-            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+            findNavController().navigate(R.id.storageEditFlowControllerScriptFragment)
         }
         binding.btnStorage.setOnClickListener {
             mainActivity.binding.bottomNavigation.selectedItemId = R.id.storageFragment
         }
         binding.ivFlowResultMenu.setOnClickListener {
-            bottomSheet.show(childFragmentManager,bottomSheet.tag)
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
 
         return binding.root
@@ -181,16 +176,16 @@ class FlowControllerResultFragment : Fragment(), NoteBottomSheetListener{
         if(endTime == "00:00" || remainingTime == totalTime)
             binding.tvEndTime.text = endTime
         else
-            binding.tvEndTime.text = "-" + endTime
+            binding.tvEndTime.setText("-$endTime")
     }
 
     // 재생 시간을 mm:ss 형식으로 변환
-    fun convertMsToMinutesSeconds(milliseconds: Long): String {
+    private fun convertMsToMinutesSeconds(milliseconds: Long): String {
         val totalSeconds = milliseconds / 1000
         val minutes = totalSeconds / 60
         val seconds = totalSeconds % 60
 
-        return String.format("%02d:%02d", minutes, seconds)
+        return "${minutes}:${seconds}"
     }
 
     //seekbar 초기화
@@ -291,7 +286,7 @@ class FlowControllerResultFragment : Fragment(), NoteBottomSheetListener{
         }
         return speechMark
     }
-    fun byteIndexToCharIndex(text: String, byteIndex: Int): Int {
+    private fun byteIndexToCharIndex(text: String, byteIndex: Int): Int {
         val bytes = text.toByteArray(Charsets.UTF_8)
         val subBytes = bytes.sliceArray(0 until byteIndex)
         return subBytes.toString(Charsets.UTF_8).length
@@ -388,60 +383,54 @@ class FlowControllerResultFragment : Fragment(), NoteBottomSheetListener{
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.INVISIBLE
-            toolbar.buttonClose.visibility = View.VISIBLE
+            if(args.isNew) {
+                toolbar.buttonClose.visibility = View.VISIBLE
+                toolbar.buttonBack.visibility = View.INVISIBLE
+                ivFlowResultMenu.visibility = View.INVISIBLE
+                toolbar.buttonClose.setOnClickListener {
+                    flowControllerViewModel.initialize()
+                    findNavController().popBackStack(R.id.homeFragment, false)
+                }
+            }
+            else {
+                toolbar.buttonClose.visibility = View.INVISIBLE
+                toolbar.buttonBack.visibility = View.VISIBLE
+                ivFlowResultMenu.visibility = View.VISIBLE
+                toolbar.buttonBack.setOnClickListener {
+                    flowControllerViewModel.initialize()
+                    findNavController().popBackStack(R.id.storageFragment, false)
+                }
+            }
             toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.textViewTitle.text = flowControllerViewModel.getTitleData().value
             toolbar.textViewPage.visibility = View.INVISIBLE
-            toolbar.buttonClose.setOnClickListener {
-                findNavController().popBackStack(R.id.homeFragment, false)
-                flowControllerViewModel.initialize()
-            }
         }
     }
-    fun generateAudio() {
-        val action = FlowControllerResultFragmentDirections.actionFlowControllerResultFragmentToLoadingFragment(
-            toolbarTitle = "발표연습",
-            comment = "화면을 나가면 저장되지 않아요!"
-        )
-        findNavController().navigate(action)
-        var apiClient = ApiClient(mainActivity)
-
-        val request = GenerateAudioRequest(flowControllerViewModel.getCustomScriptData().value.toString(), flowControllerViewModel.getSpeedData().value!!, "1234")
-        apiClient.apiService.generateAudio("Bearer ${PreferenceHelper.getUserToken(mainActivity)}","audio/mp3", request)?.enqueue(object :
-            Callback<GenerateAudioResponse> {
-            override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: GenerateAudioResponse? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-                    flowControllerViewModel.setAudioUrl(result!!.profileUrl)
-                    flowControllerViewModel.setSpeechMarks(result.speechMarks)
-                    stopPlayback()
-                    findNavController().navigate(R.id.flowControllerResultFragment)
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: GenerateAudioResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                }
-            }
-
-            override fun onFailure(call: Call<GenerateAudioResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
-    }
-    override fun onNoteSelected(position: Int) {
-        if (position == 2) {
+    override fun onItemSelected(position: Int) {
+        Log.d("##", position.toString())
+        if (position == 1) {
             findNavController().navigate(R.id.storageEditFlowControllerScriptFragment)
         }
         else {
-            Log.d("fc", "delete")
+            storageViewModel.deleteScript(mainActivity, flowControllerViewModel.getScriptIdData().value!!)
+            findNavController().popBackStack()
         }
+    }
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(args.isNew) 
+                    findNavController().popBackStack(R.id.homeFragment, false)
+                else
+                    findNavController().popBackStack(R.id.storageFragment, false)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }

@@ -302,10 +302,9 @@ class TimeCalculatorResultFragment : Fragment() {
             comment = "발표 시간을 계산하고 있어요"
         )
         findNavController().navigate(action)
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
+        val apiClient = ApiClient(mainActivity)
 
-        val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt(), "1234")
+        val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt())
         apiClient.apiService.generateAudio("Bearer ${PreferenceHelper.getUserToken(mainActivity)!!}","audio/mp3", request)?.enqueue(object :
             Callback<GenerateAudioResponse> {
             override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
@@ -346,7 +345,7 @@ class TimeCalculatorResultFragment : Fragment() {
         MyApplication.calculatedTimeMinute = minutes.toInt()
         MyApplication.calculatedTimeSecond = seconds.toInt()
 
-        MyApplication.calculatedTime = totalSeconds.toLong()
+        MyApplication.calculatedTime = totalSeconds
 
         return String.format("%02d:%02d", minutes, seconds)
     }

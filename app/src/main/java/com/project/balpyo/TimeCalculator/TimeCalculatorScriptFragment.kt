@@ -1,13 +1,11 @@
 package com.project.balpyo.TimeCalculator
 
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
@@ -43,7 +41,7 @@ class TimeCalculatorScriptFragment : Fragment() {
         viewModel.run {
             storageDetailForBottomSheet.observe(mainActivity) {
                 if (it != null) {
-                    binding.editTextScript.setText(it.script)
+                    binding.editTextScript.setText(it.content)
                 }
             }
         }

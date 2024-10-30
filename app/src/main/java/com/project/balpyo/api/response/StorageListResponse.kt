@@ -7,13 +7,19 @@ data class StorageListResponse(
 )
 
 data class StorageListResult(
-    val scriptId: Long,
-    val script: String?,
-    val gptId: String?,
-    val uid: String?,
+    val id: Long,
+    val content : String,
     val title: String,
     val secTime: Long,
     val voiceFilePath: String?,
+    val isGenerating :Boolean,
+    val playTime : Long,
+    val originalScript : String,
+    val speed : Long,
     val useAi: Boolean,
-    val tag : List<String> //테스트 코드, 추후 api 명세나오면 수정
+    val tags : List<String>,
+    val topic : String,
+    val keywords : String,
+    val fcmToken : String,
+    val speechMark : List<SpeechMark>
 )

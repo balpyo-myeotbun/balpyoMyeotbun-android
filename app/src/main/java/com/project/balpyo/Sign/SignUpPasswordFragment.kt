@@ -5,19 +5,12 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.project.balpyo.LoadingFragmentArgs
-import com.project.balpyo.LoginFragmentDirections
 import com.project.balpyo.R
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.databinding.FragmentSignUpPasswordBinding
@@ -38,7 +31,7 @@ class SignUpPasswordFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSignUpPasswordBinding.inflate(layoutInflater)
         initToolBar()
         observeKeyboardState()
@@ -105,7 +98,10 @@ class SignUpPasswordFragment : Fragment() {
             btnKeyboardNext.setOnClickListener {
                 if(isPasswordLengthValid(pw) && isPasswordComplex(pw) && pw == checkPw){
                     MyApplication.password = pw
-                    findNavController().navigate(R.id.signUpTermsFragment)
+                    val action = SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToSignUpTermsFragment(
+                        type = null
+                    )
+                    findNavController().navigate(action)
                 }
                 else{
                     llSignupCheckPw.visibility = View.VISIBLE
@@ -118,7 +114,10 @@ class SignUpPasswordFragment : Fragment() {
             btnSignupPwNext.setOnClickListener{
                 if(isPasswordLengthValid(pw) && isPasswordComplex(pw) && pw == checkPw){
                     MyApplication.password = pw
-                    findNavController().navigate(R.id.signUpTermsFragment)
+                    val action = SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToSignUpTermsFragment(
+                        type = null
+                    )
+                    findNavController().navigate(action)
                 }
                 else{
                     llSignupCheckPw.visibility = View.VISIBLE

@@ -1,12 +1,11 @@
 package com.project.balpyo.Home
 
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
@@ -14,11 +13,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
-import com.project.balpyo.Home.Adapter.BannerVPAdapter
 import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
@@ -36,9 +34,10 @@ class HomeFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var viewModel: StorageViewModel
-    private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var animationDrawable: AnimationDrawable
+
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,9 +49,8 @@ class HomeFragment : Fragment() {
         animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
         mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
 
-        //flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
-        viewModel.getStorageList(this@HomeFragment, mainActivity)
+        viewModel.getStorageList(mainActivity)
 
         mainActivity.setTransparentStatusBar()
 
@@ -95,10 +93,7 @@ class HomeFragment : Fragment() {
                         storageAdapter.itemClickListener =
                             object : StorageAdapter.OnItemClickListener {
                                 override fun onItemClick(position: Int) {
-                                    viewModel.getStorageDetail(this@HomeFragment, mainActivity, it.get(position).scriptId.toInt())
-                                    if(viewModel.storageList.value?.get(position)?.voiceFilePath != null) {
-                                       // flowControllerViewModel.setIsEdit(true)
-                                    }
+                                    viewModel.getStorageDetail(mainActivity, it[position].id.toInt())
                                     findNavController().navigate(R.id.storageEditDeleteFragment)
                                 }
                             }
@@ -168,6 +163,21 @@ class HomeFragment : Fragment() {
                 tooltip.visibility = View.INVISIBLE
             }
         }
+    }
+
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onStop() {

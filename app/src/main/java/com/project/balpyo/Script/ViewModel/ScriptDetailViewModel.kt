@@ -27,18 +27,18 @@ class ScriptDetailViewModel : ViewModel() {
         var tokenManager = TokenManager(mainActivity)
 
         apiClient.apiService.getStorageDetail("${tokenManager.getUid()}", scriptId)?.enqueue(object :
-            Callback<StorageDetailResponse> {
-            override fun onResponse(call: Call<StorageDetailResponse>, response: Response<StorageDetailResponse>) {
+            Callback<StorageDetailResult> {
+            override fun onResponse(call: Call<StorageDetailResult>, response: Response<StorageDetailResult>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    var result: StorageDetailResponse? = response.body()
+                    var result: StorageDetailResult? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    scriptResult.value = result?.result
+                    scriptResult.value = result!!
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: StorageDetailResponse? = response.body()
+                    var result: StorageDetailResult? = response.body()
                     Log.d("##", "onResponse 실패")
                     Log.d("##", "onResponse 실패: " + response.code())
                     Log.d("##", "onResponse 실패: " + response.body())
@@ -47,7 +47,7 @@ class ScriptDetailViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<StorageDetailResponse>, t: Throwable) {
+            override fun onFailure(call: Call<StorageDetailResult>, t: Throwable) {
                 // 통신 실패
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }

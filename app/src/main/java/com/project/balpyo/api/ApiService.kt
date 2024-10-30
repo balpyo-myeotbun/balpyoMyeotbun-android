@@ -2,6 +2,7 @@ package com.project.balpyo.api
 
 import com.project.balpyo.api.request.EditScriptRequest
 import com.project.balpyo.api.request.GenerateAudioRequest
+import com.project.balpyo.api.request.GenerateNoteRequest
 import retrofit2.Call
 import com.project.balpyo.api.request.GenerateScriptRequest
 import com.project.balpyo.api.request.ManageScriptRequest
@@ -15,17 +16,17 @@ import com.project.balpyo.api.response.GenerateScriptResponse
 import com.project.balpyo.api.response.GenerateUidResponse
 import com.project.balpyo.api.response.ManageScriptResponse
 import com.project.balpyo.api.response.SignInResponse
-import com.project.balpyo.api.response.StorageDetailResponse
-import com.project.balpyo.api.response.StorageListResponse
+import com.project.balpyo.api.response.StorageDetailResult
+import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.api.response.VerifyUidResponse
-import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -63,17 +64,17 @@ interface ApiService {
     ): Call<GenerateAudioResponse>
 
     // 보관함 리스트 조회
-    @GET("every/manage/script/all")
+    @GET("scripts")
     fun getStorageList(
         @Header("Authorization") token: String,
-    ): Call<StorageListResponse>
+    ): Call<List<StorageListResult>>
 
     // 보관함 상세 조회
-    @GET("every/manage/script/detail/{scriptId}")
+    @GET("scripts/{id}")
     fun getStorageDetail(
         @Header("Authorization") token: String,
-        @Path("scriptId") scriptId:Int
-    ): Call<StorageDetailResponse>
+        @Path("id") id :Int
+    ): Call<StorageDetailResult>
 
     // 스크립트 수정
     @PATCH("every/manage/script/detail/{scriptId}")
@@ -84,15 +85,31 @@ interface ApiService {
     ): Call<EditScriptResponse>
 
     // 스크립트 삭제
-    @DELETE("every/manage/script/detail/{scriptId}")
-    fun deleteScript(@Header("Authorization") token: String, @Path("scriptId") scriptId: Int): Call<Void>
+    @DELETE("scripts/{id}")
+    fun deleteScript(@Header("Authorization") token: String, @Path("id") id: Int): Call<Void>
 
+    //회원가입
     @POST("auth/signup")
     fun signUp(@Body parameters: SignUpRequest): Call<BaseResponse>
 
+    //로그인
     @POST("auth/signin")
     fun signIn(@Body parameters: SignInRequest): Call<SignInResponse>
 
+    //TODO: 삭제 예정 -> generateNote로 변경
     @POST("every/manage/script")
     fun manageScript(@Header("Authorization") token: String, @Body parameters: ManageScriptRequest): Call<ManageScriptResponse>
+
+    //노트 생성
+    @POST("scripts/note")
+    fun generateNote(@Header("Authorization") token: String, @Body parameters: GenerateNoteRequest): Call<BaseDto>
+
+    //검색
+    @GET("scripts/search")
+    fun search(@Header("Authorization") token: String, @Query("tag") tag: String?, @Query("isGenerating") isGenerating: Boolean?, @Query("searchValue") searchValue: String?): Call<List<StorageListResult>>
+
+    //검색
+    @PUT("scripts/{id}/cal")
+    fun editAndCalc(@Header("Authorization") token: String, @Path("id") id: Int, @Body parameters: BaseDto): Call<BaseDto>
+
 }

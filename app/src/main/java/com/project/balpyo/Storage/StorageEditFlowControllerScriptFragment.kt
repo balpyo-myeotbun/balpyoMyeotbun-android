@@ -42,6 +42,8 @@ class StorageEditFlowControllerScriptFragment : Fragment() {
             editTextMarginBottom = etStorageEditFlowScriptScript.marginBottom
 
             etStorageEditFlowScriptScript.text = Editable.Factory.getInstance().newEditable(flowControllerViewModel.getNormalScriptData().value.toString())
+            btnBottomNext.isEnabled = etStorageEditFlowScriptScript.text.isNotEmpty()
+            btnKeyboardNext.isEnabled = etStorageEditFlowScriptScript.text.isNotEmpty()
 
             etStorageEditFlowScriptScript.addTextChangedListener {
                 btnBottomNext.isEnabled = etStorageEditFlowScriptScript.text.isNotEmpty()
@@ -68,7 +70,7 @@ class StorageEditFlowControllerScriptFragment : Fragment() {
         val splitter = SentenceSplitter()
         val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
         flowControllerViewModel.setSplitScriptToSentences(paragraph)
-        findNavController().navigate(R.id.flowControllerAddTimeFragment)
+        findNavController().navigate(R.id.storageEditFlowControllerTimeFragment)
     }
     private fun observeKeyboardState() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -17,6 +18,7 @@ import com.project.balpyo.databinding.FragmentMyPageBinding
 class MyPageFragment : Fragment() {
     lateinit var binding: FragmentMyPageBinding
     lateinit var mainActivity: MainActivity
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,5 +62,20 @@ class MyPageFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         mainActivity.resetStatusBar()
+    }
+
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                mainActivity.binding.bottomNavigation.selectedItemId = R.id.homeFragment
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }

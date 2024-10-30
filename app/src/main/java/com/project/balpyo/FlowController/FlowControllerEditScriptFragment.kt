@@ -1,14 +1,11 @@
 package com.project.balpyo.FlowController
 
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
@@ -66,7 +63,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
         }
         viewModel.storageDetailForBottomSheet.observe(mainActivity){
             if (it != null) {
-                flowControllerViewModel.setNormalScript(it.script.toString())
+                flowControllerViewModel.setNormalScript(it.content.toString())
                 binding.etScript.setText(flowControllerViewModel.getNormalScriptData().value)
             }
         }

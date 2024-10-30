@@ -40,7 +40,7 @@ class LoadScriptBottomSheetFragment : BottomSheetDialogFragment(), BottomSheetLi
 
                 for (i in it.indices) {
                     items.add(BottomSheetData(it[i].title))
-                    scriptId.add(it[i].scriptId)
+                    scriptId.add(it[i].id)
                 }
 
                 val adapter = LoadScriptBottomSheetAdapter(items, scriptId, viewModel, mainActivity, this@LoadScriptBottomSheetFragment)

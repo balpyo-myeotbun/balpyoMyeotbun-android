@@ -101,7 +101,7 @@ class FlowControllerTitleFragment : Fragment() {
             toolbar.textViewPage.visibility = View.VISIBLE
             toolbar.textViewPage.text = "1/5"
             toolbar.buttonBack.setOnClickListener {
-                viewModel.clearValueStorageDataForBottomSheet("Bearer ${PreferenceHelper.getUserToken(mainActivity)!!}")
+                viewModel.clearValueStorageDataForBottomSheet()
                 flowControllerViewModel.initialize()
                 findNavController().popBackStack()
             }
