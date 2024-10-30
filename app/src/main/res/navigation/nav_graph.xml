@@ -138,6 +138,9 @@
         <action
             android:id="@+id/action_homeFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_flowControllerResultFragment"
+            app:destination="@id/flowControllerResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/scriptTitleFragment"

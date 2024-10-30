@@ -132,6 +132,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                         //TODO: findNavController().navigate()
                                     }
                                 } else if (tags.contains("NOTE")) {
+                                    //TODO: flow api 안나와서 note로 테스트 진행, 하단 코드는 테스트 코드, 수정 및 삭제 가능
                                     flowControllerViewModel.initialize()
                                     flowControllerViewModel.setFlowControllerResult(list[position])
                                     val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
@@ -165,6 +166,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                         //TODO: findNavController().navigate()
 
                                     } else if (tags.contains("FLOW")) {
+                                        //TODO: flow api 안나와서 note로 테스트 진행, 하단 코드는 테스트 코드, 수정 및 삭제 가능
                                         flowControllerViewModel.initialize()
                                         flowControllerViewModel.setFlowControllerResult(list[position])
                                         val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(

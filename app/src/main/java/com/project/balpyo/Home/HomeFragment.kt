@@ -1,7 +1,6 @@
 package com.project.balpyo.Home
 
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.net.Uri
@@ -13,14 +12,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Storage.StorageFragmentDirections
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.databinding.FragmentHomeBinding
@@ -34,10 +34,9 @@ class HomeFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var viewModel: StorageViewModel
+    private lateinit var flowControllerViewModel: FlowControllerViewModel
 
     private lateinit var animationDrawable: AnimationDrawable
-
-    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +49,7 @@ class HomeFragment : Fragment() {
         mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
 
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
+        flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         viewModel.getStorageList(mainActivity)
 
         mainActivity.setTransparentStatusBar()
@@ -82,7 +82,7 @@ class HomeFragment : Fragment() {
                     rvHome.run {
                         //현재 전체 리스트 받아오기 때문에 5개만 보여주기 위함, 추후 api 나눠지면 다시 처리
                         var list = it
-                        if(it.size >= 5)
+                        if (it.size >= 5)
                             list = it.slice(0..4).toMutableList()
                         val storageAdapter = StorageAdapter(list)
 
@@ -93,8 +93,44 @@ class HomeFragment : Fragment() {
                         storageAdapter.itemClickListener =
                             object : StorageAdapter.OnItemClickListener {
                                 override fun onItemClick(position: Int) {
-                                    viewModel.getStorageDetail(mainActivity, it[position].id.toInt())
-                                    findNavController().navigate(R.id.storageEditDeleteFragment)
+                                    viewModel.getStorageDetail(
+                                        mainActivity,
+                                        list[position].id.toInt()
+                                    )
+                                    val tags = list[position].tags
+
+                                    if (tags.contains("SCRIPT") || tags.contains("FLOW") || tags.contains(
+                                            "TIME"
+                                        )
+                                    ) {
+                                        if (tags.contains("SCRIPT")) {
+                                            //TODO: findNavController().navigate()
+
+                                        } else if (tags.contains("FLOW")) {
+                                            flowControllerViewModel.initialize()
+                                            flowControllerViewModel.setFlowControllerResult(list[position])
+                                            val action =
+                                                HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
+                                                    isNew = false
+                                                )
+                                            findNavController().navigate(action)
+
+                                        } else if (tags.contains("TIME")) {
+                                            //TODO: findNavController().navigate()
+                                        }
+                                    } else if (tags.contains("NOTE")) {
+                                        //TODO: flow api 안나와서 note로 테스트 진행, 하단 코드는 테스트 코드, 수정 및 삭제 가능
+                                        flowControllerViewModel.initialize()
+                                        flowControllerViewModel.setFlowControllerResult(list[position])
+                                        val action =
+                                            HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
+                                                isNew = false
+                                            )
+                                        findNavController().navigate(action)
+                                    } else {
+                                        //TODO: 예외
+                                    }
+                                    //findNavController().navigate(R.id.storageEditDeleteFragment)
                                 }
                             }
                     }
@@ -163,21 +199,6 @@ class HomeFragment : Fragment() {
                 tooltip.visibility = View.INVISIBLE
             }
         }
-    }
-
-    //기기의 뒤로가기 버튼을 누를 시
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
-    }
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onStop() {
