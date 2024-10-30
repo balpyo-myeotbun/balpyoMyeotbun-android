@@ -18,7 +18,6 @@ import com.project.balpyo.api.request.GenerateNoteRequest
 import com.project.balpyo.api.response.GenerateAudioResponse
 import com.project.balpyo.api.response.SpeechMark
 import com.project.balpyo.api.response.StorageListResult
-import com.project.balpyo.api.toStorageListResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,6 +46,7 @@ class FlowControllerViewModel : ViewModel() {
         speed.value = 0
         isEdit.value = false
         audioUrl.value = ""
+        scriptId.value = -1
         speechMarks.value = listOf()
     }
 
@@ -120,7 +120,7 @@ class FlowControllerViewModel : ViewModel() {
                             val result: BaseDto? = response.body()
                             generateFlowControllerResponse.value = result!!
                             val action = LoadingFragmentDirections.actionLoadingFragmentToFlowControllerResultFragment(
-                                isNew = true
+                                type = "New"
                             )
                             navController.navigate(action)
                         } else {
@@ -145,20 +145,20 @@ class FlowControllerViewModel : ViewModel() {
         navController.navigate(actionToLoading)
         apiClient.apiService.editAndCalc("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", scriptId.value!!.toInt(), baseDto )
             .enqueue(object :
-                Callback<BaseDto> {
-                override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
+                Callback<StorageListResult> {
+                override fun onResponse(call: Call<StorageListResult>, response: Response<StorageListResult>) {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: BaseDto? = response.body()
+                        val result: StorageListResult? = response.body()
                         Log.d("##", "onResponse 성공: " + result?.toString())
-                        setFlowControllerResult(result!!.toStorageListResult())
+                        setFlowControllerResult(result!!)
                         val actionToResult = LoadingFragmentDirections.actionLoadingFragmentToFlowControllerResultFragment(
-                            isNew = false
+                            type = "Home"
                         )
                         navController.navigate(actionToResult)
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: BaseDto? = response.body()
+                        var result: StorageListResult? = response.body()
                         Log.d("##", "onResponse 실패")
                         Log.d("##", "onResponse 실패: " + response.code())
                         Log.d("##", "onResponse 실패: " + response.body())
@@ -168,7 +168,7 @@ class FlowControllerViewModel : ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<BaseDto>, t: Throwable) {
+                override fun onFailure(call: Call<StorageListResult>, t: Throwable) {
                     // 통신 실패
                     Log.d("##", "onFailure 에러: " + t.message.toString());
                 }

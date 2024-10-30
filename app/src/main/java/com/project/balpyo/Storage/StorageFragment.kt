@@ -124,7 +124,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                         flowControllerViewModel.initialize()
                                         flowControllerViewModel.setFlowControllerResult(list[position])
                                         val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
-                                            isNew = false
+                                            type = "Storage"
                                         )
                                         findNavController().navigate(action)
 
@@ -136,7 +136,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                     flowControllerViewModel.initialize()
                                     flowControllerViewModel.setFlowControllerResult(list[position])
                                     val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
-                                        isNew = false
+                                        type = "Storage"
                                     )
                                     findNavController().navigate(action)
                                 } else {
@@ -170,7 +170,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                         flowControllerViewModel.initialize()
                                         flowControllerViewModel.setFlowControllerResult(list[position])
                                         val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
-                                            isNew = false
+                                            type = "Storage"
                                         )
                                         findNavController().navigate(action)
 
@@ -181,7 +181,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                                     flowControllerViewModel.initialize()
                                     flowControllerViewModel.setFlowControllerResult(list[position])
                                     val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
-                                        isNew = false
+                                        type = "Storage"
                                     )
                                     findNavController().navigate(action)
                                 } else {

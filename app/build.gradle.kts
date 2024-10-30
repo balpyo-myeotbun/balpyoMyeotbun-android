@@ -126,4 +126,8 @@ dependencies {
 
     //구글 로그인 지원용
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+
+    //media3
+    implementation ("androidx.media3:media3-exoplayer:1.0.0")
+    implementation ("androidx.media3:media3-ui:1.0.0")
 }

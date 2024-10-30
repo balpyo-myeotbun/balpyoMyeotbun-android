@@ -2,9 +2,9 @@ package com.project.balpyo.FlowController
 
 import android.content.Context
 import android.graphics.Color
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -19,6 +19,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.project.balpyo.FlowController.BottomSheet.FlowControllerEditBottomSheetFragment
@@ -29,7 +32,6 @@ import com.project.balpyo.R
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.api.response.SpeechMark
 import com.project.balpyo.databinding.FragmentFlowControllerResultBinding
-import java.io.IOException
 
 class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetListener {
 
@@ -37,7 +39,7 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
     private lateinit var binding: FragmentFlowControllerResultBinding
     private lateinit var scriptTextView: TextView
     private lateinit var playButton: ImageView
-    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var player: ExoPlayer
     private lateinit var handler: Handler
     private var speechMarks: List<SpeechMark> = listOf()
     private var realSpeechMark : List<SpeechMark>  = listOf()
@@ -67,7 +69,7 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
         initToolBar()
         binding.sbTime.isEnabled = false
 
-        val speed = flowControllerViewModel.getSpeedData().value
+        val speed = flowControllerViewModel.getFlowControllerResultData().value?.speed?.toInt()
         when(speed) {
             -2 -> {binding.btnSpeed03.setBackgroundResource(R.drawable.selected_speed)
                 binding.tvSpeed03.setTextColor(this.resources.getColor(R.color.primary))
@@ -87,25 +89,29 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
             else -> println("none")
         }
 
-        var script = flowControllerViewModel.getCustomScriptData().value.toString()
-        script = script.replace("숨 고르기+1", "숨 고르기 (1초)")
-        script = script.replace("PPT 넘김+2", "PPT 넘김 (2초)")
-        Log.d("", script)
+        var script = flowControllerViewModel.getFlowControllerResultData().value?.content
+        if (script != null) {
+            script = script.replace("숨 고르기+1", "숨 고르기 (1초)")
+        }
+        if (script != null) {
+            script = script.replace("PPT 넘김+2", "PPT 넘김 (2초)")
+        }
         val spannable = SpannableStringBuilder(script)
 
         scriptTextView.text = spannable
-        speechMarks = flowControllerViewModel.getSpeechMarks().value!!
+        speechMarks = flowControllerViewModel.getFlowControllerResultData().value?.speechMark!!
 
         val breakTimeToRealWord = breakTimeToRealWord(speechMarks)
         Log.d("breakTimeToRealWord", breakTimeToRealWord.toString())
         val endByteToRealEndByte = endByteToRealEndByte(breakTimeToRealWord)
         Log.d("endByteToRealEndByte", endByteToRealEndByte.toString())
-        Log.d("script", script)
-        val generateRealSpeechMark = generateRealSpeechMark(script, endByteToRealEndByte)
+        val generateRealSpeechMark = script?.let { generateRealSpeechMark(it, endByteToRealEndByte) }
         Log.d("generateRealSpeechMark", generateRealSpeechMark.toString())
-        realSpeechMark = generateRealSpeechMark
+        if (generateRealSpeechMark != null) {
+            realSpeechMark = generateRealSpeechMark
+        }
 
-        initializeMediaPlayer()
+        initializeExoPlayer()
         initializeSeekBar()
         playButton.setOnClickListener {
             if (isPlaying) {
@@ -150,89 +156,61 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
     }
 
     //플레이어 초기화
-    private fun initializeMediaPlayer() {
-        mediaPlayer = MediaPlayer()
-        try {
-            mediaPlayer.setDataSource(flowControllerViewModel.getAudioUrlData().value!!)
-            mediaPlayer.prepare()
-        } catch (e: IOException) {
-            e.printStackTrace() // URL이 잘못되었거나, 네트워크 문제 등으로 예외 처리
+    private fun initializeExoPlayer() {
+        player = ExoPlayer.Builder(requireContext()).build()
+        val mediaItem = flowControllerViewModel.getFlowControllerResultData().value?.voiceFilePath?.let {
+            MediaItem.fromUri(
+                it
+            )
         }
-        mediaPlayer.setOnCompletionListener {
-            stopPlayback()
+        if (mediaItem != null) {
+            player.setMediaItem(mediaItem)
         }
-        handler = Handler()
+        player.prepare()
+        player.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                when (playbackState) {
+                    Player.STATE_READY -> {
+                        onPlayerReady()
+                    }
+                    Player.STATE_ENDED -> {
+                        stopPlayback()
+                    }
+                }
+            }
+        })
+        handler = Handler(Looper.getMainLooper())
     }
-
-    //시작, 끝 재생 시간 업데이트
-    private fun updatePlaybackTime() {
-        val currentPosition = mediaPlayer.currentPosition //현재까지의 재생 시간
-        val totalTime = mediaPlayer.duration //총 재생 시간
-        val remainingTime = totalTime - currentPosition //끝부분 시각
-
-        val startTime = convertMsToMinutesSeconds(currentPosition.toLong())
-        val endTime = convertMsToMinutesSeconds(remainingTime.toLong())
-        binding.tvStartTime.text = startTime
-        if(endTime == "00:00" || remainingTime == totalTime)
-            binding.tvEndTime.text = endTime
-        else
-            binding.tvEndTime.setText("-$endTime")
-    }
-
-    // 재생 시간을 mm:ss 형식으로 변환
-    private fun convertMsToMinutesSeconds(milliseconds: Long): String {
-        val totalSeconds = milliseconds / 1000
-        val minutes = totalSeconds / 60
-        val seconds = totalSeconds % 60
-
-        return "${minutes}:${seconds}"
-    }
-
-    //seekbar 초기화
     private fun initializeSeekBar() {
-        binding.sbTime.max = mediaPlayer.duration
-        updatePlaybackTime()
-        //seekbar 리스너
+        binding.sbTime.max = player.duration.toInt() // 최대값 설정
+        binding.sbTime.progress = 0 // 초기값 설정
+        updatePlaybackTime() // 초기 시간 업데이트
+
         binding.sbTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            //seekbar가 변화될때
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    mediaPlayer.seekTo(progress)
-                    handler.post(updateSeekBarTask) // 재생 시작과 함께 재생 바 업데이트
-                    highlightText(progress) // 해당 시간에 맞는 텍스트 하이라이팅
+                    player.seekTo(progress.toLong()) // 사용자 조작 시 seek
+                    highlightText(progress) // 텍스트 하이라이트
                 }
             }
 
-            //seekbar를 움직이는 동안
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                // 재생 중지
-                mediaPlayer.pause()
-                isPlaying = false
-                playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.exclude))
+                pausePlayback() // 재생 일시 정지
+                handler.removeCallbacks(updateSeekBarTask) // 업데이트 멈춤
             }
 
-            //seekbar 조정이 끝날 시
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                // 재생 시작
-                mediaPlayer.start()
-                isPlaying = true
-                playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.pause))
-                handler.post(updateSeekBarTask) // 재생 바 업데이트
+                startPlayback() // 재생 재개
+                handler.post(updateSeekBarTask) // 업데이트 다시 시작
             }
         })
+
+        // SeekBar 주기적 업데이트 시작
+        handler.post(updateSeekBarTask)
     }
 
-    //재생바를 업데이트하기 위함
-    private val updateSeekBarTask = object : Runnable {
-        override fun run() {
-            if (mediaPlayer.isPlaying) {
-                val currentPosition = mediaPlayer.currentPosition
-                binding.sbTime.progress = currentPosition
-                updatePlaybackTime()
-                highlightText(currentPosition) // 현재 재생 위치에 따라 텍스트 하이라이팅
-                handler.postDelayed(this, 10) //1ms마다 업데이트
-            }
-        }
+    private fun onPlayerReady() {
+        initializeSeekBar() // Player가 준비되면 SeekBar 초기화
     }
 
     //Break Time에서 "---ms"를 분리하여 반환
@@ -297,16 +275,13 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
             val start = byteIndexToCharIndex(originalText, mark.start)
             val end = byteIndexToCharIndex(originalText, mark.end)
             speechMark.add(SpeechMark(start, end, mark.time, mark.type, mark.value))
-            Log.d("sm", speechMark.toString())
         }
         return speechMark
     }
 
     private fun highlightText(progress: Int) {
         val spannableString = SpannableString(scriptTextView.text)
-        var lastEndIndex = 0
         var highlightedLine = -1
-
         for (mark in realSpeechMark) {
             if (mark.time - 200 <= progress && progress <= mark.time + 1000) {
                 val startIndex = 0
@@ -318,26 +293,22 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
                     endIndex,
                     SpannableString.SPAN_INCLUSIVE_INCLUSIVE
                 )
-                lastEndIndex = endIndex
+                spannableString.setSpan(
+                    ForegroundColorSpan(Color.BLACK),
+                    endIndex,
+                    scriptTextView.text.length,
+                    SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+                )
                 highlightedLine = scriptTextView.layout.getLineForOffset(endIndex)
+                if (highlightedLine < 4) {
+                    scrollTextViewToLine(0)
+                }
+                if (highlightedLine > 4) {
+                    scrollTextViewToLine(highlightedLine)
+                }
             }
         }
-
-        spannableString.setSpan(
-            ForegroundColorSpan(Color.BLACK),
-            lastEndIndex,
-            scriptTextView.text.length,
-            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-        )
         scriptTextView.text = spannableString
-        Log.d("lastEndIndex", lastEndIndex.toString())
-        Log.d("", scriptTextView.text.length.toString())
-        if (highlightedLine < 4) {
-            scrollTextViewToLine(0)
-        }
-        if (highlightedLine > 4) {
-            scrollTextViewToLine(highlightedLine)
-        }
     }
 
     private fun scrollTextViewToLine(line: Int) {
@@ -347,88 +318,138 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
 
     }
 
-    private fun updateTextHighlighting(progress: Int) {
-        if (isPlaying) {
-            highlightText(progress)
+    private val updateSeekBarTask = object : Runnable {
+        override fun run() {
+            if (isPlaying) {
+                binding.sbTime.progress = player.currentPosition.toInt()
+                updatePlaybackTime()
+                highlightText(player.currentPosition.toInt())
+                handler.postDelayed(this, 100) // 100ms마다 업데이트
+            }
         }
     }
 
+    // 시작 재생
     private fun startPlayback() {
-        mediaPlayer.start()
-        playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.pause)) // Change to pause icon
+        player.playWhenReady = true
+        if (player.playbackState == Player.STATE_ENDED
+            || player.currentPosition >= player.duration
+            ) {
+            player.seekTo(0)
+        }
         isPlaying = true
-        handler.post(updateSeekBarTask) // 재생 시작과 함께 재생 바 업데이트 시작
-        updateTextHighlighting(mediaPlayer.currentPosition)
+        playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.pause))
+        handler.post(updateSeekBarTask)
     }
 
+    // 일시 정지
     private fun pausePlayback() {
-        mediaPlayer.pause()
-        playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.exclude)) // Change to play icon
+        player.playWhenReady = false
         isPlaying = false
-        updateTextHighlighting(mediaPlayer.currentPosition)
+        playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.exclude))
     }
 
+    // 정지
     private fun stopPlayback() {
-        mediaPlayer.pause()
-        mediaPlayer.seekTo(0)
-        playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.exclude)) // Change to play icon
+        player.pause()
+        player.seekTo(0)
         isPlaying = false
+        playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.exclude))
         handler.removeCallbacksAndMessages(null)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        releasePlayer()
+    }
+    private fun releasePlayer() {
+        if (this::player.isInitialized) {
+            handler.removeCallbacksAndMessages(null)
+            player.release()
+        }
+    }
+
+    private fun updatePlaybackTime() {
+        val currentPosition = player.currentPosition
+        val totalTime = player.duration
+
+        val startTime = convertMsToMinutesSeconds(currentPosition)
+        val endTimeFormatted = convertMsToMinutesSeconds(totalTime - currentPosition)
+
+        binding.tvStartTime.text = startTime
+
+        binding.tvEndTime.text = if (currentPosition >= totalTime) {
+            "00:00" // 재생이 끝난 경우
+        } else {
+            "-$endTimeFormatted"
+        }
+    }
+
+    // 재생 시간을 mm:ss 형식으로 변환
+    private fun convertMsToMinutesSeconds(milliseconds: Long): String {
+        val totalSeconds = milliseconds / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        return String.format("%02d:%02d", minutes, seconds)
     }
 
     fun initToolBar() {
         binding.run {
-            if(args.isNew) {
+            if(args.type == "New") {
                 toolbar.buttonClose.visibility = View.VISIBLE
                 toolbar.buttonBack.visibility = View.INVISIBLE
                 ivFlowResultMenu.visibility = View.INVISIBLE
-                toolbar.buttonClose.setOnClickListener {
-                    flowControllerViewModel.initialize()
-                    findNavController().popBackStack(R.id.homeFragment, false)
-                }
             }
             else {
                 toolbar.buttonClose.visibility = View.INVISIBLE
                 toolbar.buttonBack.visibility = View.VISIBLE
                 ivFlowResultMenu.visibility = View.VISIBLE
+            }
+            if(args.type == "Home" || args.type == "New") {
+                toolbar.buttonBack.setOnClickListener {
+                    flowControllerViewModel.initialize()
+                    findNavController().popBackStack(R.id.homeFragment, false)
+                }
+                toolbar.buttonClose.setOnClickListener {
+                    flowControllerViewModel.initialize()
+                    findNavController().popBackStack(R.id.homeFragment, false)
+                }
+            }
+            else
                 toolbar.buttonBack.setOnClickListener {
                     flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.storageFragment, false)
                 }
-            }
+
             toolbar.textViewTitle.visibility = View.VISIBLE
-            toolbar.textViewTitle.text = flowControllerViewModel.getTitleData().value
+            toolbar.textViewTitle.text = flowControllerViewModel.getFlowControllerResultData().value?.title
             toolbar.textViewPage.visibility = View.INVISIBLE
         }
     }
     override fun onItemSelected(position: Int) {
-        Log.d("##", position.toString())
         if (position == 1) {
             findNavController().navigate(R.id.storageEditFlowControllerScriptFragment)
         }
         else {
-            storageViewModel.deleteScript(mainActivity, flowControllerViewModel.getScriptIdData().value!!)
+            flowControllerViewModel.getFlowControllerResultData().value?.id?.let {
+                storageViewModel.deleteScript(mainActivity, it)
+            }
             findNavController().popBackStack()
         }
     }
     //기기의 뒤로가기 버튼을 누를 시
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
-    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(args.isNew) 
+                if(args.type == "Home" || args.type == "New") {
+                    flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.homeFragment, false)
-                else
+                }
+                else {
+                    flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.storageFragment, false)
+                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

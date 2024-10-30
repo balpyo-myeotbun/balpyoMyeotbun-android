@@ -1,6 +1,7 @@
 package com.project.balpyo.Home
 
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.net.Uri
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +22,6 @@ import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-import com.project.balpyo.Storage.StorageFragmentDirections
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.databinding.FragmentHomeBinding
@@ -37,6 +38,7 @@ class HomeFragment : Fragment() {
     private lateinit var flowControllerViewModel: FlowControllerViewModel
 
     private lateinit var animationDrawable: AnimationDrawable
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -111,7 +113,7 @@ class HomeFragment : Fragment() {
                                             flowControllerViewModel.setFlowControllerResult(list[position])
                                             val action =
                                                 HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
-                                                    isNew = false
+                                                    type = "Home"
                                                 )
                                             findNavController().navigate(action)
 
@@ -124,7 +126,7 @@ class HomeFragment : Fragment() {
                                         flowControllerViewModel.setFlowControllerResult(list[position])
                                         val action =
                                             HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
-                                                isNew = false
+                                                type = "Home"
                                             )
                                         findNavController().navigate(action)
                                     } else {
@@ -206,5 +208,19 @@ class HomeFragment : Fragment() {
         mainActivity.resetStatusBar()
     }
 
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
 }
