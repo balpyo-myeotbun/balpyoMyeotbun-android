@@ -18,12 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.balpyo.FlowController.AddTime.CustomDragShadowBuilder
 import com.project.balpyo.FlowController.AddTime.MultiTypeAdapter
 import com.project.balpyo.FlowController.AddTime.data.MultiTypeItem
-import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
-import com.project.balpyo.databinding.FragmentStorageEditFlowControllerTimeBinding
+import com.project.balpyo.api.BaseDto
+import com.project.balpyo.databinding.FragmentFlowControllerAddTimeBinding
 
 class StorageEditFlowControllerTimeFragment : Fragment() {
-    private lateinit var binding: FragmentStorageEditFlowControllerTimeBinding
+    private lateinit var binding: FragmentFlowControllerAddTimeBinding
+    lateinit var mainActivity: MainActivity
     private lateinit var flowControllerViewModel: FlowControllerViewModel
     private val items = mutableListOf<MultiTypeItem>()
 
@@ -32,32 +33,50 @@ class StorageEditFlowControllerTimeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
-        binding = FragmentStorageEditFlowControllerTimeBinding.inflate(inflater, container, false)
+        binding = FragmentFlowControllerAddTimeBinding.inflate(inflater, container, false)
+        mainActivity = activity as MainActivity
+
         initToolBar()
 
         initToolBar()
         initMultiTypeRecyclerView()
 
-        setupLongClickListener(binding.btnFlowControllerBreathStorageFlowControllerEditTime, R.layout.layout_custom_shadow_breath)
-        setupLongClickListener(binding.btnFlowControllerPptStorageFlowControllerEditTime, R.layout.layout_custom_shadow_ppt)
+        setupLongClickListener(binding.btnFlowControllerBreath, R.layout.layout_custom_shadow_breath)
+        setupLongClickListener(binding.btnFlowControllerPpt, R.layout.layout_custom_shadow_ppt)
         setupDragListener()
 
         // '다음' 버튼 클릭 리스너 설정
-        binding.btnFlowControllerNextStorageFlowControllerEditTime.setOnClickListener {
-            val items = (binding.rvScriptStorageFlowControllerEditTime.adapter as MultiTypeAdapter).getList()
-            flowControllerViewModel.setCustomScript(concatenateTexts(items))
-            //api 호출 하면서 하단 액션 추가
-            /*val action = StorageEditFlowControllerTimeFragmentDirections.actionStorageEditFlowControllerTimeFragmentToLoadingFragment(
-                toolbarTitle = "발표연습",
-                comment = "발표 연습이 만들어지고 있어요"
-            )
-            findNavController().navigate(action)*/
+        binding.btnFlowControllerNext.setOnClickListener {
+            flowControllerViewModel.run {
+                val items =
+                    (binding.rvScript.adapter as MultiTypeAdapter).getList()
+                setCustomScript(concatenateTexts(items))
+                val baseDto = BaseDto(
+                    id = getScriptIdData().value!!,
+                    content = getNormalScriptData().value,
+                    title = getTitleData().value!!,
+                    secTime = null,
+                    voiceFilePath = null,
+                    isGenerating = null,
+                    playTime = null,
+                    originalScript = getNormalScriptData().value,
+                    speed = (getSpeedData().value ?: 0).toLong(),
+                    useAi = null,
+                    tags = null,
+                    topic = null,
+                    keywords = null,
+                    fcmToken = null,
+                    speechMark = null
+                )
+
+                flowControllerViewModel.editScriptAndCalc(mainActivity, baseDto, findNavController())
+            }
         }
         return binding.root
     }
 
     private fun setupDragListeners() {
-        val buttons = listOf(binding.btnFlowControllerBreathStorageFlowControllerEditTime, binding.btnFlowControllerPptStorageFlowControllerEditTime)
+        val buttons = listOf(binding.btnFlowControllerBreath, binding.btnFlowControllerPpt)
         buttons.forEach { button ->
             button.setOnLongClickListener { view ->
                 val item = ClipData.Item(view.tag as? CharSequence)
@@ -79,10 +98,10 @@ class StorageEditFlowControllerTimeFragment : Fragment() {
         items.addAll(scriptData.map { MultiTypeItem.TextItem(it) })
 
         // RecyclerView 및 어댑터 설정
-        val recyclerView = binding.rvScriptStorageFlowControllerEditTime
+        val recyclerView = binding.rvScript
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        val multiTypeRecyclerViewAdapter = MultiTypeAdapter(items, binding.rvScriptStorageFlowControllerEditTime)
+        val multiTypeRecyclerViewAdapter = MultiTypeAdapter(items, binding.rvScript)
         recyclerView.adapter = multiTypeRecyclerViewAdapter
     }
 
@@ -109,7 +128,7 @@ class StorageEditFlowControllerTimeFragment : Fragment() {
         val scrollRunnableTop = object : Runnable {
             override fun run() {
                 if (isScrolling) {
-                    binding.rvScriptStorageFlowControllerEditTime.scrollBy(0, -30)
+                    binding.rvScript.scrollBy(0, -30)
                     handler.postDelayed(this, 50)
                 }
             }
@@ -118,7 +137,7 @@ class StorageEditFlowControllerTimeFragment : Fragment() {
         val scrollRunnableBottom = object : Runnable {
             override fun run() {
                 if (isScrolling) {
-                    binding.rvScriptStorageFlowControllerEditTime.scrollBy(0, 30)
+                    binding.rvScript.scrollBy(0, 30)
                     handler.postDelayed(this, 50)
                 }
             }

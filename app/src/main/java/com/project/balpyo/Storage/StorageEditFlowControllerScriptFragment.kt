@@ -70,7 +70,7 @@ class StorageEditFlowControllerScriptFragment : Fragment() {
         val splitter = SentenceSplitter()
         val paragraph = splitter.sentences(flowControllerViewModel.getNormalScriptData().value.toString())
         flowControllerViewModel.setSplitScriptToSentences(paragraph)
-        findNavController().navigate(R.id.flowControllerAddTimeFragment)
+        findNavController().navigate(R.id.storageEditFlowControllerTimeFragment)
     }
     private fun observeKeyboardState() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {

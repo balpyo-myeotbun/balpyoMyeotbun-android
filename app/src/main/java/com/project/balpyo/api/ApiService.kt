@@ -26,6 +26,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -106,5 +107,9 @@ interface ApiService {
     //검색
     @GET("scripts/search")
     fun search(@Header("Authorization") token: String, @Query("tag") tag: String?, @Query("isGenerating") isGenerating: Boolean?, @Query("searchValue") searchValue: String?): Call<List<StorageListResult>>
+
+    //검색
+    @PUT("scripts/{id}/cal")
+    fun editAndCalc(@Header("Authorization") token: String, @Path("id") id: Int, @Body parameters: BaseDto): Call<BaseDto>
 
 }
