@@ -77,6 +77,7 @@ interface ApiService {
     ): Call<StorageDetailResult>
 
     // 스크립트 수정
+    //TODO: 삭제 예정 -> editAndCalc,
     @PATCH("every/manage/script/detail/{scriptId}")
     fun editScript(
         @Header("Authorization") token: String,
@@ -108,7 +109,7 @@ interface ApiService {
     @GET("scripts/search")
     fun search(@Header("Authorization") token: String, @Query("tag") tag: String?, @Query("isGenerating") isGenerating: Boolean?, @Query("searchValue") searchValue: String?): Call<List<StorageListResult>>
 
-    //검색
+    //수정 (계산함)
     @PUT("scripts/{id}/cal")
     fun editAndCalc(@Header("Authorization") token: String, @Path("id") id: Int, @Body parameters: BaseDto): Call<BaseDto>
 
