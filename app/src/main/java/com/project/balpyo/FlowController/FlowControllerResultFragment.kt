@@ -1,5 +1,6 @@
 package com.project.balpyo.FlowController
 
+import android.content.Context
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +47,7 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
     private lateinit var storageViewModel: StorageViewModel
     var bottomSheet = FlowControllerEditBottomSheetFragment()
     private val args: FlowControllerResultFragmentArgs by navArgs()
+    private lateinit var callback: OnBackPressedCallback
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -412,5 +415,22 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
             storageViewModel.deleteScript(mainActivity, flowControllerViewModel.getScriptIdData().value!!)
             findNavController().popBackStack()
         }
+    }
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(args.isNew) 
+                    findNavController().popBackStack(R.id.homeFragment, false)
+                else
+                    findNavController().popBackStack(R.id.storageFragment, false)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }

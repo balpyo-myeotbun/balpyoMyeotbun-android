@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
+import com.project.balpyo.LoadingFragmentDirections
 import com.project.balpyo.MainActivity
-import com.project.balpyo.Storage.StorageFragmentDirections
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.BaseDto
@@ -156,7 +156,7 @@ class FlowControllerViewModel : ViewModel() {
                         if (response.isSuccessful) {
                             val result: BaseDto? = response.body()
                             generateFlowControllerResponse.value = result!!
-                            val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                            val action = LoadingFragmentDirections.actionLoadingFragmentToFlowControllerResultFragment(
                                 isNew = true
                             )
                             navController.navigate(action)
