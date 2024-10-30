@@ -1,6 +1,7 @@
 package com.project.balpyo.Home
 
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.net.Uri
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +36,8 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: StorageViewModel
 
     private lateinit var animationDrawable: AnimationDrawable
+
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -159,6 +163,21 @@ class HomeFragment : Fragment() {
                 tooltip.visibility = View.INVISIBLE
             }
         }
+    }
+
+    //기기의 뒤로가기 버튼을 누를 시
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onStop() {
