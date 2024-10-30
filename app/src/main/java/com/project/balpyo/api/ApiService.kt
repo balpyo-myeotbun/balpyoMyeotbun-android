@@ -111,6 +111,6 @@ interface ApiService {
 
     //수정 (계산함)
     @PUT("scripts/{id}/cal")
-    fun editAndCalc(@Header("Authorization") token: String, @Path("id") id: Int, @Body parameters: BaseDto): Call<BaseDto>
+    fun editAndCalc(@Header("Authorization") token: String, @Path("id") id: Int, @Body parameters: BaseDto): Call<StorageListResult>
 
 }

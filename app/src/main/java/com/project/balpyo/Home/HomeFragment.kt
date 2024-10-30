@@ -111,7 +111,7 @@ class HomeFragment : Fragment() {
                                             flowControllerViewModel.setFlowControllerResult(list[position])
                                             val action =
                                                 HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
-                                                    isNew = false
+                                                    type = "Home"
                                                 )
                                             findNavController().navigate(action)
 
@@ -124,7 +124,7 @@ class HomeFragment : Fragment() {
                                         flowControllerViewModel.setFlowControllerResult(list[position])
                                         val action =
                                             HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
-                                                isNew = false
+                                                type = "Home"
                                             )
                                         findNavController().navigate(action)
                                     } else {

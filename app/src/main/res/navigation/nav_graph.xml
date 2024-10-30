@@ -84,8 +84,8 @@
             android:id="@+id/action_flowControllerResultFragment_to_loadingFragment"
             app:destination="@id/loadingFragment" />
         <argument
-            android:name="isNew"
-            app:argType="boolean"
+            android:name="type"
+            app:argType="string"
             android:defaultValue="true" />
     </fragment>
     <fragment
