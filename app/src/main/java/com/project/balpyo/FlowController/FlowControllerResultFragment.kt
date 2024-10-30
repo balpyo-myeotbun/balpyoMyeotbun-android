@@ -69,7 +69,7 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
         initToolBar()
         binding.sbTime.isEnabled = false
 
-        val speed = flowControllerViewModel.getSpeedData().value
+        val speed = flowControllerViewModel.getFlowControllerResultData().value?.speed?.toInt()
         when(speed) {
             -2 -> {binding.btnSpeed03.setBackgroundResource(R.drawable.selected_speed)
                 binding.tvSpeed03.setTextColor(this.resources.getColor(R.color.primary))
@@ -89,21 +89,27 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
             else -> println("none")
         }
 
-        var script = flowControllerViewModel.getCustomScriptData().value.toString()
-        script = script.replace("숨 고르기+1", "숨 고르기 (1초)")
-        script = script.replace("PPT 넘김+2", "PPT 넘김 (2초)")
+        var script = flowControllerViewModel.getFlowControllerResultData().value?.content
+        if (script != null) {
+            script = script.replace("숨 고르기+1", "숨 고르기 (1초)")
+        }
+        if (script != null) {
+            script = script.replace("PPT 넘김+2", "PPT 넘김 (2초)")
+        }
         val spannable = SpannableStringBuilder(script)
 
         scriptTextView.text = spannable
-        speechMarks = flowControllerViewModel.getSpeechMarks().value!!
+        speechMarks = flowControllerViewModel.getFlowControllerResultData().value?.speechMark!!
 
         val breakTimeToRealWord = breakTimeToRealWord(speechMarks)
         Log.d("breakTimeToRealWord", breakTimeToRealWord.toString())
         val endByteToRealEndByte = endByteToRealEndByte(breakTimeToRealWord)
         Log.d("endByteToRealEndByte", endByteToRealEndByte.toString())
-        val generateRealSpeechMark = generateRealSpeechMark(script, endByteToRealEndByte)
+        val generateRealSpeechMark = script?.let { generateRealSpeechMark(it, endByteToRealEndByte) }
         Log.d("generateRealSpeechMark", generateRealSpeechMark.toString())
-        realSpeechMark = generateRealSpeechMark
+        if (generateRealSpeechMark != null) {
+            realSpeechMark = generateRealSpeechMark
+        }
 
         initializeExoPlayer()
         initializeSeekBar()
@@ -152,8 +158,14 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
     //플레이어 초기화
     private fun initializeExoPlayer() {
         player = ExoPlayer.Builder(requireContext()).build()
-        val mediaItem = MediaItem.fromUri(flowControllerViewModel.getAudioUrlData().value!!)
-        player.setMediaItem(mediaItem)
+        val mediaItem = flowControllerViewModel.getFlowControllerResultData().value?.voiceFilePath?.let {
+            MediaItem.fromUri(
+                it
+            )
+        }
+        if (mediaItem != null) {
+            player.setMediaItem(mediaItem)
+        }
         player.prepare()
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
@@ -410,7 +422,7 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
                 }
 
             toolbar.textViewTitle.visibility = View.VISIBLE
-            toolbar.textViewTitle.text = flowControllerViewModel.getTitleData().value
+            toolbar.textViewTitle.text = flowControllerViewModel.getFlowControllerResultData().value?.title
             toolbar.textViewPage.visibility = View.INVISIBLE
         }
     }
@@ -419,7 +431,9 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
             findNavController().navigate(R.id.storageEditFlowControllerScriptFragment)
         }
         else {
-            storageViewModel.deleteScript(mainActivity, flowControllerViewModel.getScriptIdData().value!!)
+            flowControllerViewModel.getFlowControllerResultData().value?.id?.let {
+                storageViewModel.deleteScript(mainActivity, it)
+            }
             findNavController().popBackStack()
         }
     }
@@ -429,9 +443,11 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(args.type == "Home" || args.type == "New") {
+                    flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.homeFragment, false)
                 }
                 else {
+                    flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.storageFragment, false)
                 }
             }

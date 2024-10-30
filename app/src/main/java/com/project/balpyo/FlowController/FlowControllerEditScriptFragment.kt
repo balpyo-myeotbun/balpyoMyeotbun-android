@@ -68,7 +68,6 @@ class FlowControllerEditScriptFragment() : Fragment() {
             }
         }
         observeKeyboardState()
-        //setInsetsListener()
         initToolBar()
 
         return binding.root

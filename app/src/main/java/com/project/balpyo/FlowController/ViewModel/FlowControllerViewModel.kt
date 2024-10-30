@@ -46,6 +46,7 @@ class FlowControllerViewModel : ViewModel() {
         speed.value = 0
         isEdit.value = false
         audioUrl.value = ""
+        scriptId.value = -1
         speechMarks.value = listOf()
     }
 
