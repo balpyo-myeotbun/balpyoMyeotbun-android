@@ -26,7 +26,7 @@
         android:background="@drawable/edittext_script_rounded_corner_rectangle"
         android:paddingHorizontal="10dp"
         android:paddingVertical="8dp"
-        android:text="탈퇴 시 발표몇분 계정이 삭제되며 연동된 계정으로 n일간  재가입할 수 없습니다. \n발표몇분에 저장된 대본 등 계정의 모든 데이터는 즉시 파기되며 이는 복구할 수 없습니다.\n단, 정보 수집 이용에 동의를 하신 경우에 한해 학습에 이용되는 데이터(대본 생성, 편집 데이터 등)는 비식별 처리되어 동의받은 기간 동안 보관됩니다."
+        android:text="@string/cancel_account"
         android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

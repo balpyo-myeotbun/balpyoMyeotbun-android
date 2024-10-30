@@ -23,25 +23,12 @@
         android:id="@+id/tv_mypage_main_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:fontFamily="@font/pretendard_bold"
         android:text="고독한 사자님"
         android:textColor="@color/primary"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_mypage_main_email"
-        app:layout_constraintStart_toStartOf="@+id/tv_mypage_main_email" />
-
-    <TextView
-        android:id="@+id/tv_mypage_main_email"
-        style="@style/Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginBottom="29dp"
-        android:text="Email@gmail.com"
-        android:textColor="@color/gray4"
-        app:layout_constraintBottom_toTopOf="@+id/cl_mypage_main"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:layout_editor_absoluteX="22dp"
+        tools:layout_editor_absoluteY="190dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_mypage_main"

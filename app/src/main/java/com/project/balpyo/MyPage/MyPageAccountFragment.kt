@@ -23,10 +23,21 @@ class MyPageAccountFragment : Fragment() {
 
         initToolBar()
         binding.run {
-            tvMypageAccountCancel.setOnClickListener {
+
+            buttonAccountCancel.setOnClickListener {
                 findNavController().navigate(R.id.myPageCancelAccountFragment)
             }
-            tvMypageAccountEmail.text = PreferenceHelper.getUserId(mainActivity)
+
+            buttonChangePassword.setOnClickListener {
+
+            }
+
+            buttonEdit.setOnClickListener {
+
+            }
+
+            textViewUserEmail.text = PreferenceHelper.getUserId(mainActivity)
+            textViewUserEmail.text = PreferenceHelper.getUserNickname(mainActivity)
         }
         return binding.root
     }
@@ -37,7 +48,7 @@ class MyPageAccountFragment : Fragment() {
             toolbar.buttonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.VISIBLE
-            toolbar.textViewTitle.text = "계정 정보"
+            toolbar.textViewTitle.text = "내 정보 관리"
             toolbar.buttonBack.setOnClickListener {
                 findNavController().popBackStack()
             }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray1"
     tools:context=".MyPage.MyPageAccountFragment">
 
     <include
@@ -16,49 +17,99 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_mypage_account_email_title"
-        style="@style/Medium"
+        android:id="@+id/button_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="60dp"
-        android:text="닉네임"
-        android:textColor="@color/disabled"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <View
-        android:id="@+id/divider7"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="22dp"
-        android:background="?android:attr/listDivider"
+        android:layout_marginRight="16dp"
+        android:text="수정"
+        android:textColor="@color/gray3"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_mypage_account_email"
-        app:layout_constraintTop_toBottomOf="@+id/tv_mypage_account_email" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/tv_mypage_account_email"
-        style="@style/XLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="Email@gmail.com"
-        android:textColor="@color/text"
-        app:layout_constraintStart_toStartOf="@+id/tv_mypage_account_email_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_mypage_account_email_title" />
-
-    <TextView
-        android:id="@+id/tv_mypage_account_cancel"
+        android:id="@+id/button_account_cancel"
         style="@style/Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:text="탈퇴하기"
+        android:layout_marginBottom="57dp"
+        android:fontFamily="@font/pretendard_regular"
+        android:text="@string/cancel_account_button"
         android:textColor="@color/disabled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="22dp"
+        android:paddingTop="51dp"
+        android:paddingBottom="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            android:id="@+id/textView_name"
+            style="@style/Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textColor="@color/text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_user_name"
+            style="@style/Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유저 닉네임"
+            android:textColor="@color/gray3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_email"
+            style="@style/Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="이메일"
+            android:textColor="@color/text"
+            app:layout_constraintStart_toStartOf="@id/textView_name"
+            app:layout_constraintTop_toBottomOf="@id/textView_name" />
+
+        <TextView
+            android:id="@+id/textView_user_email"
+            style="@style/Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유저 이메일"
+            android:textColor="@color/gray3"
+            app:layout_constraintEnd_toEndOf="@+id/textView_user_name"
+            app:layout_constraintTop_toTopOf="@id/textView_email" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/button_change_password"
+        style="@style/Large"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:paddingVertical="18dp"
+        android:paddingLeft="20dp"
+        android:text="비밀번호 변경하기"
+        android:textColor="@color/text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
