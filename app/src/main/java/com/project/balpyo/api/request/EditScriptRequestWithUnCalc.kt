@@ -1,6 +1,6 @@
 package com.project.balpyo.api.request
 
-data class GenerateNoteRequest(
+data class EditScriptRequestWithUnCalc(
     val content: String,
-    val title: String,
+    val title: String
 )

@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.project.balpyo.R
+import com.project.balpyo.api.BaseDto
 import com.project.balpyo.api.data.Tag
-import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.ItemStorageBinding
 
 
-class StorageAdapter (var result: List<StorageListResult>) :
+class StorageAdapter (var result: List<BaseDto>) :
     RecyclerView.Adapter<StorageAdapter.ViewHolder>() {
     private var context: Context? = null
 
 
-    fun setItems(list: List<StorageListResult>) {
+    fun setItems(list: List<BaseDto>) {
         result = list
         notifyDataSetChanged()
     }
@@ -31,7 +31,11 @@ class StorageAdapter (var result: List<StorageListResult>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         val binding =
-            ItemStorageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemStorageBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
 
         return ViewHolder(binding)
     }
@@ -40,7 +44,7 @@ class StorageAdapter (var result: List<StorageListResult>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.run {
             title.text = result[position].title
-            content.text = getFirst20CharsIgnoringSpaces(result[position].content)
+            content.text = getFirst20CharsIgnoringSpaces(result[position].content ?: "")
 
             // 태그 초기화
             tagNote.visibility = View.GONE
@@ -48,7 +52,7 @@ class StorageAdapter (var result: List<StorageListResult>) :
             tagTime.visibility = View.GONE
             tagFlow.visibility = View.GONE
 
-            result[position].tags.forEach {
+            result[position].tags?.forEach {
                 when (it) {
                     Tag.NOTE.value -> tagNote.visibility = View.VISIBLE
                     Tag.SCRIPT.value -> tagScript.visibility = View.VISIBLE

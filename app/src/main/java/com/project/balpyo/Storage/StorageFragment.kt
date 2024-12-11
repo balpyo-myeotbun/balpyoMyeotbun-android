@@ -28,9 +28,9 @@ import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetFragment
 import com.project.balpyo.Storage.FilterBottomSheet.FilterBottomSheetListener
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.Utils.PreferenceHelper
+import com.project.balpyo.api.BaseDto
 import com.project.balpyo.api.data.Tag
 import com.project.balpyo.api.request.SearchParameter
-import com.project.balpyo.api.response.StorageListResult
 import com.project.balpyo.databinding.FragmentStorageBinding
 
 enum class ToolbarMode {
@@ -60,9 +60,9 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
     lateinit var searchHistoryManager: SearchHistoryManager
     lateinit var searchHistoryAdapter: SearchHistoryAdapter
 
-    var storageList : MutableList<StorageListResult> = mutableListOf()
-    var searchList: MutableList<StorageListResult> = mutableListOf()
-    var filterList: MutableList<StorageListResult> = mutableListOf()
+    var storageList : MutableList<BaseDto> = mutableListOf()
+    var searchList: MutableList<BaseDto> = mutableListOf()
+    var filterList: MutableList<BaseDto> = mutableListOf()
 
     var filterPosition = -1
     var isSearchFilter = false
@@ -73,7 +73,7 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentStorageBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
@@ -109,38 +109,36 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                             override fun onItemClick(position: Int) {
                                 viewModel.getStorageDetail(
                                     mainActivity,
-                                    list[position].id.toInt()
+                                    list[position].id ?: 0
                                 )
                                 val tags = list[position].tags
 
-                                if (tags.contains("SCRIPT") || tags.contains("FLOW") || tags.contains(
-                                        "TIME"
-                                    )
-                                ) {
-                                    if (tags.contains("SCRIPT")) {
-                                        //TODO: findNavController().navigate()
+                                if (tags != null) {
+                                    if (
+                                        tags.contains("SCRIPT") ||
+                                        tags.contains("FLOW") ||
+                                        tags.contains("TIME")
+                                    ) {
+                                        if (tags.contains("SCRIPT")) {
+                                            //TODO: findNavController().navigate()
 
-                                    } else if (tags.contains("FLOW")) {
-                                        flowControllerViewModel.initialize()
-                                        flowControllerViewModel.setFlowControllerResult(list[position])
-                                        val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
-                                            type = "Storage"
-                                        )
-                                        findNavController().navigate(action)
+                                        } else if (tags.contains("FLOW")) {
+                                            flowControllerViewModel.initialize()
+                                            flowControllerViewModel.setFlowControllerResult(list[position])
+                                            val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                                                type = "Storage"
+                                            )
+                                            findNavController().navigate(action)
 
-                                    } else if (tags.contains("TIME")) {
-                                        //TODO: findNavController().navigate()
+                                        } else if (tags.contains("TIME")) {
+                                            //TODO: findNavController().navigate()
+                                        }
+                                    } else if (tags.contains("NOTE")) {
+                                        //TODO: note 결과 화면으로 이동해야함
+                                        findNavController().navigate(R.id.noteFragment)
+                                    } else {
+                                        //TODO: 예외
                                     }
-                                } else if (tags.contains("NOTE")) {
-                                    //TODO: flow api 안나와서 note로 테스트 진행, 하단 코드는 테스트 코드, 수정 및 삭제 가능
-                                    flowControllerViewModel.initialize()
-                                    flowControllerViewModel.setFlowControllerResult(list[position])
-                                    val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
-                                        type = "Storage"
-                                    )
-                                    findNavController().navigate(action)
-                                } else {
-                                    //TODO: 예외
                                 }
                                 //findNavController().navigate(R.id.storageEditDeleteFragment)
                             }
@@ -154,38 +152,39 @@ class StorageFragment : Fragment(), FilterBottomSheetListener {
                             override fun onItemClick(position: Int) {
                                 viewModel.getStorageDetail(
                                     mainActivity,
-                                    list[position].id.toInt()
+                                    list[position].id ?: 0
                                 )
                                 val tags = list[position].tags
 
-                                if (tags.contains("SCRIPT") || tags.contains("FLOW") || tags.contains(
-                                        "TIME"
-                                    )
-                                ) {
-                                    if (tags.contains("SCRIPT")) {
-                                        //TODO: findNavController().navigate()
+                                if (tags != null) {
+                                    if (tags.contains("SCRIPT") || tags.contains("FLOW") || tags.contains(
+                                            "TIME"
+                                        )
+                                    ) {
+                                        if (tags.contains("SCRIPT")) {
+                                            //TODO: findNavController().navigate()
 
-                                    } else if (tags.contains("FLOW")) {
-                                        //TODO: flow api 안나와서 note로 테스트 진행, 하단 코드는 테스트 코드, 수정 및 삭제 가능
+                                        } else if (tags.contains("FLOW")) {
+                                            flowControllerViewModel.initialize()
+                                            flowControllerViewModel.setFlowControllerResult(list[position])
+                                            val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
+                                                type = "Storage"
+                                            )
+                                            findNavController().navigate(action)
+
+                                        } else if (tags.contains("TIME")) {
+                                            //TODO: findNavController().navigate()
+                                        }
+                                    } else if (tags.contains("NOTE")) {
                                         flowControllerViewModel.initialize()
                                         flowControllerViewModel.setFlowControllerResult(list[position])
                                         val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
                                             type = "Storage"
                                         )
                                         findNavController().navigate(action)
-
-                                    } else if (tags.contains("TIME")) {
-                                       //TODO: findNavController().navigate()
+                                    } else {
+                                        //TODO: 예외
                                     }
-                                } else if (tags.contains("NOTE")) {
-                                    flowControllerViewModel.initialize()
-                                    flowControllerViewModel.setFlowControllerResult(list[position])
-                                    val action = StorageFragmentDirections.actionStorageFragmentToFlowControllerResultFragment(
-                                        type = "Storage"
-                                    )
-                                    findNavController().navigate(action)
-                                } else {
-                                    //TODO: 예외
                                 }
                             }
                         }

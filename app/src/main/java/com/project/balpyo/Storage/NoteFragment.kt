@@ -1,8 +1,5 @@
 package com.project.balpyo.Storage
 
-import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,13 +14,11 @@ import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetFragment
 import com.project.balpyo.Storage.NoteBottomSheet.NoteBottomSheetListener
-import com.project.balpyo.Utils.MyApplication
+import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.EditScriptRequest
-import com.project.balpyo.api.request.ManageScriptRequest
-import com.project.balpyo.api.response.EditScriptResponse
-import com.project.balpyo.api.response.ManageScriptResponse
+import com.project.balpyo.api.BaseDto
+import com.project.balpyo.api.request.EditScriptRequestWithUnCalc
+import com.project.balpyo.api.request.GenerateNoteRequest
 import com.project.balpyo.databinding.FragmentNoteBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,14 +29,14 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
     lateinit var binding: FragmentNoteBinding
     lateinit var mainActivity: MainActivity
 
-    var bottomSheet = NoteBottomSheetFragment()
+    private var bottomSheet = NoteBottomSheetFragment()
 
-    var scriptId = -1
+    var scriptId : Long = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentNoteBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
@@ -58,10 +53,10 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
             }
 
             buttonStore.setOnClickListener {
-                if(scriptId != -1) {
+                if(scriptId.toInt() != -1) {
                     editScript()
                 } else {
-                    storeScript()
+                    generateNote()
                 }
             }
 
@@ -90,7 +85,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
     }
 
 
-    fun checkText() {
+    private fun checkText() {
         binding.run {
             if(editTextTitle.text.isNotEmpty() && editTextNote.text.isNotEmpty()) {
                 buttonStore.setTextColor(ContextCompat.getColor(mainActivity, R.color.text))
@@ -101,22 +96,26 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
         }
     }
 
-    // 빈 스크립트 생성
-    fun storeScript() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
+    fun generateNote() {
+        val apiClient = ApiClient(mainActivity)
 
-        var manageScript = ManageScriptRequest("${binding.editTextNote.text}", "${binding.editTextTitle.text}", 0, listOf("NOTE"), false)
+        val generateNoteRequest = GenerateNoteRequest(
+            title = "${binding.editTextNote.text}",
+            content = "${binding.editTextTitle.text}"
+        )
 
-        apiClient.apiService.manageScript("${tokenManager.getUid()}",manageScript)?.enqueue(object :
-            Callback<ManageScriptResponse> {
-            override fun onResponse(call: Call<ManageScriptResponse>, response: Response<ManageScriptResponse>) {
+        apiClient.apiService.generateNote(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            generateNoteRequest
+        ).enqueue(object :
+            Callback<BaseDto> {
+            override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    var result: ManageScriptResponse? = response.body()
+                    val result: BaseDto? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    scriptId = result?.result?.scriptId!!.toInt()
+                    scriptId = result?.id ?: -1
 
                     Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
                     binding.buttonStore.visibility = View.GONE
@@ -136,7 +135,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: ManageScriptResponse? = response.body()
+                    var result: BaseDto? = response.body()
                     Log.d("##", "onResponse 실패")
                     Log.d("##", "onResponse 실패: " + response.code())
                     Log.d("##", "onResponse 실패: " + response.body())
@@ -145,25 +144,30 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
                 }
             }
 
-            override fun onFailure(call: Call<ManageScriptResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseDto>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
             }
         })
     }
 
-    fun editScript() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
+    private fun editScript() {
+        val apiClient = ApiClient(mainActivity)
 
-        var editScript = EditScriptRequest(scriptId.toLong(), binding.editTextNote.text.toString(), binding.editTextTitle.text.toString(), 0)
-
-        apiClient.apiService.editScript("${tokenManager.getUid()}",scriptId, editScript)?.enqueue(object :
-            Callback<EditScriptResponse> {
-            override fun onResponse(call: Call<EditScriptResponse>, response: Response<EditScriptResponse>) {
+        val editScript = EditScriptRequestWithUnCalc(
+            binding.editTextNote.text.toString(),
+            binding.editTextTitle.text.toString()
+        )
+        apiClient.apiService.editWithUnCalc(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            scriptId,
+            editScript
+        ).enqueue(object :
+            Callback<BaseDto> {
+            override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    var result: EditScriptResponse? = response.body()
+                    val result: BaseDto? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
                     Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
@@ -184,7 +188,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: EditScriptResponse? = response.body()
+                    var result: BaseDto? = response.body()
                     Log.d("##", "onResponse 실패")
                     Log.d("##", "onResponse 실패: " + response.code())
                     Log.d("##", "onResponse 실패: " + response.body())
@@ -193,30 +197,29 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
                 }
             }
 
-            override fun onFailure(call: Call<EditScriptResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseDto>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
             }
         })
     }
 
-    fun deleteScript() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
+    private fun deleteScript() {
+        val apiClient = ApiClient(mainActivity)
 
-        apiClient.apiService.deleteScript("${tokenManager.getUid()}",scriptId.toInt())?.enqueue(object :
+        apiClient.apiService.deleteScript(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            scriptId.toInt()).enqueue(object :
             Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    var result: Void? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
+                    Log.d("##", "onResponse 성공")
 
                     findNavController().popBackStack()
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: Void? = response.body()
                     Log.d("##", "onResponse 실패")
                     Log.d("##", "onResponse 실패: " + response.code())
                     Log.d("##", "onResponse 실패: " + response.body())
@@ -227,7 +230,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
             }
         })
     }

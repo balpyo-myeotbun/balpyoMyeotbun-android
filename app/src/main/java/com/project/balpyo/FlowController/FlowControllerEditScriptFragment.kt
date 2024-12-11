@@ -22,7 +22,7 @@ import com.project.balpyo.databinding.FragmentFlowControllerEditScriptBinding
 import kr.bydelta.koala.okt.SentenceSplitter
 import kotlin.properties.Delegates
 
-class FlowControllerEditScriptFragment() : Fragment() {
+class FlowControllerEditScriptFragment : Fragment() {
     lateinit var binding: FragmentFlowControllerEditScriptBinding
     private lateinit var flowControllerViewModel: FlowControllerViewModel
     lateinit var mainActivity: MainActivity
@@ -32,7 +32,7 @@ class FlowControllerEditScriptFragment() : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
         binding = FragmentFlowControllerEditScriptBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity

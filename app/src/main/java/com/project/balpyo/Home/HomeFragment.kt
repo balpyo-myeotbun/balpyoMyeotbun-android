@@ -1,6 +1,5 @@
 package com.project.balpyo.Home
 
-
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
@@ -43,12 +42,12 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mainActivity = activity as MainActivity
 
         binding = FragmentHomeBinding.inflate(layoutInflater)
         animationDrawable = binding.imageViewLoading.drawable as AnimationDrawable
-        mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true);
+        mainActivity.binding.bottomNavigation.menu.findItem(R.id.homeFragment).setChecked(true)
 
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
@@ -97,40 +96,37 @@ class HomeFragment : Fragment() {
                                 override fun onItemClick(position: Int) {
                                     viewModel.getStorageDetail(
                                         mainActivity,
-                                        list[position].id.toInt()
+                                        list[position].id ?: -1
                                     )
                                     val tags = list[position].tags
 
-                                    if (tags.contains("SCRIPT") || tags.contains("FLOW") || tags.contains(
-                                            "TIME"
-                                        )
-                                    ) {
-                                        if (tags.contains("SCRIPT")) {
-                                            //TODO: findNavController().navigate()
+                                    if (tags != null) {
+                                        if (
+                                            tags.contains("SCRIPT") ||
+                                            tags.contains("FLOW") ||
+                                            tags.contains("TIME")
+                                        ) {
+                                            if (tags.contains("SCRIPT")) {
+                                                //TODO: findNavController().navigate()
 
-                                        } else if (tags.contains("FLOW")) {
-                                            flowControllerViewModel.initialize()
-                                            flowControllerViewModel.setFlowControllerResult(list[position])
-                                            val action =
-                                                HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
-                                                    type = "Home"
-                                                )
-                                            findNavController().navigate(action)
+                                            } else if (tags.contains("FLOW")) {
+                                                flowControllerViewModel.initialize()
+                                                flowControllerViewModel.setFlowControllerResult(list[position])
+                                                val action =
+                                                    HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
+                                                        type = "Home"
+                                                    )
+                                                findNavController().navigate(action)
 
-                                        } else if (tags.contains("TIME")) {
-                                            //TODO: findNavController().navigate()
+                                            } else if (tags.contains("TIME")) {
+                                                //TODO: findNavController().navigate()
+                                            }
+                                        } else if (tags.contains("NOTE")) {
+                                            //TODO: note 결과 프래그먼트로 이동
+                                            findNavController().navigate(R.id.noteFragment)
+                                        } else {
+                                            //TODO: 예외
                                         }
-                                    } else if (tags.contains("NOTE")) {
-                                        //TODO: flow api 안나와서 note로 테스트 진행, 하단 코드는 테스트 코드, 수정 및 삭제 가능
-                                        flowControllerViewModel.initialize()
-                                        flowControllerViewModel.setFlowControllerResult(list[position])
-                                        val action =
-                                            HomeFragmentDirections.actionHomeFragmentToFlowControllerResultFragment(
-                                                type = "Home"
-                                            )
-                                        findNavController().navigate(action)
-                                    } else {
-                                        //TODO: 예외
                                     }
                                     //findNavController().navigate(R.id.storageEditDeleteFragment)
                                 }

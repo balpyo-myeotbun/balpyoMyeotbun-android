@@ -8,21 +8,20 @@ import com.project.balpyo.Storage.LoadScriptBottomSheet.LoadScriptBottomSheetFra
 import com.project.balpyo.MainActivity
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
+import com.project.balpyo.api.BaseDto
 import com.project.balpyo.api.data.Tag
 import com.project.balpyo.api.request.SearchParameter
-import com.project.balpyo.api.response.StorageDetailResult
-import com.project.balpyo.api.response.StorageListResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class StorageViewModel: ViewModel() {
-    var storageList = MutableLiveData<MutableList<StorageListResult>>()
-    var storageListForBottomSheet = MutableLiveData<MutableList<StorageListResult>>()
-    var storageDetail = MutableLiveData<StorageDetailResult>()
-    var storageDetailForBottomSheet = MutableLiveData<StorageDetailResult>()
-    var searchList = MutableLiveData<MutableList<StorageListResult>>()
-    var filterList = MutableLiveData<MutableList<StorageListResult>>()
+    var storageList = MutableLiveData<MutableList<BaseDto>>()
+    var storageListForBottomSheet = MutableLiveData<MutableList<BaseDto>>()
+    var storageDetail = MutableLiveData<BaseDto?>()
+    var storageDetailForBottomSheet = MutableLiveData<BaseDto?>()
+    var searchList = MutableLiveData<MutableList<BaseDto>>()
+    var filterList = MutableLiveData<MutableList<BaseDto>>()
 
 
     init {
@@ -33,17 +32,17 @@ class StorageViewModel: ViewModel() {
 
     fun getStorageList(mainActivity: MainActivity) {
 
-        val tempList = mutableListOf<StorageListResult>()
+        val tempList = mutableListOf<BaseDto>()
 
         val apiClient = ApiClient(mainActivity)
 
         apiClient.apiService.getStorageList("Bearer ${PreferenceHelper.getUserToken(mainActivity)}")
             .enqueue(object :
-                Callback<List<StorageListResult>> {
-                override fun onResponse(call: Call<List<StorageListResult>>, response: Response<List<StorageListResult>>) {
+                Callback<List<BaseDto>> {
+                override fun onResponse(call: Call<List<BaseDto>>, response: Response<List<BaseDto>>) {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: List<StorageListResult>? = response.body()
+                        val result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 성공: " + result?.toString())
 
                         if (result != null) {
@@ -56,7 +55,7 @@ class StorageViewModel: ViewModel() {
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: List<StorageListResult>? = response.body()
+                        var result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 실패")
                         Log.d("##", "onResponse 실패: " + response.code())
                         Log.d("##", "onResponse 실패: " + response.body())
@@ -66,23 +65,25 @@ class StorageViewModel: ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<List<StorageListResult>>, t: Throwable) {
+                override fun onFailure(call: Call<List<BaseDto>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("##", "onFailure 에러: " + t.message.toString());
+                    Log.d("##", "onFailure 에러: " + t.message.toString())
                 }
             })
     }
 
-    fun getStorageDetail(mainActivity: MainActivity, scriptId: Int) {
+    fun getStorageDetail(mainActivity: MainActivity, scriptId: Long) {
 
         val apiClient = ApiClient(mainActivity)
-        apiClient.apiService.getStorageDetail("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", scriptId)
-            .enqueue(object :
-                Callback<StorageDetailResult> {
-                override fun onResponse(call: Call<StorageDetailResult>, response: Response<StorageDetailResult>) {
+        apiClient.apiService.getStorageDetail(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            scriptId
+        ).enqueue(object :
+                Callback<BaseDto> {
+                override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: StorageDetailResult? = response.body()
+                        val result: BaseDto? = response.body()
                         Log.d("##", "onResponse 성공: " + result?.toString())
 
                         if (result != null) {
@@ -91,7 +92,7 @@ class StorageViewModel: ViewModel() {
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: StorageDetailResult? = response.body()
+                        var result: BaseDto? = response.body()
                         Log.d("##", "onResponse 실패")
                         Log.d("##", "onResponse 실패: " + response.code())
                         Log.d("##", "onResponse 실패: " + response.body())
@@ -100,31 +101,31 @@ class StorageViewModel: ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<StorageDetailResult>, t: Throwable) {
+                override fun onFailure(call: Call<BaseDto>, t: Throwable) {
                     // 통신 실패
-                    Log.d("##", "onFailure 에러: " + t.message.toString());
+                    Log.d("##", "onFailure 에러: " + t.message.toString())
                 }
             })
     }
 
     fun getStorageListForBottomSheet(fragmentManager: FragmentManager, mainActivity: MainActivity) {
 
-        val tempList = mutableListOf<StorageListResult>()
+        val tempList = mutableListOf<BaseDto>()
 
         val apiClient = ApiClient(mainActivity)
 
         apiClient.apiService.getStorageList("Bearer ${PreferenceHelper.getUserToken(mainActivity)}")
             .enqueue(object :
-                Callback<List<StorageListResult>> {
-                override fun onResponse(call: Call<List<StorageListResult>>, response: Response<List<StorageListResult>>) {
+                Callback<List<BaseDto>> {
+                override fun onResponse(call: Call<List<BaseDto>>, response: Response<List<BaseDto>>) {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: List<StorageListResult>? = response.body()
+                        val result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 성공: " + result?.toString())
 
                         if (result != null) {
                             for(item in result) {
-                                if(item.tags.contains(Tag.NOTE.value))
+                                if(item.tags?.contains(Tag.NOTE.value) == true)
                                     tempList.add(item)
                             }
                         }
@@ -136,7 +137,7 @@ class StorageViewModel: ViewModel() {
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: List<StorageListResult>? = response.body()
+                        var result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 실패")
                         Log.d("##", "onResponse 실패: " + response.code())
                         Log.d("##", "onResponse 실패: " + response.body())
@@ -145,29 +146,32 @@ class StorageViewModel: ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<List<StorageListResult>>, t: Throwable) {
+                override fun onFailure(call: Call<List<BaseDto>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("##", "onFailure 에러: " + t.message.toString());
+                    Log.d("##", "onFailure 에러: " + t.message.toString())
                 }
             })
     }
 
-    fun getStorageDetailForBottomSheet(mainActivity: MainActivity, scriptId: Int) {
+    fun getStorageDetailForBottomSheet(mainActivity: MainActivity, scriptId: Long) {
 
         val apiClient = ApiClient(mainActivity)
 
-        apiClient.apiService.getStorageDetail("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", scriptId)?.enqueue(object :
-            Callback<StorageDetailResult> {
-            override fun onResponse(call: Call<StorageDetailResult>, response: Response<StorageDetailResult>) {
+        apiClient.apiService.getStorageDetail(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            scriptId
+        ).enqueue(object :
+            Callback<BaseDto> {
+            override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    val result: StorageDetailResult? = response.body()
+                    val result: BaseDto? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                        storageDetailForBottomSheet.value = result
+                    storageDetailForBottomSheet.value = result
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: StorageDetailResult? = response.body()
+                    var result: BaseDto? = response.body()
                     Log.d("##", "onResponse 실패")
                     Log.d("##", "onResponse 실패: " + response.code())
                     Log.d("##", "onResponse 실패: " + response.body())
@@ -176,9 +180,9 @@ class StorageViewModel: ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<StorageDetailResult>, t: Throwable) {
+            override fun onFailure(call: Call<BaseDto>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
             }
         })
     }
@@ -206,24 +210,28 @@ class StorageViewModel: ViewModel() {
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
             }
         })
     }
 
     fun searchStorageList(mainActivity: MainActivity, searchParameter : SearchParameter) {
 
-        val tempList = mutableListOf<StorageListResult>()
+        val tempList = mutableListOf<BaseDto>()
 
         val apiClient = ApiClient(mainActivity)
 
-        apiClient.apiService.search("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", searchParameter.tag, searchParameter.isGenerating, searchParameter.searchValue)
-            .enqueue(object :
-                Callback<List<StorageListResult>> {
-                override fun onResponse(call: Call<List<StorageListResult>>, response: Response<List<StorageListResult>>) {
+        apiClient.apiService.search(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            searchParameter.tag,
+            searchParameter.isGenerating,
+            searchParameter.searchValue
+        ).enqueue(object :
+                Callback<List<BaseDto>> {
+                override fun onResponse(call: Call<List<BaseDto>>, response: Response<List<BaseDto>>) {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: List<StorageListResult>? = response.body()
+                        val result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 성공: " + result?.toString())
 
                         if (result != null) {
@@ -236,7 +244,7 @@ class StorageViewModel: ViewModel() {
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: List<StorageListResult>? = response.body()
+                        var result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 실패")
                         Log.d("##", "onResponse 실패: " + response.code())
                         Log.d("##", "onResponse 실패: " + response.body())
@@ -246,25 +254,29 @@ class StorageViewModel: ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<List<StorageListResult>>, t: Throwable) {
+                override fun onFailure(call: Call<List<BaseDto>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("##", "onFailure 에러: " + t.message.toString());
+                    Log.d("##", "onFailure 에러: " + t.message.toString())
                 }
             })
     }
     fun filterStorageList(mainActivity: MainActivity, searchParameter : SearchParameter) {
 
-        val tempList = mutableListOf<StorageListResult>()
+        val tempList = mutableListOf<BaseDto>()
 
         val apiClient = ApiClient(mainActivity)
 
-        apiClient.apiService.search("Bearer ${PreferenceHelper.getUserToken(mainActivity)}", searchParameter.tag, searchParameter.isGenerating, searchParameter.searchValue)
-            .enqueue(object :
-                Callback<List<StorageListResult>> {
-                override fun onResponse(call: Call<List<StorageListResult>>, response: Response<List<StorageListResult>>) {
+        apiClient.apiService.search(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            searchParameter.tag,
+            searchParameter.isGenerating,
+            searchParameter.searchValue
+        ).enqueue(object :
+                Callback<List<BaseDto>> {
+                override fun onResponse(call: Call<List<BaseDto>>, response: Response<List<BaseDto>>) {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: List<StorageListResult>? = response.body()
+                        val result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 성공: " + result?.toString())
 
                         if (result != null) {
@@ -277,7 +289,7 @@ class StorageViewModel: ViewModel() {
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: List<StorageListResult>? = response.body()
+                        var result: List<BaseDto>? = response.body()
                         Log.d("##", "onResponse 실패")
                         Log.d("##", "onResponse 실패: " + response.code())
                         Log.d("##", "onResponse 실패: " + response.body())
@@ -287,16 +299,16 @@ class StorageViewModel: ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<List<StorageListResult>>, t: Throwable) {
+                override fun onFailure(call: Call<List<BaseDto>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("##", "onFailure 에러: " + t.message.toString());
+                    Log.d("##", "onFailure 에러: " + t.message.toString())
                 }
             })
     }
 
     //바텀시트 뷰모델 초기화
     fun clearValueStorageDataForBottomSheet() {
-        storageDetailForBottomSheet.value = StorageDetailResult(
+        storageDetailForBottomSheet.value = BaseDto(
             0,
             "",
             "",

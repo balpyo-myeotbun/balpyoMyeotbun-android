@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,11 +15,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.NumberPicker
-import android.widget.Spinner
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -31,23 +28,10 @@ import com.arasthel.spannedgridlayoutmanager.SpanSize
 import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
-import com.project.balpyo.Script.Adapter.SubTopicAdapter
 import com.project.balpyo.Script.Adapter.SubTopicCheckAdapter
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
-import com.project.balpyo.Sign.SignUpTermsFragment
 import com.project.balpyo.Utils.MyApplication
-import com.project.balpyo.Utils.PreferenceHelper
-import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.ManageScriptRequest
-import com.project.balpyo.api.request.SignUpRequest
-import com.project.balpyo.api.response.BaseResponse
-import com.project.balpyo.api.response.ManageScriptResponse
 import com.project.balpyo.databinding.FragmentScriptCheckBinding
-import okhttp3.internal.notifyAll
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ScriptCheckFragment : Fragment() {
 
@@ -66,7 +50,7 @@ class ScriptCheckFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentScriptCheckBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
@@ -79,7 +63,8 @@ class ScriptCheckFragment : Fragment() {
 
         binding.run {
             buttonComplete.setOnClickListener {
-                manageScript()
+                //TODO: 대본 생성 api로 변경 필요합니다!
+                //manageScript()
             }
 
             editTextTitleCheck.addTextChangedListener {
@@ -115,11 +100,12 @@ class ScriptCheckFragment : Fragment() {
 
             subtopicList = MyApplication.scriptSubtopic.split(",").toMutableList()
 
-            var subTopicAdapter = SubTopicCheckAdapter(subtopicList)
+            val subTopicAdapter = SubTopicCheckAdapter(subtopicList)
 
-            var spannedGridLayoutManager = SpannedGridLayoutManager(
+            val spannedGridLayoutManager = SpannedGridLayoutManager(
                 orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
-                spans = 4)
+                spans = 4
+            )
 
             recyclerViewSubtopicCheck.run {
 
@@ -206,10 +192,10 @@ class ScriptCheckFragment : Fragment() {
             setGravity(Gravity.BOTTOM)
         }
 
-        var spinnerMinute: NumberPicker = dialog.findViewById(R.id.spinner_minute_check)
-        var spinnerSecond: NumberPicker = dialog.findViewById(R.id.spinner_second_check)
-        var buttonNoSpecificTime: LinearLayout = dialog.findViewById(R.id.button_no_specific_time_check)
-        var imageViewCheck: ImageView = dialog.findViewById(R.id.imageView_check)
+        val spinnerMinute: NumberPicker = dialog.findViewById(R.id.spinner_minute_check)
+        val spinnerSecond: NumberPicker = dialog.findViewById(R.id.spinner_second_check)
+        val buttonNoSpecificTime: LinearLayout = dialog.findViewById(R.id.button_no_specific_time_check)
+        val imageViewCheck: ImageView = dialog.findViewById(R.id.imageView_check)
 
         dialog.setOnDismissListener {
             isDialogShowing = false
@@ -219,7 +205,7 @@ class ScriptCheckFragment : Fragment() {
             } else {
                 Log.d("발표몇분", "${spinnerMinute.value}")
                 Log.d("발표몇분", "${spinnerSecond.value}")
-                var selectedTime = spinnerMinute.value*60 + spinnerSecond.value
+                val selectedTime = spinnerMinute.value*60 + spinnerSecond.value
                 MyApplication.scriptTime = selectedTime.toLong()
                 if(spinnerMinute.value != 0) {
                     MyApplication.scriptTimeString = "${spinnerMinute.value}분 ${spinnerSecond.value}초"
@@ -345,8 +331,8 @@ class ScriptCheckFragment : Fragment() {
         }
     }
 
-    // 빈 스크립트 생성
-    fun manageScript() {
+    //TODO: 대본 생성 api로 변경 필요합니다!
+    /*fun manageScript() {
         var apiClient = ApiClient(mainActivity)
         var tokenManager = TokenManager(mainActivity)
 
@@ -383,5 +369,5 @@ class ScriptCheckFragment : Fragment() {
                 Log.d("##", "onFailure 에러: " + t.message.toString());
             }
         })
-    }
+    }*/
 }

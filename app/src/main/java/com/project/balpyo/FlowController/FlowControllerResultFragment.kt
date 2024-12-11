@@ -53,7 +53,7 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mainActivity = activity as MainActivity
         binding = FragmentFlowControllerResultBinding.inflate(inflater, container, false)
         scriptTextView = binding.tvScript
@@ -69,7 +69,7 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
         initToolBar()
         binding.sbTime.isEnabled = false
 
-        val speed = flowControllerViewModel.getFlowControllerResultData().value?.speed?.toInt()
+        val speed = flowControllerViewModel.getFlowControllerResultData().value?.speed ?: 1
         when(speed) {
             -2 -> {binding.btnSpeed03.setBackgroundResource(R.drawable.selected_speed)
                 binding.tvSpeed03.setTextColor(this.resources.getColor(R.color.primary))
@@ -96,6 +96,8 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
         if (script != null) {
             script = script.replace("PPT 넘김+2", "PPT 넘김 (2초)")
         }
+        Log.d("%%", script.toString())
+        Log.d("%%", flowControllerViewModel.getFlowControllerResultData().value.toString())
         val spannable = SpannableStringBuilder(script)
 
         scriptTextView.text = spannable
@@ -123,23 +125,38 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
         }
         binding.btnSpeed03.setOnClickListener {
             flowControllerViewModel.setSpeed(-2)
-            //TODO: 스크립트 수정
+            flowControllerViewModel.editScriptAndCalc(
+                mainActivity = mainActivity,
+                navController = findNavController()
+            )
         }
         binding.btnSpeed05.setOnClickListener {
             flowControllerViewModel.setSpeed(-1)
-            //TODO: 스크립트 수정
+            flowControllerViewModel.editScriptAndCalc(
+                mainActivity = mainActivity,
+                navController = findNavController()
+            )
         }
         binding.btnSpeed1.setOnClickListener {
             flowControllerViewModel.setSpeed(0)
-            //TODO: 스크립트 수정
+            flowControllerViewModel.editScriptAndCalc(
+                mainActivity = mainActivity,
+                navController = findNavController()
+            )
         }
         binding.btnSpeed15.setOnClickListener {
             flowControllerViewModel.setSpeed(1)
-            //TODO: 스크립트 수정
+            flowControllerViewModel.editScriptAndCalc(
+                mainActivity = mainActivity,
+                navController = findNavController()
+            )
         }
         binding.btnSpeed2.setOnClickListener {
             flowControllerViewModel.setSpeed(2)
-            //TODO: 스크립트 수정
+            flowControllerViewModel.editScriptAndCalc(
+                mainActivity = mainActivity,
+                navController = findNavController()
+            )
         }
 
         binding.btnEdit.setOnClickListener {

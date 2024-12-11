@@ -16,9 +16,8 @@ import com.project.balpyo.Storage.StorageEditBottomSheet.StorageBottomSheetListe
 import com.project.balpyo.Storage.StorageEditBottomSheet.StorageEditBottomSheetFragment
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.EditScriptRequest
-import com.project.balpyo.api.response.EditScriptResponse
+import com.project.balpyo.api.BaseDto
+import com.project.balpyo.api.request.EditScriptRequestWithUnCalc
 import com.project.balpyo.databinding.FragmentStorageEditDeleteBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,7 +46,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentStorageEditDeleteBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
@@ -56,12 +55,12 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         viewModel.run {
             storageDetail.observe(mainActivity) {
-                binding.editTextScript.setText(it.content.toString())
-                binding.toolbar.textViewTitle.text = it.title.toString()
-                binding.textViewScriptTitle.text = it.title.toString()
-                scriptId = it.id.toLong()
-                var minute = (it.secTime.toInt()) / 60
-                var second = (it.secTime.toInt()) % 60
+                binding.editTextScript.setText(it?.content.toString())
+                binding.toolbar.textViewTitle.text = it?.title.toString()
+                binding.textViewScriptTitle.text = it?.title.toString()
+                scriptId = it?.id?: -1
+                val minute = (it?.secTime ?: 0) / 60
+                val second = (it?.secTime ?: 0) % 60
 
                 binding.textViewGoalTime.text = "${minute}분 ${second}초"
             }
@@ -120,54 +119,59 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
     }
 
     fun editScript() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
+        val apiClient = ApiClient(mainActivity)
 
-        var editScript = EditScriptRequest(scriptId, binding.editTextScript.text.toString(), binding.toolbar.textViewTitle.text.toString(), secTime)
+        val editScript = EditScriptRequestWithUnCalc(
+            binding.editTextScript.text.toString(),
+            binding.toolbar.textViewTitle.text.toString()
+        )
 
-        apiClient.apiService.editScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",scriptId.toInt(), editScript)?.enqueue(object :
-            Callback<EditScriptResponse> {
-            override fun onResponse(call: Call<EditScriptResponse>, response: Response<EditScriptResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: EditScriptResponse? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
+        apiClient.apiService.editWithUnCalc(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            scriptId,
+            editScript
+        ).enqueue(
+            object : Callback<BaseDto> {
+                override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseDto? = response.body()
+                        Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    binding.run {
-                        buttonStore.visibility = View.INVISIBLE
-                        buttonMenu.visibility = View.VISIBLE
+                        binding.run {
+                            buttonStore.visibility = View.INVISIBLE
+                            buttonMenu.visibility = View.VISIBLE
 
-                        editTextScript.isFocusableInTouchMode = false
+                            editTextScript.isFocusableInTouchMode = false
+                        }
+
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseDto? = response.body()
+                        Log.d("##", "onResponse 실패")
+                        Log.d("##", "onResponse 실패: " + response.code())
+                        Log.d("##", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("##", "Error Response: $errorBody")
                     }
-
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: EditScriptResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
                 }
-            }
 
-            override fun onFailure(call: Call<EditScriptResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
+                override fun onFailure(call: Call<BaseDto>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("##", "onFailure 에러: " + t.message.toString())
+                }
+            })
     }
 
-    fun deleteScript() {
+    private fun deleteScript() {
         val apiClient = ApiClient(mainActivity)
-        apiClient.apiService.deleteScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",scriptId.toInt())?.enqueue(object :
+        apiClient.apiService.deleteScript(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)}",
+            scriptId.toInt()
+        ).enqueue(object :
             Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: Void? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-
                     viewModel.getStorageList(mainActivity)
 
                     findNavController().popBackStack()
@@ -185,7 +189,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
             }
         })
     }

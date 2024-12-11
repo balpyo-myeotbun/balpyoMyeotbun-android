@@ -60,7 +60,7 @@ class StorageEditFlowControllerTimeFragment : Fragment() {
                     isGenerating = null,
                     playTime = null,
                     originalScript = getNormalScriptData().value,
-                    speed = (getSpeedData().value ?: 0).toLong(),
+                    speed = getSpeedData().value ?: 0,
                     useAi = null,
                     tags = null,
                     topic = null,
@@ -69,7 +69,7 @@ class StorageEditFlowControllerTimeFragment : Fragment() {
                     speechMark = null
                 )
 
-                flowControllerViewModel.editScriptAndCalc(mainActivity, baseDto, findNavController())
+                flowControllerViewModel.editScriptAndCalc(mainActivity, findNavController())
             }
         }
         return binding.root

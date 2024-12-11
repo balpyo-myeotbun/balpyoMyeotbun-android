@@ -1,6 +1,5 @@
 package com.project.balpyo
 
-import android.R.id
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -14,10 +13,10 @@ import com.project.balpyo.databinding.ActivityNotificationBinding
 
 class NotificationActivity : AppCompatActivity() {
 
-    var scriptId = 0
+    var scriptId : Long = 0
 
     lateinit var binding: ActivityNotificationBinding
-    lateinit var scriptViewModel: ScriptDetailViewModel
+    private lateinit var scriptViewModel: ScriptDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +31,7 @@ class NotificationActivity : AppCompatActivity() {
             insets
         }
 
-        scriptId = intent?.getStringExtra("scriptId")!!.toInt()
+        scriptId = intent?.getStringExtra("scriptId")!!.toLong()
         Log.d("발표몇분", "scriptId in activity : $scriptId")
 
         scriptViewModel = ViewModelProvider(this)[ScriptDetailViewModel::class.java]

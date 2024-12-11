@@ -1,6 +1,5 @@
 package com.project.balpyo.TimeCalculator
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
 import android.media.MediaPlayer
@@ -13,23 +12,15 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.project.balpyo.FlowController.FlowControllerPreviewFragmentDirections
-import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.GenerateAudioRequest
-import com.project.balpyo.api.response.GenerateAudioResponse
+import com.project.balpyo.api.BaseDto
+import com.project.balpyo.api.request.GenerateTimeAndFlowRequest
 import com.project.balpyo.databinding.FragmentTimeCalculatorSpeedBinding
-import com.warkiz.widget.IndicatorSeekBar
-import com.warkiz.widget.OnSeekChangeListener
-import com.warkiz.widget.SeekParams
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,7 +43,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentTimeCalculatorSpeedBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
@@ -72,7 +63,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
         binding.run {
             buttonNext.setOnClickListener {
                 stopMediaPlayers()
-                generateAudio(mainActivity)
+                generateTime()
             }
         }
         return binding.root
@@ -96,33 +87,38 @@ class TimeCalculatorSpeedFragment : Fragment() {
     }
 
     //TTS 받아오기 테스트
-    fun generateAudio(requireActivity: FragmentActivity) {
+    private fun generateTime() {
         val action = TimeCalculatorSpeedFragmentDirections.actionTimeCalculatorSpeedFragmentToLoadingFragment(
             toolbarTitle = "시간 계산",
             comment = "발표 시간을 계산하고 있어요"
         )
         findNavController().navigate(action)
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
-
-        val request = GenerateAudioRequest(MyApplication.timeCalculatorScript, MyApplication.timeCalculatorSpeed.toInt())
-        apiClient.apiService.generateAudio("Bearer ${PreferenceHelper.getUserToken(mainActivity)!!}", "audio/mp3", request)?.enqueue(object :
-            Callback<GenerateAudioResponse> {
-            override fun onResponse(call: Call<GenerateAudioResponse>, response: Response<GenerateAudioResponse>) {
+        val apiClient = ApiClient(mainActivity)
+        val request = GenerateTimeAndFlowRequest(
+            MyApplication.timeCalculatorTitle,
+            MyApplication.timeCalculatorScript,
+            MyApplication.timeCalculatorSpeed.toInt()
+        )
+        apiClient.apiService.postTimeAndFlow(
+            "Bearer ${PreferenceHelper.getUserToken(mainActivity)!!}",
+            request
+        ).enqueue(object :
+            Callback<BaseDto> {
+            override fun onResponse(call: Call<BaseDto>, response: Response<BaseDto>) {
                 if (response.isSuccessful) {
                     // 정상적으로 통신이 성공된 경우
-                    var result: GenerateAudioResponse? = response.body()
+                    val result: BaseDto? = response.body()
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
-                    convertMsToMinutesSeconds((result!!.playTime.toLong())*1000)
-                    MyApplication.speechMarks = result.speechMarks
+                    convertMsToMinutesSeconds((result?.playTime?.toLong())?.times(1000) ?: 0)
+                    MyApplication.speechMarks = result?.speechMark ?: emptyList()
                     Log.d("##", "duration : ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초")
 
                     findNavController().navigate(R.id.timeCalculatorResultFragment)
 
                 } else {
                     // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: GenerateAudioResponse? = response.body()
+                    var result: BaseDto? = response.body()
                     Log.d("##", "onResponse 실패")
                     Log.d("##", "onResponse 실패: " + response.code())
                     Log.d("##", "onResponse 실패: " + response.body())
@@ -131,9 +127,9 @@ class TimeCalculatorSpeedFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<GenerateAudioResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseDto>, t: Throwable) {
                 // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
+                Log.d("##", "onFailure 에러: " + t.message.toString())
             }
         })
     }
@@ -147,7 +143,7 @@ class TimeCalculatorSpeedFragment : Fragment() {
         MyApplication.calculatedTimeMinute = minutes.toInt()
         MyApplication.calculatedTimeSecond = seconds.toInt()
 
-        MyApplication.calculatedTime = totalSeconds.toLong()
+        MyApplication.calculatedTime = totalSeconds
 
         return String.format("%02d:%02d", minutes, seconds)
     }
