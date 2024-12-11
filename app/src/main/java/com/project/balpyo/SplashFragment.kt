@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.Utils.PreferenceUtil
 import com.project.balpyo.Utils.PreferenceHelper
@@ -21,7 +20,7 @@ class SplashFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentSplashBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity

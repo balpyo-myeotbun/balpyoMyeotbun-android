@@ -10,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.project.balpyo.FlowController.ViewModel.FlowControllerViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
 import com.project.balpyo.databinding.FragmentFlowControllerPreviewBinding
-import kotlinx.coroutines.launch
 
 
 class FlowControllerPreviewFragment : Fragment() {
@@ -27,7 +25,7 @@ class FlowControllerPreviewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mainActivity = activity as MainActivity
         flowControllerViewModel =
             ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
@@ -69,9 +67,10 @@ class FlowControllerPreviewFragment : Fragment() {
         return binding.root
     }
     private fun generateFlowController() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            flowControllerViewModel.generateFlowControllerForStorage(mainActivity, findNavController())
-        }
+        flowControllerViewModel.generateFlowController(
+            navController = findNavController(),
+            mainActivity = mainActivity
+        )
     }
     fun initToolBar() {
         binding.run {

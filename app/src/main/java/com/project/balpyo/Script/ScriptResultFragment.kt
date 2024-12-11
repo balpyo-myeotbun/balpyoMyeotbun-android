@@ -17,15 +17,7 @@ import com.project.balpyo.NotificationActivity
 import com.project.balpyo.Script.ViewModel.GenerateScriptViewModel
 import com.project.balpyo.Script.ViewModel.ScriptDetailViewModel
 import com.project.balpyo.Utils.MyApplication
-import com.project.balpyo.Utils.PreferenceHelper
-import com.project.balpyo.api.ApiClient
-import com.project.balpyo.api.TokenManager
-import com.project.balpyo.api.request.StoreScriptRequest
-import com.project.balpyo.api.response.StoreScriptResponse
 import com.project.balpyo.databinding.FragmentScriptResultBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class ScriptResultFragment : Fragment() {
@@ -45,7 +37,7 @@ class ScriptResultFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentScriptResultBinding.inflate(layoutInflater)
         notificationActivity = activity as NotificationActivity
         mainActivity = MainActivity()
@@ -55,13 +47,13 @@ class ScriptResultFragment : Fragment() {
 
         scriptViewModel.run {
             scriptResult.observe(notificationActivity) {
-                title = it.title
-                secTime = it.secTime
+                title = it?.title ?: ""
+                secTime = (it?.secTime ?: -1).toLong()
 
                 binding.run {
                     editTextScript.setText(it.content)
-                    var minute = (it.secTime.toInt()) / 60
-                    var second = (it.secTime.toInt()) % 60
+                    val minute = (it.secTime ?: -1) / 60
+                    val second = (it.secTime ?: -1) % 60
 
                     textViewGoalTime.text = "${minute}분 ${second}초"
                     textViewScriptTitle.text = "${it.title}"
@@ -95,7 +87,7 @@ class ScriptResultFragment : Fragment() {
             */
 
             buttonStore.setOnClickListener {
-                //TODO: script 저장이 필요한가? 생성과 동시에 보관함 저장? 버튼 눌러야 저장?
+                //TODO: script 생성과 동시에 보관함 저장이라 수정or삭제 필요할 것 같아요!
             // storeScript()
             }
 
@@ -107,8 +99,8 @@ class ScriptResultFragment : Fragment() {
     }
 
     private fun copyStr(context : Context, str : String): Boolean {
-        var clipboardManager : ClipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        var clipData = ClipData.newPlainText("copyScript", str)
+        val clipboardManager : ClipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("copyScript", str)
         clipboardManager.setPrimaryClip(clipData)
 
         return true
@@ -152,48 +144,4 @@ class ScriptResultFragment : Fragment() {
             }
         }
     }
-
-    /*fun storeScript() {
-        var apiClient = ApiClient(notificationActivity)
-        var tokenManager = TokenManager(notificationActivity)
-
-        var inputScriptInfo = StoreScriptRequest(binding.editTextScript.text.toString(), gptId.toString(), title.toString(), listOf("SCRIPT"), secTime)
-        Log.d("##", "script info : ${inputScriptInfo}")
-
-        apiClient.apiService.storeScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",inputScriptInfo)?.enqueue(object :
-            Callback<StoreScriptResponse> {
-            override fun onResponse(call: Call<StoreScriptResponse>, response: Response<StoreScriptResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: StoreScriptResponse? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-
-                    MyApplication.type = "push"
-
-                    if(MyApplication.mainActivity) {
-                        notificationActivity.finish()
-                    } else {
-                        notificationActivity.finish()
-                        val mainIntent = Intent(notificationActivity, MainActivity::class.java)
-                        mainIntent.putExtra("type", "push")
-                        startActivity(mainIntent)
-                    }
-
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: StoreScriptResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                }
-            }
-
-            override fun onFailure(call: Call<StoreScriptResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
-    }*/
 }

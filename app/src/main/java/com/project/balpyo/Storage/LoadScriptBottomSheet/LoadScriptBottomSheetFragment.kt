@@ -28,7 +28,11 @@ class LoadScriptBottomSheetFragment : BottomSheetDialogFragment(), BottomSheetLi
     var position: Int? = null
     lateinit var viewModel: StorageViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentBottomsheetBinding.inflate(inflater, container, false)
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
@@ -39,11 +43,17 @@ class LoadScriptBottomSheetFragment : BottomSheetDialogFragment(), BottomSheetLi
                 val items = mutableListOf<BottomSheetData>()
 
                 for (i in it.indices) {
-                    items.add(BottomSheetData(it[i].title, it[1].content))
-                    scriptId.add(it[i].id)
+                    items.add(BottomSheetData(it[i].title ?: "", it[i].content ?: ""))
+                    scriptId.add(it[i].id ?: -1)
                 }
 
-                val adapter = LoadScriptBottomSheetAdapter(items, scriptId, viewModel, mainActivity, this@LoadScriptBottomSheetFragment)
+                val adapter = LoadScriptBottomSheetAdapter(
+                    items,
+                    scriptId,
+                    viewModel,
+                    mainActivity,
+                    this@LoadScriptBottomSheetFragment
+                )
                 binding.rvBsScript.adapter = adapter
                 binding.rvBsScript.layoutManager = LinearLayoutManager(mainActivity)
 
@@ -51,7 +61,7 @@ class LoadScriptBottomSheetFragment : BottomSheetDialogFragment(), BottomSheetLi
                     dismiss()
                 }
                 binding.btnBsLoad.setOnClickListener {
-                    viewModel.getStorageDetailForBottomSheet(mainActivity, scriptId[position!!].toInt())
+                    viewModel.getStorageDetailForBottomSheet(mainActivity, scriptId[position!!])
                     dismiss()
                 }
             }
