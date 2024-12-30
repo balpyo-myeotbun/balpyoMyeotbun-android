@@ -3,7 +3,8 @@ package com.project.balpyo.Script.ViewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.project.balpyo.NotificationActivity
+import com.project.balpyo.MainActivity
+import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.api.ApiClient
 import com.project.balpyo.api.BaseDto
 import com.project.balpyo.api.TokenManager
@@ -15,7 +16,7 @@ class ScriptDetailViewModel : ViewModel() {
 
     var scriptResult = MutableLiveData<BaseDto>()
 
-    fun getScriptDetail(mainActivity: NotificationActivity, scriptId: Long) {
+    fun getScriptDetail(mainActivity: MainActivity, scriptId: Long) {
 
         val apiClient = ApiClient(mainActivity)
         val tokenManager = TokenManager(mainActivity)
