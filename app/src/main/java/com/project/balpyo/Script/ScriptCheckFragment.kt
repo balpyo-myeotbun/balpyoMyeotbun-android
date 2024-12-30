@@ -63,8 +63,7 @@ class ScriptCheckFragment : Fragment() {
 
         binding.run {
             buttonComplete.setOnClickListener {
-                //TODO: 대본 생성 api로 변경 필요합니다!
-                //manageScript()
+                viewModel.generateScript(findNavController(), mainActivity)
             }
 
             editTextTitleCheck.addTextChangedListener {
@@ -159,14 +158,14 @@ class ScriptCheckFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.VISIBLE
-            toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.imageViewButtonBack.visibility = View.VISIBLE
+            toolbar.imageViewButtonClose.visibility = View.INVISIBLE
             toolbar.textViewTitle.text = "대본 생성"
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
                 text = "5/5"
             }
-            toolbar.buttonBack.setOnClickListener {
+            toolbar.imageViewButtonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
                 findNavController().popBackStack()
             }
@@ -330,44 +329,4 @@ class ScriptCheckFragment : Fragment() {
             }
         }
     }
-
-    //TODO: 대본 생성 api로 변경 필요합니다!
-    /*fun manageScript() {
-        var apiClient = ApiClient(mainActivity)
-        var tokenManager = TokenManager(mainActivity)
-
-        var manageScript = ManageScriptRequest("", MyApplication.scriptTitle, MyApplication.scriptTime, listOf("SCRIPT"),
-            true)
-
-        apiClient.apiService.manageScript("Bearer ${PreferenceHelper.getUserToken(mainActivity)}",manageScript)?.enqueue(object :
-            Callback<ManageScriptResponse> {
-            override fun onResponse(call: Call<ManageScriptResponse>, response: Response<ManageScriptResponse>) {
-                if (response.isSuccessful) {
-                    // 정상적으로 통신이 성공된 경우
-                    var result: ManageScriptResponse? = response.body()
-                    Log.d("##", "onResponse 성공: " + result?.toString())
-                    MyApplication.scriptId = result?.result!!.scriptId.toLong()
-
-                    viewModel.generateScript(this@ScriptCheckFragment, mainActivity)
-
-                    MyApplication.scriptGenerating = true
-
-                    findNavController().navigate(R.id.scriptCompleteFragment)
-                } else {
-                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                    var result: ManageScriptResponse? = response.body()
-                    Log.d("##", "onResponse 실패")
-                    Log.d("##", "onResponse 실패: " + response.code())
-                    Log.d("##", "onResponse 실패: " + response.body())
-                    val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                    Log.d("##", "Error Response: $errorBody")
-                }
-            }
-
-            override fun onFailure(call: Call<ManageScriptResponse>, t: Throwable) {
-                // 통신 실패
-                Log.d("##", "onFailure 에러: " + t.message.toString());
-            }
-        })
-    }*/
 }

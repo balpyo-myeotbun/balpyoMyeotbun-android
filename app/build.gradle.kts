@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("androidx.navigation.safeargs.kotlin")
-    alias(libs.plugins.googleGmsGoogleServices)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -102,7 +102,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.4.0")
 
     //FCM
-    implementation("com.google.firebase:firebase-messaging:24.0.0")
+    implementation("com.google.firebase:firebase-messaging:24.1.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
 
     //뷰페이저

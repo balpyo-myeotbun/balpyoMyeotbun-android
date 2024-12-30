@@ -52,7 +52,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
                 checkText()
             }
 
-            buttonStore.setOnClickListener {
+            textViewButtonStore.setOnClickListener {
                 if(scriptId.toInt() != -1) {
                     editScript()
                 } else {
@@ -70,14 +70,14 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
 
     fun initToolBar() {
         binding.run {
-            binding.buttonStore.visibility = View.VISIBLE
+            binding.textViewButtonStore.visibility = View.VISIBLE
             binding.buttonMenu.visibility = View.GONE
 
-            toolbar.buttonBack.visibility = View.VISIBLE
-            toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.imageViewButtonBack.visibility = View.VISIBLE
+            toolbar.imageViewButtonClose.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
-            toolbar.buttonBack.setOnClickListener {
+            toolbar.imageViewButtonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
                 findNavController().popBackStack()
             }
@@ -88,10 +88,10 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
     private fun checkText() {
         binding.run {
             if(editTextTitle.text.isNotEmpty() && editTextNote.text.isNotEmpty()) {
-                buttonStore.setTextColor(ContextCompat.getColor(mainActivity, R.color.text))
+                textViewButtonStore.setTextColor(ContextCompat.getColor(mainActivity, R.color.text))
             }
             else {
-                buttonStore.setTextColor(ContextCompat.getColor(mainActivity, R.color.disabled))
+                textViewButtonStore.setTextColor(ContextCompat.getColor(mainActivity, R.color.disabled))
             }
         }
     }
@@ -118,7 +118,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
                     scriptId = result?.id ?: -1
 
                     Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
-                    binding.buttonStore.visibility = View.GONE
+                    binding.textViewButtonStore.visibility = View.GONE
                     binding.buttonMenu.visibility = View.VISIBLE
                     binding.run {
                         editTextNote.run {
@@ -171,7 +171,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
                     Log.d("##", "onResponse 성공: " + result?.toString())
 
                     Toast.makeText(mainActivity, "저장되었습니다", Toast.LENGTH_SHORT).show()
-                    binding.buttonStore.visibility = View.GONE
+                    binding.textViewButtonStore.visibility = View.GONE
                     binding.buttonMenu.visibility = View.VISIBLE
                     binding.run {
                         editTextNote.run {
@@ -238,7 +238,7 @@ class NoteFragment : Fragment(), NoteBottomSheetListener {
     override fun onNoteSelected(position: Int) {
         if (position == 2) {
             Toast.makeText(mainActivity, "수정 후 저장하기를 눌러주세요", Toast.LENGTH_SHORT).show()
-            binding.buttonStore.visibility = View.VISIBLE
+            binding.textViewButtonStore.visibility = View.VISIBLE
             binding.buttonMenu.visibility = View.GONE
             binding.editTextNote.run {
                 isEnabled = true

@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
 
-    lateinit var notificationActivity: NotificationActivity
-
     lateinit var sharedPreferenceManager: PreferenceUtil
 
     var type = ""
@@ -44,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        notificationActivity = NotificationActivity()
 
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

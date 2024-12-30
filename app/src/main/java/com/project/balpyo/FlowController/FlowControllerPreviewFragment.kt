@@ -74,13 +74,13 @@ class FlowControllerPreviewFragment : Fragment() {
     }
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.VISIBLE
-            toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.imageViewButtonBack.visibility = View.VISIBLE
+            toolbar.imageViewButtonClose.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.textViewTitle.text = "발표 연습"
             toolbar.textViewPage.visibility = View.VISIBLE
             toolbar.textViewPage.text = "4/5"
-            toolbar.buttonBack.setOnClickListener {
+            toolbar.imageViewButtonBack.setOnClickListener {
                 findNavController().popBackStack()
             }
         }

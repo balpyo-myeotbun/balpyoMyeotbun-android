@@ -92,7 +92,7 @@
         android:scrollbars="vertical"
         android:textColor="@color/gray4"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_store"
+        app:layout_constraintBottom_toTopOf="@+id/textView_button_store"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_success" />

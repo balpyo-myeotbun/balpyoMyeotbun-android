@@ -53,14 +53,14 @@ class ScriptTitleFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.VISIBLE
-            toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.imageViewButtonBack.visibility = View.VISIBLE
+            toolbar.imageViewButtonClose.visibility = View.INVISIBLE
             toolbar.textViewTitle.text = "대본 생성"
             toolbar.textViewPage.run {
                 visibility = View.VISIBLE
                 text = "1/5"
             }
-            toolbar.buttonBack.setOnClickListener {
+            toolbar.imageViewButtonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
                 findNavController().popBackStack()
             }
