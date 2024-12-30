@@ -198,13 +198,13 @@ class StorageEditFlowControllerTimeFragment : Fragment() {
 
     private fun initToolBar() {
         binding.toolbar.run {
-            buttonBack.visibility = View.VISIBLE
-            buttonClose.visibility = View.INVISIBLE
+            imageViewButtonBack.visibility = View.VISIBLE
+            imageViewButtonClose.visibility = View.INVISIBLE
             textViewTitle.visibility = View.VISIBLE
             textViewTitle.text = "발표 연습"
             textViewPage.visibility = View.VISIBLE
             textViewPage.text = "2/2"
-            buttonBack.setOnClickListener { findNavController().popBackStack() }
+            imageViewButtonBack.setOnClickListener { findNavController().popBackStack() }
         }
     }
 }

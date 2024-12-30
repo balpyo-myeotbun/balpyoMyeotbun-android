@@ -38,11 +38,6 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
     var scriptId = 0L
     var secTime = 0L
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,7 +65,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
 
         binding.editTextScript.keyListener = null
         binding.run {
-            buttonStore.visibility = View.INVISIBLE
+            textViewButtonStore.visibility = View.INVISIBLE
             buttonMenu.visibility = View.VISIBLE
 
             editTextScript.isFocusableInTouchMode = false
@@ -79,7 +74,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
                 bottomSheet.show(childFragmentManager,bottomSheet.tag)
             }
 
-            buttonStore.setOnClickListener {
+            textViewButtonStore.setOnClickListener {
                 editScript()
             }
         }
@@ -88,11 +83,11 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.VISIBLE
-            toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.imageViewButtonBack.visibility = View.VISIBLE
+            toolbar.imageViewButtonClose.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
-            toolbar.buttonBack.setOnClickListener {
+            toolbar.imageViewButtonBack.setOnClickListener {
                 findNavController().popBackStack()
             }
         }
@@ -104,7 +99,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
 
         if (position == 2) {
             Log.d("발표몇분", "수정")
-            binding.buttonStore.visibility = View.VISIBLE
+            binding.textViewButtonStore.visibility = View.VISIBLE
             binding.buttonMenu.visibility = View.GONE
 
             binding.editTextScript.run {
@@ -139,7 +134,7 @@ class StorageEditDeleteFragment : Fragment(), StorageBottomSheetListener {
                         Log.d("##", "onResponse 성공: " + result?.toString())
 
                         binding.run {
-                            buttonStore.visibility = View.INVISIBLE
+                            textViewButtonStore.visibility = View.INVISIBLE
                             buttonMenu.visibility = View.VISIBLE
 
                             editTextScript.isFocusableInTouchMode = false

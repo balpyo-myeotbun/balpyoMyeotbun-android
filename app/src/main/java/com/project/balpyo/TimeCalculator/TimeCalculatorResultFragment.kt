@@ -197,16 +197,16 @@ class TimeCalculatorResultFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.VISIBLE
-            toolbar.buttonClose.visibility = View.VISIBLE
+            toolbar.imageViewButtonBack.visibility = View.VISIBLE
+            toolbar.imageViewButtonClose.visibility = View.VISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.textViewTitle.text = "시간 계산"
-            toolbar.buttonBack.setOnClickListener {
+            toolbar.imageViewButtonBack.setOnClickListener {
                 // 뒤로가기 버튼 클릭시 동작
                 findNavController().popBackStack(R.id.timeCalculatorSpeedFragment, false)
             }
-            toolbar.buttonClose.setOnClickListener {
+            toolbar.imageViewButtonClose.setOnClickListener {
                 findNavController().popBackStack(R.id.homeFragment, false)
             }
         }

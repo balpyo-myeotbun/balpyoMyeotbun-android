@@ -44,12 +44,12 @@ class MyPageAccountFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.VISIBLE
-            toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.imageViewButtonBack.visibility = View.VISIBLE
+            toolbar.imageViewButtonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.VISIBLE
             toolbar.textViewTitle.text = "내 정보 관리"
-            toolbar.buttonBack.setOnClickListener {
+            toolbar.imageViewButtonBack.setOnClickListener {
                 findNavController().popBackStack()
             }
         }

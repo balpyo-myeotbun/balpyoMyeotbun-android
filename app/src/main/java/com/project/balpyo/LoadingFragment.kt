@@ -44,8 +44,8 @@ class LoadingFragment : Fragment() {
 
     fun initToolBar() {
         binding.run {
-            toolbar.buttonBack.visibility = View.INVISIBLE
-            toolbar.buttonClose.visibility = View.INVISIBLE
+            toolbar.imageViewButtonBack.visibility = View.INVISIBLE
+            toolbar.imageViewButtonClose.visibility = View.INVISIBLE
             toolbar.textViewPage.visibility = View.INVISIBLE
             toolbar.textViewTitle.visibility = View.VISIBLE
         }

@@ -413,27 +413,27 @@ class FlowControllerResultFragment : Fragment(), FlowControllerEditBottomSheetLi
     fun initToolBar() {
         binding.run {
             if(args.type == "New") {
-                toolbar.buttonClose.visibility = View.VISIBLE
-                toolbar.buttonBack.visibility = View.INVISIBLE
+                toolbar.imageViewButtonClose.visibility = View.VISIBLE
+                toolbar.imageViewButtonBack.visibility = View.INVISIBLE
                 ivFlowResultMenu.visibility = View.INVISIBLE
             }
             else {
-                toolbar.buttonClose.visibility = View.INVISIBLE
-                toolbar.buttonBack.visibility = View.VISIBLE
+                toolbar.imageViewButtonClose.visibility = View.INVISIBLE
+                toolbar.imageViewButtonBack.visibility = View.VISIBLE
                 ivFlowResultMenu.visibility = View.VISIBLE
             }
             if(args.type == "Home" || args.type == "New") {
-                toolbar.buttonBack.setOnClickListener {
+                toolbar.imageViewButtonBack.setOnClickListener {
                     flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.homeFragment, false)
                 }
-                toolbar.buttonClose.setOnClickListener {
+                toolbar.imageViewButtonClose.setOnClickListener {
                     flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.homeFragment, false)
                 }
             }
             else
-                toolbar.buttonBack.setOnClickListener {
+                toolbar.imageViewButtonBack.setOnClickListener {
                     flowControllerViewModel.initialize()
                     findNavController().popBackStack(R.id.storageFragment, false)
                 }
