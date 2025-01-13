@@ -348,9 +348,6 @@
         android:label="fragment_my_page"
         tools:layout="@layout/fragment_my_page" >
         <action
-            android:id="@+id/action_myPageFragment_to_myPageProfileFragment"
-            app:destination="@id/myPageProfileFragment" />
-        <action
             android:id="@+id/action_myPageFragment_to_myPageAccountFragment"
             app:destination="@id/myPageAccountFragment" />
     </fragment>
@@ -372,6 +369,12 @@
         <action
             android:id="@+id/action_myPageAccountFragment_to_myPageCancelAccountFragment"
             app:destination="@id/myPageCancelAccountFragment" />
+        <action
+            android:id="@+id/action_myPageAccountFragment_to_myPageProfileFragment"
+            app:destination="@id/myPageProfileFragment" />
+        <action
+            android:id="@+id/action_myPageAccountFragment_to_myPageCurrentPasswordFragment"
+            app:destination="@id/myPageCurrentPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/onboarding1Fragment"
@@ -474,4 +477,27 @@
         android:name="com.project.balpyo.Script.ScriptEditFragment"
         android:label="fragment_script_edit"
         tools:layout="@layout/fragment_script_edit" />
+    <fragment
+        android:id="@+id/myPageChangePasswordFragment"
+        android:name="com.project.balpyo.MyPage.MyPageChangePasswordFragment"
+        android:label="fragment_my_page_change_password"
+        tools:layout="@layout/fragment_my_page_change_password" >
+        <action
+            android:id="@+id/action_myPageChangePasswordFragment_to_myPageChangePasswordCompleteFragment"
+            app:destination="@id/myPageChangePasswordCompleteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageChangePasswordCompleteFragment"
+        android:name="com.project.balpyo.MyPage.MyPageChangePasswordCompleteFragment"
+        android:label="fragment_my_page_change_password_complete"
+        tools:layout="@layout/fragment_my_page_change_password_complete" />
+    <fragment
+        android:id="@+id/myPageCurrentPasswordFragment"
+        android:name="com.project.balpyo.MyPage.MyPageCurrentPasswordFragment"
+        android:label="fragment_my_page_current_password"
+        tools:layout="@layout/fragment_my_page_current_password" >
+        <action
+            android:id="@+id/action_myPageCurrentPasswordFragment_to_myPageChangePasswordFragment"
+            app:destination="@id/myPageChangePasswordFragment" />
+    </fragment>
 </navigation>

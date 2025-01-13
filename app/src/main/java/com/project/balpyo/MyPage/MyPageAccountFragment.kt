@@ -29,11 +29,11 @@ class MyPageAccountFragment : Fragment() {
             }
 
             buttonChangePassword.setOnClickListener {
-
+                findNavController().navigate(R.id.myPageCurrentPasswordFragment)
             }
 
             buttonEdit.setOnClickListener {
-
+                findNavController().navigate(R.id.myPageProfileFragment)
             }
 
             textViewUserEmail.text = PreferenceHelper.getUserId(mainActivity)
