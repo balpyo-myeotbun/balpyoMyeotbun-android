@@ -33,7 +33,7 @@ class FirebaseService : FirebaseMessagingService() {
         val notificationID = (System.currentTimeMillis() / 7).toInt() // 고유 ID 지정
 
         createNotificationChannel(notificationManager)
-        val intent = Intent(this, NotificationActivity::class.java).apply {
+        val intent = Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
