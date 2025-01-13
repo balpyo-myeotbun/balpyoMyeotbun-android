@@ -79,18 +79,17 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         type = intent?.getStringExtra("type").toString()
         Log.d("발표몇분", "type : ${MyApplication.type}")
-        if(MyApplication.type == "push") {
+        if(type == "push") {
 //            navController.navigate(R.id.splashFragment)
 //            navController.navigate(R.id.loginFragment)
             navController.navigate(R.id.homeFragment)
             Log.d("발표몇분", "home fragment")
             MyApplication.type = ""
+            type = ""
         }
-        else if(MyApplication.type == "google") {
+        else if(type == "google") {
             MyApplication.type = ""
-        }
-        else {
-            navController.navigate(R.id.splashFragment)
+            type = ""
         }
     }
 
