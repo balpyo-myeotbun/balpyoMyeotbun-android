@@ -110,4 +110,19 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body parameters: GenerateTimeAndFlowRequest
     ): Call<BaseDto>
+
+    // 현재 비밀번호 체크
+    @GET("/auth/check-user-password")
+    fun checkPassword(
+        @Header("Authorization") token: String,
+        @Query("currentPassword") currentPassword: String
+    ): Call<Boolean>
+
+    // 비밀번호 변경
+    @PUT("/auth/change-user-password")
+    fun changePassword(
+        @Header("Authorization") token: String,
+        @Query("currentPassword") currentPassword: String,
+        @Query("newPassword") newPassword: String
+    ): Call<EmptyDto>
 }

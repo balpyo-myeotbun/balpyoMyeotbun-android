@@ -35,7 +35,7 @@ class MyPageFragment : Fragment() {
 
         binding.run {
             llMypagePersonal.setOnClickListener {
-                findNavController().navigate(R.id.myPageProfileFragment)
+                findNavController().navigate(R.id.myPageAccountFragment)
             }
             llMypageNotice.setOnClickListener {
                 openUrl("https://balpyo.notion.site/3e95ef296572437cbcb081bd4ae4e111")
