@@ -35,5 +35,7 @@ class MyApplication : Application() {
         // FCM
         var type = ""
         var mainActivity = false
+
+        var currentPassword = ""
     }
 }
