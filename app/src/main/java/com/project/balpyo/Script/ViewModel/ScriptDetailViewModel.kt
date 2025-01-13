@@ -30,6 +30,10 @@ class ScriptDetailViewModel : ViewModel() {
                         var result: BaseDto? = response.body()
                         Log.d("##", "onResponse 성공: " + result?.toString())
 
+                        convertMsToMinutesSeconds((result?.playTime?.toLong())?.times(1000) ?: 0)
+                        MyApplication.speechMarks = result?.speechMark ?: emptyList()
+                        Log.d("##", "duration : ${MyApplication.calculatedTimeMinute}분 ${MyApplication.calculatedTimeSecond}초")
+
                         scriptResult.value = result!!
 
                     } else {
@@ -48,5 +52,19 @@ class ScriptDetailViewModel : ViewModel() {
                     Log.d("##", "onFailure 에러: " + t.message.toString())
                 }
             })
+    }
+
+    //밀리 초를 mm:ss로 변환
+    fun convertMsToMinutesSeconds(milliseconds: Long): String {
+        val totalSeconds = milliseconds / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+
+        MyApplication.calculatedTimeMinute = minutes.toInt()
+        MyApplication.calculatedTimeSecond = seconds.toInt()
+
+        MyApplication.calculatedTime = totalSeconds
+
+        return String.format("%02d:%02d", minutes, seconds)
     }
 }

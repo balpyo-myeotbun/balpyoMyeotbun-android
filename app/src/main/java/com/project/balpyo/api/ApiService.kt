@@ -36,7 +36,7 @@ interface ApiService {
     ): Call<VerifyUidResponse>
 
     // 스크립트 생성
-    @POST("user/ai/script")
+    @POST("scripts/generate")
     fun generateScript(
         @Header("Authorization") token: String,
         @Body parameters: GenerateScriptRequest

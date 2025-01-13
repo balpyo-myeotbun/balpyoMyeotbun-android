@@ -3,12 +3,9 @@ package com.project.balpyo.api.request
 import com.google.gson.annotations.SerializedName
 
 data class GenerateScriptRequest(
-    val scriptId: Long,
+    val title: String,
     val topic: String,
     val keywords: String,
     val secTime: Long,
-    @SerializedName("balpyoAPIKey") val balpyoApikey: String,
-    val tag: List<String>,
-    val test: String,
-    val fcmtoken: String
+    val fcmToken: String
 )

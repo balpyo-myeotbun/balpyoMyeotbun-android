@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
@@ -40,22 +41,18 @@ class GenerateScriptViewModel : ViewModel() {
     var gptId = MutableLiveData<String>()
 
     //대본 생성이 완료되면 결과 프래그먼트로 이동하도록 설정, 코루틴
-    fun generateScript(fragment: Fragment, mainActivity: MainActivity) {
+    fun generateScript(navController: NavController, mainActivity: MainActivity) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 var apiClient = ApiClient(mainActivity)
-                var tokenManager = TokenManager(mainActivity)
 
                 MyApplication.preferences = PreferenceUtil(mainActivity)
 
                 var inputScriptInfo = GenerateScriptRequest(
-                    MyApplication.scriptId,
+                    MyApplication.scriptTitle,
                     MyApplication.scriptTopic,
                     MyApplication.scriptSubtopic,
                     MyApplication.scriptTime,
-                    "1234",
-                    mutableListOf("SCRIPT"),
-                    "false",
                     MyApplication.preferences.getFCMToken().toString()
                 )
 
@@ -71,6 +68,10 @@ class GenerateScriptViewModel : ViewModel() {
                             // 정상적으로 통신이 성공된 경우
                             var result: GenerateScriptResponse? = response.body()
                             Log.d("##", "onResponse 성공: " + result?.toString())
+
+                            MyApplication.scriptGenerating = true
+
+                            navController.navigate(R.id.scriptCompleteFragment)
 
 //                            MyApplication.preferences.setScriptResult(result?.result?.resultScript.toString())
 //                            Log.d("발표몇분", "스크립트 저장 : ${MyApplication.preferences.getScriptResult()}")

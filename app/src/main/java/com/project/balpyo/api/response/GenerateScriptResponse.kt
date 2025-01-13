@@ -1,7 +1,5 @@
 package com.project.balpyo.api.response
 
-import com.google.gson.annotations.SerializedName
-
 data class GenerateScriptResponse(
     val code: String,
     val message: String,
@@ -9,18 +7,18 @@ data class GenerateScriptResponse(
 )
 
 data class GenerateScrpitResult(
-    val resultScript: List<ResultScript>,
-    val gptId: String
-)
-
-data class ResultScript(
-    val index: Long,
-    val message: Message,
-    val logprobs: Any?,
-    @SerializedName("finish_reason") val finishReason: String
-)
-
-data class Message(
-    val role: String,
-    val content: String
+    val id: Int,
+    val content: String,
+    val title: String,
+    val secTime: Int,
+    val voiceFilePath: String,
+    val isGenerating: Boolean,
+    val playTime: Int,
+    val originalScript: String,
+    val speed: Int,
+    val useAi: Boolean,
+    val tags: List<String>,
+    val topic: String,
+    val keywords: String,
+    val fcmToken: String
 )

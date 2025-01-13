@@ -141,6 +141,12 @@
         <action
             android:id="@+id/action_homeFragment_to_flowControllerResultFragment"
             app:destination="@id/flowControllerResultFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_timeCalculatorEditFragment"
+            app:destination="@id/timeCalculatorEditFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_scriptEditFragment"
+            app:destination="@id/scriptEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/scriptTitleFragment"
@@ -268,11 +274,7 @@
         android:id="@+id/scriptResultFragment"
         android:name="com.project.balpyo.Script.ScriptResultFragment"
         android:label="fragment_script_result"
-        tools:layout="@layout/fragment_script_result" >
-        <action
-            android:id="@+id/action_scriptResultFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_script_result" />
     <fragment
         android:id="@+id/scriptCompleteFragment"
         android:name="com.project.balpyo.Script.ScriptCompleteFragment"
@@ -462,4 +464,14 @@
             android:name="content"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/timeCalculatorEditFragment"
+        android:name="com.project.balpyo.TimeCalculator.TimeCalculatorEditFragment"
+        android:label="fragment_time_calculator_edit"
+        tools:layout="@layout/fragment_time_calculator_edit" />
+    <fragment
+        android:id="@+id/scriptEditFragment"
+        android:name="com.project.balpyo.Script.ScriptEditFragment"
+        android:label="fragment_script_edit"
+        tools:layout="@layout/fragment_script_edit" />
 </navigation>
