@@ -21,6 +21,7 @@ import com.project.balpyo.Storage.Adapter.StorageAdapter
 import com.project.balpyo.Storage.ViewModel.StorageViewModel
 import com.project.balpyo.MainActivity
 import com.project.balpyo.R
+import com.project.balpyo.Script.ViewModel.ScriptDetailViewModel
 import com.project.balpyo.Utils.MyApplication
 import com.project.balpyo.Utils.PreferenceHelper
 import com.project.balpyo.databinding.FragmentHomeBinding
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
 
     lateinit var viewModel: StorageViewModel
     private lateinit var flowControllerViewModel: FlowControllerViewModel
+    private lateinit var scriptDetailViewModel: ScriptDetailViewModel
 
     private lateinit var animationDrawable: AnimationDrawable
     private lateinit var callback: OnBackPressedCallback
@@ -51,6 +53,7 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProvider(mainActivity)[StorageViewModel::class.java]
         flowControllerViewModel = ViewModelProvider(requireActivity())[FlowControllerViewModel::class.java]
+        scriptDetailViewModel = ViewModelProvider(requireActivity())[ScriptDetailViewModel::class.java]
         viewModel.getStorageList(mainActivity)
 
         mainActivity.setTransparentStatusBar()
@@ -107,8 +110,8 @@ class HomeFragment : Fragment() {
                                             tags.contains("TIME")
                                         ) {
                                             if (tags.contains("SCRIPT")) {
-                                                //TODO: findNavController().navigate()
-
+                                                viewModel.getStorageDetail(mainActivity, list[position].id!!)
+                                                findNavController().navigate(R.id.scriptEditFragment)
                                             } else if (tags.contains("FLOW")) {
                                                 flowControllerViewModel.initialize()
                                                 flowControllerViewModel.setFlowControllerResult(list[position])
@@ -119,13 +122,13 @@ class HomeFragment : Fragment() {
                                                 findNavController().navigate(action)
 
                                             } else if (tags.contains("TIME")) {
-                                                //TODO: findNavController().navigate()
+                                                findNavController().navigate(R.id.timeCalculatorEditFragment)
                                             }
                                         } else if (tags.contains("NOTE")) {
-                                            //TODO: note 결과 프래그먼트로 이동
                                             findNavController().navigate(R.id.noteFragment)
                                         } else {
                                             //TODO: 예외
+
                                         }
                                     }
                                     //findNavController().navigate(R.id.storageEditDeleteFragment)
@@ -166,12 +169,12 @@ class HomeFragment : Fragment() {
             val nickName = PreferenceHelper.getUserNickname(mainActivity)
             if (nickName != null) {
                 Log.d("", nickName)
-                tvHomeStorageTitle.text = "${nickName}님의 보관함"
+                tvHomeStorageTitle.text = "피유진님의 보관함"
                 val spannableTitle = SpannableString(tvHomeStorageTitle.text)
                 spannableTitle.setSpan(
                     ForegroundColorSpan(resources.getColor(R.color.primary)),
                     0,
-                    nickName.length,
+                    "피유진".length,
                     SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
                 )
                 tvHomeStorageTitle.text = spannableTitle
