@@ -118,4 +118,11 @@ interface ApiService {
         @Query("currentPassword") currentPassword: String
     ): Call<Boolean>
 
+    // 비밀번호 변경
+    @PUT("/auth/change-user-password")
+    fun changePassword(
+        @Header("Authorization") token: String,
+        @Query("currentPassword") currentPassword: String,
+        @Query("newPassword") newPassword: String
+    ): Call<EmptyDto>
 }
